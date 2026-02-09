@@ -1,6 +1,45 @@
+import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 import { Button } from "@mui/material";
+import Box from "@mui/material/Box";
+import Modal from "@mui/material/Modal";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { FaStethoscope } from "react-icons/fa";
+import ManishaSuryawanshiImg from "../../asset/aboutMore/founders/manishaSuryawanshi.png";
+import ConsciousLivingIcon from "../../asset/aboutPage/mission/ConsciousLiving.png";
+import EcosystemIcon from "../../asset/aboutPage/mission/Ecosystem.png";
+import LearningIcon from "../../asset/aboutPage/mission/Learning.png";
+import WellnessIcon from "../../asset/aboutPage/mission/Wellness.png";
+import collectivelearningIcon from "../../asset/aboutPage/ourVision/CollectiveLearning.png";
+import enrichedlifeIcon from "../../asset/aboutPage/ourVision/EnrichedLife.png";
+import innerstrengthIcon from "../../asset/aboutPage/ourVision/InnerStrength.png";
+import naturalwisdomIcon from "../../asset/aboutPage/ourVision/naturalwisdom.png";
+import SustainablesystemsIcon from "../../asset/aboutPage/ourVision/SustainableSystems.png";
+import thrivingecosystemsIcon from "../../asset/aboutPage/ourVision/ThrivingEcosystems.png";
+import BodyIcon from "../../asset/aboutPage/philosophy/Body.png";
+import CommunityIcon from "../../asset/aboutPage/philosophy/Community.png";
+import MindIcon from "../../asset/aboutPage/philosophy/Mind.png";
+import NatureIcon from "../../asset/aboutPage/philosophy/Nature.png";
+import DailyRitualImg from "../../asset/blogs/Daily Rituals.png";
+import panchakaramaImg from "../../asset/blogs/panchakarama.png";
+import yogaclassImg from "../../asset/blogs/yogaclass.jpg";
+import corporateMindfulnessWorkshopsImg from "../../asset/communityProgram/Corporate Mindfulness Workshops.png";
+import guidedForestTherapyWalkImg from "../../asset/communityProgram/Guided Forest Therapy Walk.png";
+import outDoorLeavingImg from "../../asset/communityProgram/Out Door Leaving.png";
+import sisnorToursImg from "../../asset/communityProgram/Sisnor Tours.png";
+import swagramDarshanImg from "../../asset/communityProgram/swagramDarshan.png";
+import weekendDigitalDetoxCampImg from "../../asset/communityProgram/Weekend Digital Detox Camp.png";
+import massageTherapyImg from "../../asset/gallary-stories/massagetherapy.png";
+import morningYogaImg from "../../asset/gallary-stories/morningyoga.jpg";
+import SattvicFoodImg from "../../asset/gallary-stories/SattvicFood.jpg";
+import TurmericImg from "../../asset/gallary-stories/Turmeric.webp";
+import culturistHealerImg from "../../asset/learningcourses/CulturistHealer.png";
+import ingeniousLifestyleImg from "../../asset/learningcourses/IngeniousLifestyle.png";
+import inventionWisdomImg from "../../asset/learningcourses/InventionWisdom.png";
+import learningCourseImg from "../../asset/learningcourses/LearningCourse.png";
+import rootHealerImg from "../../asset/learningcourses/rootHealer.jpg";
+import therapistImg from "../../asset/learningcourses/Therapist.png";
+import welfareHomeExpertImg from "../../asset/learningcourses/WelfareHomeExpert.png";
 import FoodImg from "../../asset/newherosection/food.jpg";
 import hairSpaImg from "../../asset/newherosection/hairspa.jpg";
 import headMassageImg from "../../asset/newherosection/headmassage.jpg";
@@ -8,53 +47,14 @@ import headMassagesImg from "../../asset/newherosection/headmassages.jpg";
 import meditationImg from "../../asset/newherosection/meditation.jpg";
 import TrackingImg from "../../asset/newherosection/tracking.png";
 import YogaImg from "../../asset/newherosection/yoga.jpg";
-import MindIcon from "../../asset/aboutPage/philosophy/Mind.png";
-import BodyIcon from "../../asset/aboutPage/philosophy/Body.png";
-import NatureIcon from "../../asset/aboutPage/philosophy/Nature.png";
-import CommunityIcon from "../../asset/aboutPage/philosophy/Community.png";
-import naturalwisdomIcon from "../../asset/aboutPage/ourVision/naturalwisdom.png";
-import SustainablesystemsIcon from "../../asset/aboutPage/ourVision/SustainableSystems.png";
-import innerstrengthIcon from "../../asset/aboutPage/ourVision/InnerStrength.png";
-import thrivingecosystemsIcon from "../../asset/aboutPage/ourVision/ThrivingEcosystems.png";
-import enrichedlifeIcon from "../../asset/aboutPage/ourVision/EnrichedLife.png";
-import collectivelearningIcon from "../../asset/aboutPage/ourVision/CollectiveLearning.png";
-import WellnessIcon from "../../asset/aboutPage/mission/Wellness.png";
-import LearningIcon from "../../asset/aboutPage/mission/Learning.png";
-import EcosystemIcon from "../../asset/aboutPage/mission/Ecosystem.png";
-import ConsciousLivingIcon from "../../asset/aboutPage/mission/ConsciousLiving.png";
-import wellnessAndRetreatImg from "../../asset/ourServices/wellness&Retreat.jpg";
 import barterExchangeImg from "../../asset/ourServices/barterExchange.jpg";
-import ecoAgroTourismImg from "../../asset/ourServices/EcoAgroTourism.jpg";
 import communityLivingImg from "../../asset/ourServices/communityLiving.jpg";
+import ecoAgroTourismImg from "../../asset/ourServices/EcoAgroTourism.jpg";
 import learningProgramImg from "../../asset/ourServices/learningProgram.jpg";
-import rootHealerImg from "../../asset/learningcourses/rootHealer.jpg";
-import therapistImg from "../../asset/learningcourses/Therapist.png";
-import culturistHealerImg from "../../asset/learningcourses/CulturistHealer.png";
-import welfareHomeExpertImg from "../../asset/learningcourses/WelfareHomeExpert.png";
-import inventionWisdomImg from "../../asset/learningcourses/InventionWisdom.png";
-import ingeniousLifestyleImg from "../../asset/learningcourses/IngeniousLifestyle.png";
-import learningCourseImg from "../../asset/learningcourses/LearningCourse.png";
-import EventCalendar from "../eventCalander/EventCalender";
-import swagramDarshanImg from "../../asset/communityProgram/swagramDarshan.png";
-import corporateMindfulnessWorkshopsImg from "../../asset/communityProgram/Corporate Mindfulness Workshops.png";
-import sisnorToursImg from "../../asset/communityProgram/Sisnor Tours.png";
-import weekendDigitalDetoxCampImg from "../../asset/communityProgram/Weekend Digital Detox Camp.png";
-import outDoorLeavingImg from "../../asset/communityProgram/Out Door Leaving.png";
-import guidedForestTherapyWalkImg from "../../asset/communityProgram/Guided Forest Therapy Walk.png";
-import Modal from "@mui/material/Modal";
-import Box from "@mui/material/Box";
-import TurmericImg from "../../asset/gallary-stories/Turmeric.webp";
-import morningYogaImg from "../../asset/gallary-stories/morningyoga.jpg";
-import massageTherapyImg from "../../asset/gallary-stories/massagetherapy.png";
-import SattvicFoodImg from "../../asset/gallary-stories/SattvicFood.jpg";
-import DailyRitualImg from "../../asset/blogs/Daily Rituals.png";
+import wellnessAndRetreatImg from "../../asset/ourServices/wellness&Retreat.jpg";
 import wellnessImg from "../../asset/testimonals/wellness.jpg";
-import panchakaramaImg from "../../asset/blogs/panchakarama.png";
-import yogaclassImg from "../../asset/blogs/yogaclass.jpg";
+import EventCalendar from "../eventCalander/EventCalender";
 import TestimonialsSection from "./TestimonialsSection";
-import { ChevronLeft, ChevronRight } from "@mui/icons-material";
-import ManishaSuryawanshiImg from "../../asset/aboutMore/founders/manishaSuryawanshi.png";
-import { FaStethoscope } from "react-icons/fa";
 
 export default function HomePage() {
   const articleList = [
@@ -457,23 +457,15 @@ export default function HomePage() {
       "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-2xl overflow-hidden shadow-xl cursor-pointer transition-all duration-500";
 
     if (offset === 0) {
-      return `${base} w-[220px] h-[280px] md:w-[300px] md:h-[340px] z-30`;
+      return `${base} w-[180px] h-[240px] sm:w-[220px] sm:h-[280px] md:w-[260px] md:h-[320px] lg:w-[300px] lg:h-[360px] 2xl:w-[400px] 2xl:h-[400px] z-30`;
     }
 
-    if (offset === -1) {
-      return `${base} w-[180px] h-[240px] md:w-[240px] md:h-[300px] z-20 opacity-90`;
+    if (offset === -1 || offset === 1) {
+      return `${base} w-[140px] h-[200px] sm:w-[170px] sm:h-[230px] md:w-[200px] md:h-[260px] lg:w-[230px] lg:h-[290px] 2xl:w-[330px] 2xl:h-[350px] z-20 opacity-90`;
     }
 
-    if (offset === 1) {
-      return `${base} w-[180px] h-[240px] md:w-[240px] md:h-[300px] z-20 opacity-90`;
-    }
-
-    if (offset === -2) {
-      return `${base} w-[140px] h-[200px] md:w-[200px] md:h-[260px] z-10 opacity-60`;
-    }
-
-    if (offset === 2) {
-      return `${base} w-[140px] h-[200px] md:w-[200px] md:h-[260px] z-10 opacity-60`;
+    if (offset === -2 || offset === 2) {
+      return `${base} w-[100px] h-[160px] sm:w-[120px] sm:h-[180px] md:w-[150px] md:h-[210px] lg:w-[180px] lg:h-[240px] 2xl:w-[280px] 2xl:h-[300px] z-10 opacity-60`;
     }
 
     return "hidden";
@@ -481,10 +473,10 @@ export default function HomePage() {
 
   const getSlideTransform = (offset) => {
     if (offset === 0) return "translate(-50%, -50%) scale(1)";
-    if (offset === -1) return "translate(-140%, -50%) scale(0.92)";
-    if (offset === 1) return "translate(40%, -50%) scale(0.92)";
-    if (offset === -2) return "translate(-220%, -50%) scale(0.82)";
-    if (offset === 2) return "translate(120%, -50%) scale(0.82)";
+    if (offset === -1) return "translate(-110%, -50%) scale(0.92)";
+    if (offset === 1) return "translate(10%, -50%) scale(0.92)";
+    if (offset === -2) return "translate(-170%, -50%) scale(0.82)";
+    if (offset === 2) return "translate(70%, -50%) scale(0.82)";
     return "translate(-50%, -50%) scale(0.7)";
   };
 
@@ -780,14 +772,6 @@ export default function HomePage() {
     setTimeout(() => setIsGalleryAnimating(false), 500);
   };
 
-  const getVisibleGalleryItems = () => {
-    const startIndex = currentGalleryIndex * galleryItemsPerView;
-    const endIndex = startIndex + galleryItemsPerView;
-    return filteredStories.slice(startIndex, endIndex);
-  };
-
-  const visibleGalleryItems = getVisibleGalleryItems();
-
   //Blogs
 
   const containerRef = useRef(null);
@@ -851,11 +835,11 @@ export default function HomePage() {
 
   return (
     <>
-      <div className="pt-16 px-4 md:px-20">
+      <div className="pt-16 px-4 md:px-10">
         <div className="w-full py-8 md:py-10 ">
           <section className="w-full mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 md:gap-6 items-center">
-              <div className="space-y-6">
+              <div className="space-y-6  z-10">
                 <motion.h1
                   initial={{ opacity: 0, y: 18 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -895,7 +879,7 @@ export default function HomePage() {
                       paddingRight: "18px",
                       paddingTop: "8px",
                       paddingBottom: "8px",
-                      background:"#dcfce7",
+                      background: "#dcfce7",
                       fontWeight: 600,
                       "&:hover": {
                         backgroundColor: "#263d21",
@@ -931,7 +915,7 @@ export default function HomePage() {
                     className="relative px-6 py-2.5 rounded-xl font-semibold text-[#263d21] overflow-visible"
                   >
                     <motion.div
-                      className="absolute inset-0 rounded-xl p-[2px] bg-[#263d21]"
+                      className="absolute inset-0 rounded-xl p-[1.5px] bg-[#263d21]"
                       whileHover={{
                         backgroundPosition: ["0% 50%", "100% 50%"],
                         boxShadow: "0 0 25px rgba(34, 197, 94, 0.5)",
@@ -953,12 +937,10 @@ export default function HomePage() {
                   </motion.button>
                 </motion.div>
               </div>
-
-              <div className="flex justify-center lg:justify-end items-center">
-                <div className="relative w-[340px] md:w-[460px] h-[390px]">
+              <div className="flex justify-center lg:justify-end items-center z-0 w-full px-4 sm:px-8 md:px-12 lg:px-16 xl:px-24 2xl:px-12">
+                <div className="relative h-[390px] w-full max-w-[1000px] overflow-visible">
                   {slides.map((slide, index) => {
                     const offset = getOffset(index);
-
                     return (
                       <motion.div
                         key={slide.id}
@@ -998,8 +980,8 @@ export default function HomePage() {
         </div>
       </div>
       <div>
-        <section id="about" className="py-2 pt-5 px-6 lg:px-20">
-          <div className="w-full mx-auto md:max-w-7xl">
+        <section id="about" className="py-2 pt-5 px-6 lg:px-10">
+          <div className="w-full mx-auto">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-6">
               <h2 className="text-xl md:text-2xl xl:text-3xl font-bold tracking-wider text-[#263d21] text-left sm:text-left flex items-center gap-2">
                 <span>About JYA</span>
@@ -1139,7 +1121,7 @@ export default function HomePage() {
           </div>
         </section>
       </div>
-      <section id="services" className="py-4 px-4 md:px-20">
+      <section id="services" className="py-4 px-4 md:px-10">
         <section id="ourServicesSection" className="">
           <div className="max-w-7xl mx-auto">
             <div className="flex items-center justify-between mb-6">
@@ -1244,7 +1226,7 @@ export default function HomePage() {
           </div>
         </section>
       </section>
-      <section className="px-4 md:px-20 py-12">
+      <section className="px-4 md:px-10 py-12">
         <motion.article
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -1316,7 +1298,7 @@ export default function HomePage() {
         <EventCalendar />
       </div>
 
-      <section id="events" className="py-5 px-4 md:px-20">
+      <section id="events" className="py-5 px-4 md:px-10">
         <div className="w-full mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 18 }}
@@ -1394,7 +1376,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section id="team" className="py-7 px-4 md:px-20">
+      <section id="team" className="py-7 px-4 md:px-10">
         <div className="w-full mx-auto">
           <motion.h3
             initial={{ opacity: 0, y: 18 }}
@@ -1434,7 +1416,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="py-16 px-4 md:px-20 bg-gradient-to-b from-amber-50/30 to-green-50/30">
+      <section className="py-16 px-4 md:px-10 bg-gradient-to-b from-amber-50/30 to-green-50/30">
         <div className="w-full mx-auto max-w-7xl">
           <div className="text-center mb-12">
             <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-amber-700 via-green-700 to-emerald-700 bg-clip-text text-transparent">
@@ -1627,7 +1609,7 @@ export default function HomePage() {
 
       <section
         id="articleSection"
-        className="py-5 md:py-6 px-4 md:px-20 overflow-hidden"
+        className="py-5 md:py-6 px-4 md:px-10 overflow-hidden"
       >
         {/* HEADER */}
         <div className="flex flex-col md:flex-row justify-between mb-6 items-center gap-6 w-full">
@@ -1635,9 +1617,9 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
             className="text-xl md:text-3xl font-semibold tracking-tight flex items-center gap-3 text-[#1c3016]"
           >
-            <span className="animate-bounce">🌱</span>
             Resources — Blog & Podcast
           </motion.h3>
 
@@ -1649,48 +1631,47 @@ export default function HomePage() {
           </a>
         </div>
 
-        <div className="relative">
+        <div className="relative px-8 md:px-12">
           <button
             onClick={prev}
-            className="absolute left-0 md:-left-4 top-1/2 -translate-y-1/2 z-20
-            w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/90 backdrop-blur-md 
-            shadow-lg hover:shadow-xl hover:bg-white transition-all
-            flex items-center justify-center text-[#1c3016] font-bold
-            disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={index === 0}
+            className="absolute left-0 top-1/2 -translate-y-1/2 z-20
+          w-10 h-10 md:w-12 md:h-12 rounded-full bg-amber-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed"
             aria-label="Previous"
           >
-            ◀
+            <ChevronLeft className="w-6 h-6" />
           </button>
 
           <button
             onClick={next}
-            className="absolute right-0 md:-right-4 top-1/2 -translate-y-1/2 z-20
-            w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/90 backdrop-blur-md 
-            shadow-lg hover:shadow-xl hover:bg-white transition-all
-            flex items-center justify-center text-[#1c3016] font-bold
-            disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={index === maxIndex}
+            className="absolute right-0 top-1/2 -translate-y-1/2 z-20
+               w-10 h-10 md:w-12 md:h-12 rounded-full bg-amber-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed"
             aria-label="Next"
           >
-            ▶
+            <ChevronRight className="w-6 h-6" />
           </button>
-
           <div
             ref={containerRef}
-            className="flex gap-6 overflow-x-hidden scroll-smooth py-4"
+            className="flex gap-4 md:gap-6 overflow-x-hidden scroll-smooth py-4"
             style={{
               scrollSnapType: "x mandatory",
             }}
           >
-            {articleList.map((item) => (
+            {articleList.map((item, idx) => (
               <motion.div
                 key={item.id}
-                whileHover={{ scale: 1.03 }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: idx * 0.1 }}
+                viewport={{ once: true }}
+                whileHover={{ scale: 1.02 }}
                 className="flex-shrink-0 w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]
-                rounded-3xl bg-white border shadow-sm group cursor-pointer
-                hover:shadow-xl transition-all overflow-hidden"
+              rounded-3xl bg-white border border-gray-200 shadow-sm group cursor-pointer
+              hover:shadow-xl transition-all overflow-hidden"
                 style={{ scrollSnapAlign: "start" }}
               >
-                <div className="rounded-t-3xl h-56 overflow-hidden">
+                <div className="rounded-t-3xl h-48 md:h-56 overflow-hidden bg-gray-100">
                   <img
                     src={item.image}
                     alt={item.title}
@@ -1728,16 +1709,15 @@ export default function HomePage() {
               </motion.div>
             ))}
           </div>
-
-          <div className="flex justify-center gap-2 mt-6">
+          <div className="flex justify-center gap-2 mt-3">
             {Array.from({ length: maxIndex + 1 }).map((_, i) => (
               <button
                 key={i}
                 onClick={() => scrollToIndex(i)}
-                className={`w-2 h-2 rounded-full transition-all ${
+                className={`h-2 rounded-full transition-all duration-300 ${
                   i === index
-                    ? "bg-[#1c3016] w-8"
-                    : "bg-[#1c3016]/30 hover:bg-[#1c3016]/50"
+                    ? "bg-amber-700 w-8"
+                    : "bg-amber-400 hover:bg-[#1c3016]/50 w-2"
                 }`}
                 aria-label={`Go to slide ${i + 1}`}
               />

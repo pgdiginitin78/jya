@@ -7,7 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 import { API } from "./http-common";
 import AboutUs from "./pages/aboutUs/AboutUs";
-import AyurvedaBlog from "./pages/bolgs/Blogs";
+import AyurvedaBlog from "./pages/blogs/Blogs";
 import ContactUs from "./pages/contactUs/ContactUs";
 import Footer from "./pages/footer/Footer";
 import Gallary from "./pages/gallary/Gallary";

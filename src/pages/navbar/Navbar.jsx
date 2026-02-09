@@ -291,6 +291,13 @@ export default function ModernNavbar() {
             </div>
 
             <div className="hidden lg:flex items-center space-x-1">
+              <div>
+                <Link to="/">
+                  <button className="nav-link flex items-center gap-1">
+                    <span>Home</span>
+                  </button>
+                </Link>
+              </div>
               <div className="relative nav-item">
                 <button className="nav-link flex items-center gap-1">
                   <span>About Us</span>

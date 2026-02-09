@@ -243,9 +243,9 @@ const AboutUs = () => {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.7 }}
-        className="px-4 lg:px-20 py-6"
+        className="px-4 lg:px-10 py-6"
       >
-        <div className="max-w-7xl mx-auto grid lg:grid-cols-3 gap-10">
+        <div className=" mx-auto grid lg:grid-cols-3 gap-10">
           <div className="lg:col-span-2 bg-white rounded-3xl p-10 shadow-xl border hover:shadow-2xl transition-all">
             <h2 className="text-3xl font-bold text-gray-900 mb-5">
               Our Philosophy
@@ -292,7 +292,7 @@ const AboutUs = () => {
         className="px-4 lg:px-20 py-6"
         id="founders"
       >
-        <div className="w-full mx-auto max-w-7xl">
+        <div className="w-full mx-auto ">
           <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
             Our Founders & Team
           </h2>
@@ -391,190 +391,203 @@ const AboutUs = () => {
         </div>
       </motion.section>
 
-      <Modal
-        open={modalOpen}
-        onClose={() => setModalOpen(false)}
-        closeAfterTransition
-        slots={{ backdrop: Backdrop }}
-        slotProps={{
-          backdrop: {
-            timeout: 500,
-            sx: {
-              backgroundColor: "rgba(0, 0, 0, 0.6)",
-              backdropFilter: "blur(8px)",
+      {modalOpen && (
+        <Modal
+          open={modalOpen}
+          onClose={() => setModalOpen(false)}
+          closeAfterTransition
+          slots={{ backdrop: Backdrop }}
+          slotProps={{
+            backdrop: {
+              timeout: 500,
+              sx: {
+                backgroundColor: "rgba(0, 0, 0, 0.6)",
+                backdropFilter: "blur(8px)",
+              },
             },
-          },
-        }}
-      >
-        <Fade in={modalOpen}>
-          <Box
-            sx={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              width: "90%",
-              maxWidth: "896px",
-              maxHeight: "90vh",
-              bgcolor: "background.paper",
-              borderRadius: "24px",
-              boxShadow: 24,
-              overflow: "auto",
-              outline: "none",
-              "&::-webkit-scrollbar": {
-                width: "8px",
-              },
-              "&::-webkit-scrollbar-track": {
-                background: "#FFC3B8",
-                borderRadius: "4px",
-              },
-              "&::-webkit-scrollbar-thumb": {
-                background: "#FF5533",
-                borderRadius: "4px",
-                "&:hover": {
-                  background: "#555",
+          }}
+        >
+          <Fade in={modalOpen}>
+            <Box
+              sx={{
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                width: "90%",
+                maxWidth: "896px",
+                maxHeight: "90vh",
+                bgcolor: "background.paper",
+                borderRadius: "24px",
+                boxShadow: 24,
+                overflow: "auto",
+                outline: "none",
+                "&::-webkit-scrollbar": {
+                  width: "8px",
                 },
-              },
-            }}
-          >
-            {selectedFounder && (
-              <>
-                <IconButton
-                  onClick={() => setModalOpen(false)}
-                  sx={{
-                    position: "sticky",
-                    top: 16,
-                    float: "right",
-                    mr: 2,
-                    bgcolor: "#fee2e2",
-                    color: "#dc2626",
-                    width: 40,
-                    height: 40,
-                    zIndex: 10,
-                    "&:hover": {
-                      bgcolor: "#fecaca",
-                    },
-                  }}
-                >
-                  <CloseIcon />
-                </IconButton>
-                <div className="p-8 lg:p-12">
-                  <h3 className="text-2xl  font-bold text-gray-900 mb-3">
-                    {selectedFounder.title}
-                  </h3>
-                  <p className="text-base text-gray-600 mb-6">
-                    {selectedFounder.desc}
-                  </p>
+                "&::-webkit-scrollbar-track": {
+                  background: "#FFC3B8",
+                  borderRadius: "4px",
+                },
+                "&::-webkit-scrollbar-thumb": {
+                  background: "#FF5533",
+                  borderRadius: "4px",
+                  "&:hover": {
+                    background: "#555",
+                  },
+                },
+              }}
+            >
+              {selectedFounder && (
+                <>
+                  <IconButton
+                    onClick={() => setModalOpen(false)}
+                    sx={{
+                      position: "sticky",
+                      top: 16,
+                      float: "right",
+                      mr: 2,
+                      bgcolor: "#fee2e2",
+                      color: "#dc2626",
+                      width: 40,
+                      height: 40,
+                      zIndex: 10,
+                      "&:hover": {
+                        bgcolor: "#fecaca",
+                      },
+                    }}
+                  >
+                    <CloseIcon />
+                  </IconButton>
+                  <div className="p-8 lg:p-12">
+                    <h3 className="text-2xl  font-bold text-gray-900 mb-3">
+                      {selectedFounder.title}
+                    </h3>
+                    <p className="text-base text-gray-600 mb-6">
+                      {selectedFounder.desc}
+                    </p>
 
-                  {selectedFounder.education && (
-                    <div className="mb-6">
-                      <h4 className="text-xl font-semibold text-amber-800 mb-3 flex items-center">
-                        <span className="w-1.5 h-6 bg-amber-600 rounded-full mr-3"></span>
-                        Education
-                      </h4>
-                      <ul className="space-y-2 ml-6 text-gray-700">
-                        {selectedFounder.education.map((item, idx) => (
-                          <li key={idx} className="flex items-start">
-                            <span className="text-amber-600 mr-2 mt-1">•</span>
-                            <span>{item}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
+                    {selectedFounder.education && (
+                      <div className="mb-6">
+                        <h4 className="text-xl font-semibold text-amber-800 mb-3 flex items-center">
+                          <span className="w-1.5 h-6 bg-amber-600 rounded-full mr-3"></span>
+                          Education
+                        </h4>
+                        <ul className="space-y-2 ml-6 text-gray-700">
+                          {selectedFounder.education.map((item, idx) => (
+                            <li key={idx} className="flex items-start">
+                              <span className="text-amber-600 mr-2 mt-1">
+                                •
+                              </span>
+                              <span>{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
 
-                  {selectedFounder.experience && (
-                    <div className="mb-6">
-                      <h4 className="text-xl font-semibold text-amber-800 mb-3 flex items-center">
-                        <span className="w-1.5 h-6 bg-amber-600 rounded-full mr-3"></span>
-                        Professional Experience
-                      </h4>
-                      <ul className="space-y-2 ml-6 text-gray-700">
-                        {selectedFounder.experience.map((item, idx) => (
-                          <li key={idx} className="flex items-start">
-                            <span className="text-amber-600 mr-2 mt-1">•</span>
-                            <span>{item}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
+                    {selectedFounder.experience && (
+                      <div className="mb-6">
+                        <h4 className="text-xl font-semibold text-amber-800 mb-3 flex items-center">
+                          <span className="w-1.5 h-6 bg-amber-600 rounded-full mr-3"></span>
+                          Professional Experience
+                        </h4>
+                        <ul className="space-y-2 ml-6 text-gray-700">
+                          {selectedFounder.experience.map((item, idx) => (
+                            <li key={idx} className="flex items-start">
+                              <span className="text-amber-600 mr-2 mt-1">
+                                •
+                              </span>
+                              <span>{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
 
-                  {selectedFounder.awards && (
-                    <div className="mb-6">
-                      <h4 className="text-xl font-semibold text-amber-800 mb-3 flex items-center">
-                        <span className="w-1.5 h-6 bg-amber-600 rounded-full mr-3"></span>
-                        Awards & Recognition
-                      </h4>
-                      <ul className="space-y-2 ml-6 text-gray-700">
-                        {selectedFounder.awards.map((item, idx) => (
-                          <li key={idx} className="flex items-start">
-                            <span className="text-amber-600 mr-2 mt-1">•</span>
-                            <span>{item}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
+                    {selectedFounder.awards && (
+                      <div className="mb-6">
+                        <h4 className="text-xl font-semibold text-amber-800 mb-3 flex items-center">
+                          <span className="w-1.5 h-6 bg-amber-600 rounded-full mr-3"></span>
+                          Awards & Recognition
+                        </h4>
+                        <ul className="space-y-2 ml-6 text-gray-700">
+                          {selectedFounder.awards.map((item, idx) => (
+                            <li key={idx} className="flex items-start">
+                              <span className="text-amber-600 mr-2 mt-1">
+                                •
+                              </span>
+                              <span>{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
 
-                  {selectedFounder.specializations && (
-                    <div className="mb-6">
-                      <h4 className="text-xl font-semibold text-amber-800 mb-3 flex items-center">
-                        <span className="w-1.5 h-6 bg-amber-600 rounded-full mr-3"></span>
-                        Specializations
-                      </h4>
-                      <ul className="space-y-2 ml-6 text-gray-700">
-                        {selectedFounder.specializations.map((item, idx) => (
-                          <li key={idx} className="flex items-start">
-                            <span className="text-amber-600 mr-2 mt-1">•</span>
-                            <span>{item}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
+                    {selectedFounder.specializations && (
+                      <div className="mb-6">
+                        <h4 className="text-xl font-semibold text-amber-800 mb-3 flex items-center">
+                          <span className="w-1.5 h-6 bg-amber-600 rounded-full mr-3"></span>
+                          Specializations
+                        </h4>
+                        <ul className="space-y-2 ml-6 text-gray-700">
+                          {selectedFounder.specializations.map((item, idx) => (
+                            <li key={idx} className="flex items-start">
+                              <span className="text-amber-600 mr-2 mt-1">
+                                •
+                              </span>
+                              <span>{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
 
-                  {selectedFounder.certifications && (
-                    <div className="mb-6">
-                      <h4 className="text-xl font-semibold text-amber-800 mb-3 flex items-center">
-                        <span className="w-1.5 h-6 bg-amber-600 rounded-full mr-3"></span>
-                        Certifications
-                      </h4>
-                      <ul className="space-y-2 ml-6 text-gray-700">
-                        {selectedFounder.certifications.map((item, idx) => (
-                          <li key={idx} className="flex items-start">
-                            <span className="text-amber-600 mr-2 mt-1">•</span>
-                            <span>{item}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
+                    {selectedFounder.certifications && (
+                      <div className="mb-6">
+                        <h4 className="text-xl font-semibold text-amber-800 mb-3 flex items-center">
+                          <span className="w-1.5 h-6 bg-amber-600 rounded-full mr-3"></span>
+                          Certifications
+                        </h4>
+                        <ul className="space-y-2 ml-6 text-gray-700">
+                          {selectedFounder.certifications.map((item, idx) => (
+                            <li key={idx} className="flex items-start">
+                              <span className="text-amber-600 mr-2 mt-1">
+                                •
+                              </span>
+                              <span>{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
 
-                  {selectedFounder.expertise && (
-                    <div className="mb-6">
-                      <h4 className="text-xl font-semibold text-amber-800 mb-3 flex items-center">
-                        <span className="w-1.5 h-6 bg-amber-600 rounded-full mr-3"></span>
-                        Core Expertise
-                      </h4>
-                      <ul className="space-y-2 ml-6 text-gray-700">
-                        {selectedFounder.expertise.map((item, idx) => (
-                          <li key={idx} className="flex items-start">
-                            <span className="text-amber-600 mr-2 mt-1">•</span>
-                            <span>{item}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                </div>
-              </>
-            )}
-          </Box>
-        </Fade>
-      </Modal>
+                    {selectedFounder.expertise && (
+                      <div className="mb-6">
+                        <h4 className="text-xl font-semibold text-amber-800 mb-3 flex items-center">
+                          <span className="w-1.5 h-6 bg-amber-600 rounded-full mr-3"></span>
+                          Core Expertise
+                        </h4>
+                        <ul className="space-y-2 ml-6 text-gray-700">
+                          {selectedFounder.expertise.map((item, idx) => (
+                            <li key={idx} className="flex items-start">
+                              <span className="text-amber-600 mr-2 mt-1">
+                                •
+                              </span>
+                              <span>{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                </>
+              )}
+            </Box>
+          </Fade>
+        </Modal>
+      )}
 
-      {/* Pillars Section */}
       <motion.section
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
