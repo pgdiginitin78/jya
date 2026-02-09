@@ -78,7 +78,7 @@ const InputField = ({
                     ? {}
                     : {
                         position: "absolute",
-                        top: "0px",
+                        top: "1px",
                       }),
                 },
               }}

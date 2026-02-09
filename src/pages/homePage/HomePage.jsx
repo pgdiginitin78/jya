@@ -55,8 +55,30 @@ import wellnessAndRetreatImg from "../../asset/ourServices/wellness&Retreat.jpg"
 import wellnessImg from "../../asset/testimonals/wellness.jpg";
 import EventCalendar from "../eventCalander/EventCalender";
 import TestimonialsSection from "./TestimonialsSection";
+import BookAppointment from "../appointementBookingForm/BookAppointment";
 
 export default function HomePage() {
+  const [typedLineIndex, setTypedLineIndex] = useState(0);
+  const [typedCharIndex, setTypedCharIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(2);
+  const [aboutSectionActiveIndex, setAboutSectionActiveIndex] = useState(0);
+  const [aboutSectionPaused, setAboutSectionPaused] = useState(false);
+  const [ourServicesSectionStartIndex, setOurServicesSectionStartIndex] =
+    useState(0);
+  const [currentFilter, setCurrentFilter] = useState("all");
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalStories, setModalStories] = useState([]);
+  const [currentGalleryIndex, setCurrentGalleryIndex] = useState(0);
+  const [galleryItemsPerView, setGalleryItemsPerView] = useState(3);
+  const [isGalleryAutoPlaying, setIsGalleryAutoPlaying] = useState(true);
+  const [isGalleryAnimating, setIsGalleryAnimating] = useState(false);
+  const [index, setIndex] = useState(0);
+  const [cardsToShow, setCardsToShow] = useState(1);
+  const [openBookAppointmentModal, setOpenBookAppointmentModal] =
+    useState(false);
+
+  const containerRef = useRef(null);
+
   const articleList = [
     {
       id: 1,
@@ -401,11 +423,6 @@ export default function HomePage() {
     [],
   );
 
-  const [typedLineIndex, setTypedLineIndex] = useState(0);
-  const [typedCharIndex, setTypedCharIndex] = useState(0);
-
-  const [activeIndex, setActiveIndex] = useState(2);
-
   useEffect(() => {
     if (typedLineIndex >= typingLines.length) return;
 
@@ -482,9 +499,6 @@ export default function HomePage() {
 
   // about jya
 
-  const [aboutSectionActiveIndex, setAboutSectionActiveIndex] = useState(0);
-  const [aboutSectionPaused, setAboutSectionPaused] = useState(false);
-
   const handleAboutSectionNext = () => {
     setAboutSectionActiveIndex(
       (prev) => (prev + 1) % aboutSectionSlides.length,
@@ -512,9 +526,6 @@ export default function HomePage() {
 
   // our services
 
-  const [ourServicesSectionStartIndex, setOurServicesSectionStartIndex] =
-    useState(0);
-
   const handleOurServicesSectionNext = () => {
     setOurServicesSectionStartIndex((prev) => {
       const nextIndex = prev + 3;
@@ -537,13 +548,6 @@ export default function HomePage() {
   );
 
   // gallary section
-  const [currentFilter, setCurrentFilter] = useState("all");
-  const [modalOpen, setModalOpen] = useState(false);
-  const [modalStories, setModalStories] = useState([]);
-  const [currentGalleryIndex, setCurrentGalleryIndex] = useState(0);
-  const [galleryItemsPerView, setGalleryItemsPerView] = useState(3);
-  const [isGalleryAutoPlaying, setIsGalleryAutoPlaying] = useState(true);
-  const [isGalleryAnimating, setIsGalleryAnimating] = useState(false);
 
   const filters = [
     { id: "all", label: "All Practices" },
@@ -774,10 +778,6 @@ export default function HomePage() {
 
   //Blogs
 
-  const containerRef = useRef(null);
-  const [index, setIndex] = useState(0);
-  const [cardsToShow, setCardsToShow] = useState(1);
-
   useEffect(() => {
     const updateCardsToShow = () => {
       const width = window.innerWidth;
@@ -865,57 +865,41 @@ export default function HomePage() {
                   initial={{ opacity: 0, y: 25 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.9, delay: 0.55 }}
-                  className="grid gap-3 md:flex items-center md:flex-wrap md:gap-3 pt-2 z-50"
+                  className="grid grid-cols-1 sm:grid-cols-2 lg:flex items-center lg:flex-wrap gap-3 pt-2 z-50"
                 >
-                  <Button
-                    variant="outlined"
-                    size="medium"
-                    sx={{
-                      borderColor: "#263d21",
-                      color: "#263d21",
-                      borderRadius: "10px",
-                      textTransform: "none",
-                      paddingLeft: "18px",
-                      paddingRight: "18px",
-                      paddingTop: "8px",
-                      paddingBottom: "8px",
-                      background: "#dcfce7",
-                      fontWeight: 600,
-                      "&:hover": {
-                        backgroundColor: "#263d21",
-                        color: "#ffffff",
-                        borderColor: "#263d21",
-                      },
-                    }}
+                  {/* Button 1 - Outlined Style */}
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                    className="px-[18px] py-2 rounded-xl font-semibold text-[#263d21] bg-[#dcfce7] border-2 border-[#263d21] hover:bg-[#263d21] hover:text-white transition-colors duration-300 whitespace-nowrap"
                   >
                     Start Self-Discovery Game
-                  </Button>
+                  </motion.button>
 
-                  <Button
-                    variant="contained"
-                    size="medium"
-                    sx={{
-                      backgroundColor: "#263d21",
-                      borderRadius: "10px",
-                      textTransform: "none",
-                      paddingLeft: "18px",
-                      paddingRight: "18px",
-                      paddingTop: "8px",
-                      paddingBottom: "8px",
-                      fontWeight: 600,
-                      "&:hover": { backgroundColor: "#1b3318" },
-                    }}
+                  {/* Button 2 - Contained Style */}
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                    className="px-[18px] py-2 rounded-xl font-semibold text-white bg-[#263d21] hover:bg-[#1b3318] transition-colors duration-300 whitespace-nowrap"
                   >
                     Become a JYA Member
-                  </Button>
+                  </motion.button>
+
+                  {/* Button 3 - Special Animated Border */}
                   <motion.button
+                    type="button"
+                    onClick={() => {
+                      setOpenBookAppointmentModal(true);
+                    }}
                     whileHover={{ scale: 1.05, y: -2 }}
                     whileTap={{ scale: 0.95 }}
                     transition={{ type: "spring", stiffness: 400, damping: 17 }}
-                    className="relative px-6 py-2.5 rounded-xl font-semibold text-[#263d21] overflow-visible"
+                    className="relative px-6 py-2.5 rounded-xl font-semibold text-[#263d21] overflow-visible mt-3 lg:mt-0"
                   >
                     <motion.div
-                      className="absolute inset-0 rounded-xl p-[1.5px] bg-[#263d21]"
+                      className="absolute inset-0 rounded-xl p-[1.5px] bg-gradient-to-r from-[#263d21] via-green-600 to-[#263d21]"
                       whileHover={{
                         backgroundPosition: ["0% 50%", "100% 50%"],
                         boxShadow: "0 0 25px rgba(34, 197, 94, 0.5)",
@@ -925,7 +909,7 @@ export default function HomePage() {
                     >
                       <div className="h-full w-full rounded-[10px] bg-green-100"></div>
                     </motion.div>
-                    <span className="relative flex items-center gap-2 whitespace-nowrap z-10 animate-pulse">
+                    <span className="relative flex items-center justify-center gap-2 whitespace-nowrap z-10 animate-pulse">
                       <motion.span
                         whileHover={{ rotate: 360 }}
                         transition={{ duration: 0.6 }}
@@ -1727,6 +1711,15 @@ export default function HomePage() {
       </section>
 
       <TestimonialsSection />
+
+      {openBookAppointmentModal && (
+        <BookAppointment
+          open={openBookAppointmentModal}
+          handleClose={() => {
+            setOpenBookAppointmentModal(false);
+          }}
+        />
+      )}
     </>
   );
 }
