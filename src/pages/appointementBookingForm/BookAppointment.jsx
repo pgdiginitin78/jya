@@ -1,16 +1,19 @@
+import { Divider } from "@mui/material";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import CancelButtonModal from "../../components/common/button/CancelButtonModal";
-import DropdownField from "../../components/common/formFields/DropdownField";
-import { getClinicList } from "../../services/bookAppointment/BookAppointmentServices";
-import { Divider } from "@mui/material";
-import DatePickerField from "../../components/common/formFields/DatePickerField";
-import TimePickerField from "../../components/common/formFields/TimePickerField";
-import InputField from "../../components/common/formFields/InputField";
 import CommonButton from "../../components/common/button/CommonButton";
+import DatePickerField from "../../components/common/formFields/DatePickerField";
+import DropdownField from "../../components/common/formFields/DropdownField";
+import InputField from "../../components/common/formFields/InputField";
+import {
+  getClinicList,
+  getDoctorsData,
+} from "../../services/bookAppointment/BookAppointmentServices";
+import { errorAlert } from "../../components/common/toast/CustomToast";
 
 const style = {
   position: "absolute",
@@ -24,6 +27,7 @@ const style = {
 
 export default function BookAppointment({ open, handleClose }) {
   const [clinicsOptions, setClinicOptions] = useState([]);
+  const [doctorOptions, setDoctorOptions] = useState([]);
 
   const {
     register,
@@ -50,6 +54,7 @@ export default function BookAppointment({ open, handleClose }) {
     mode: "onChange",
   });
 
+  const clinicFidValue = watch("clinicFid");
   //     {
   //     "macId":"22.22",
   //     "macIp":"12.2",
@@ -70,11 +75,32 @@ export default function BookAppointment({ open, handleClose }) {
 
   useEffect(() => {
     getClinicList()
-      .then((response) => {
-        console.log("getClinicList", response);
+      .then((res) => {
+        const data = res?.data?.data;
+        if (data?.length) {
+          setClinicOptions(
+            data.map((item) => ({
+              ...item,
+              id: item.fid,
+              value: item.fid,
+              label: item.clinicName,
+            })),
+          );
+        }
       })
-      .catch((error) => error);
+      .catch((err) => console.log(err.message || "Failed to fetch clinics"));
   }, []);
+
+  useEffect(() => {
+    if (clinicFidValue?.id > 0) {
+      getDoctorsData(clinicFidValue?.id)
+        .then((res) => {
+          setDoctorOptions(res.data.data);
+        })
+        .catch((error) => error);
+    }
+  }, [clinicFidValue]);
+
   return (
     <div>
       <Modal
@@ -82,7 +108,10 @@ export default function BookAppointment({ open, handleClose }) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style} className="w-[95%] md:w-[85%] h-[90%] lg:h-[55%] rounded-xl bg-white  overflow-y-auto">
+        <Box
+          sx={style}
+          className="w-[95%] md:w-[85%] h-[90%] lg:h-[55%] rounded-xl bg-white  overflow-y-auto"
+        >
           <div className="flex items-center gap-3">
             <motion.div
               initial={{ scale: 0 }}
@@ -127,7 +156,15 @@ export default function BookAppointment({ open, handleClose }) {
                 control={control}
                 name="clinicFid"
                 placeholder={"Clinic"}
-                dataArray={[]}
+                dataArray={clinicsOptions}
+              />
+            </div>
+               <div>
+              <DropdownField
+                control={control}
+                name="doctorFid"
+                placeholder={"Select Doctor"}
+                dataArray={doctorOptions}
               />
             </div>
             <div>
@@ -138,14 +175,7 @@ export default function BookAppointment({ open, handleClose }) {
                 dataArray={[]}
               />
             </div>
-            <div>
-              <DropdownField
-                control={control}
-                name="doctorFid"
-                placeholder={"Select Doctor"}
-                dataArray={[]}
-              />
-            </div>
+         
             <div>
               <DropdownField
                 control={control}

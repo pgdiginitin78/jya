@@ -17,6 +17,7 @@ import OurServices from "./pages/OurServices/OurServices";
 import PrivacyAndPolicy from "./pages/privacyAndPolicy/PrivacyAndPolicy";
 import ScrollToHash from "./ScrollToHash";
 import ScrollToTopButton from "./ScrollToTopButton";
+import DeleteAccount from "./pages/privacyAndPolicy/DeleteAccount";
 
 function PageSkeleton() {
   return (
@@ -95,6 +96,8 @@ function App() {
                 <Route path="/services" element={<OurServices />} />
                 <Route path="/resources/gallery" element={<Gallary />} />
                 <Route path="/contact" element={<ContactUs />} />
+                <Route path="/deleteAccount" element={<DeleteAccount />} />
+
               </Routes>
             </Suspense>
           </motion.div>

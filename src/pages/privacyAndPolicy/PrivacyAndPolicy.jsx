@@ -16,10 +16,12 @@ import {
   Info,
 } from "lucide-react";
 import { Modal, Box, Fade, Backdrop } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 function PrivacyAndPolicy() {
   const [openModal, setOpenModal] = useState(false);
-  const [modalType, setModalType] = useState(""); // 'delete' or 'deactivate'
+  const [modalType, setModalType] = useState("");
+  const navigate = useNavigate()
 
   const fadeInUp = {
     hidden: { opacity: 0, y: 20 },
@@ -50,16 +52,12 @@ function PrivacyAndPolicy() {
   };
 
   const handleDeleteAccount = () => {
-    // Implement delete account logic
     console.log("Account deletion confirmed");
-    // Add your API call here
     handleCloseModal();
   };
 
   const handleDeactivateAccount = () => {
-    // Implement deactivate account logic
     console.log("Account deactivation confirmed");
-    // Add your API call here
     handleCloseModal();
   };
 
@@ -218,7 +216,6 @@ function PrivacyAndPolicy() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-green-50 via-white to-amber-50">
-      {/* Header Section */}
       <motion.div
         className="bg-gradient-to-r from-green-600 to-emerald-700 text-white py-10 md:py-40 px-4"
         initial={{ opacity: 0 }}
@@ -263,7 +260,6 @@ function PrivacyAndPolicy() {
         </div>
       </motion.div>
 
-      {/* Introduction */}
       <motion.div
         className="max-w-6xl mx-auto px-4 py-8 md:py-10"
         initial="hidden"
@@ -287,7 +283,6 @@ function PrivacyAndPolicy() {
         </div>
       </motion.div>
 
-      {/* Policy Sections */}
       <div className="max-w-6xl mx-auto px-4 pb-10 md:pb-12">
         <motion.div
           variants={staggerContainer}
@@ -334,7 +329,6 @@ function PrivacyAndPolicy() {
         </motion.div>
       </div>
 
-      {/* Account Management Section */}
       <motion.div
         className="max-w-6xl mx-auto px-4 pb-10"
         initial="hidden"
@@ -353,7 +347,6 @@ function PrivacyAndPolicy() {
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {/* Deactivate Account Card */}
             <div className="bg-white rounded-lg p-4 border-2 border-orange-200 hover:border-orange-400 transition-colors">
               <div className="flex items-start gap-3 mb-3">
                 <div className="bg-orange-100 p-2 rounded-lg">
@@ -378,8 +371,6 @@ function PrivacyAndPolicy() {
                 Deactivate Account
               </motion.button>
             </div>
-
-            {/* Delete Account Card */}
             <div className="bg-white rounded-lg p-4 border-2 border-red-200 hover:border-red-400 transition-colors">
               <div className="flex items-start gap-3 mb-3">
                 <div className="bg-red-100 p-2 rounded-lg">
@@ -398,7 +389,10 @@ function PrivacyAndPolicy() {
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                onClick={() => handleOpenModal("delete")}
+                // onClick={() => handleOpenModal("delete")}
+                onClick={()=>{
+                  navigate("/deleteAccount")
+                }}
                 className="w-full bg-red-600 text-white px-4 py-2 rounded-lg font-semibold text-sm shadow hover:bg-red-700 transition-colors duration-300 flex items-center justify-center gap-2"
               >
                 <Trash2 className="w-4 h-4" />
@@ -409,7 +403,6 @@ function PrivacyAndPolicy() {
         </div>
       </motion.div>
 
-      {/* Material-UI Modal */}
       <Modal
         open={openModal}
         onClose={handleCloseModal}
@@ -425,9 +418,7 @@ function PrivacyAndPolicy() {
         <Fade in={openModal}>
           <Box sx={modalStyle}>
             {modalType === "delete" ? (
-              // Delete Account Modal Content
               <div className="relative">
-                {/* Modal Header */}
                 <div className="bg-gradient-to-r from-red-600 to-red-700 text-white p-5 md:p-6 sticky top-0 z-10 ">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
@@ -446,10 +437,7 @@ function PrivacyAndPolicy() {
                     </button>
                   </div>
                 </div>
-
-                {/* Modal Body */}
                 <div className="p-5 md:p-6 space-y-5">
-                  {/* Warning Alert */}
                   <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded">
                     <div className="flex items-start gap-3">
                       <AlertTriangle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
@@ -464,8 +452,6 @@ function PrivacyAndPolicy() {
                       </div>
                     </div>
                   </div>
-
-                  {/* What will be deleted */}
                   <div>
                     <h4 className="font-semibold text-gray-800 text-base mb-3 flex items-center gap-2">
                       <Info className="w-5 h-5 text-blue-600" />
@@ -510,8 +496,6 @@ function PrivacyAndPolicy() {
                       </li>
                     </ul>
                   </div>
-
-                  {/* What will be retained */}
                   <div>
                     <h4 className="font-semibold text-gray-800 text-base mb-3 flex items-center gap-2">
                       <Lock className="w-5 h-5 text-amber-600" />
@@ -539,8 +523,6 @@ function PrivacyAndPolicy() {
                       </li>
                     </ul>
                   </div>
-
-                  {/* Timeline */}
                   <div className="bg-gray-50 rounded-lg p-4">
                     <h4 className="font-semibold text-gray-800 text-sm mb-2">
                       Deletion Timeline:
@@ -552,8 +534,6 @@ function PrivacyAndPolicy() {
                       is complete.
                     </p>
                   </div>
-
-                  {/* Alternative option */}
                   <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                     <h4 className="font-semibold text-blue-900 text-sm mb-2">
                       Not ready for permanent deletion?
@@ -573,8 +553,6 @@ function PrivacyAndPolicy() {
                     </button>
                   </div>
                 </div>
-
-                {/* Modal Footer */}
                 <div className="bg-gray-50 p-5 md:p-6 rounded-b-2xl border-t sticky bottom-0">
                   <div className="flex flex-col-reverse sm:flex-row gap-3">
                     <motion.button
@@ -598,9 +576,7 @@ function PrivacyAndPolicy() {
                 </div>
               </div>
             ) : (
-              // Deactivate Account Modal Content
               <div className="relative">
-                {/* Modal Header */}
                 <div className="bg-gradient-to-r from-orange-500 to-orange-600 text-white p-5 md:p-6 sticky top-0 z-10">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
@@ -619,10 +595,7 @@ function PrivacyAndPolicy() {
                     </button>
                   </div>
                 </div>
-
-                {/* Modal Body */}
                 <div className="p-5 md:p-6 space-y-5">
-                  {/* Info Alert */}
                   <div className="bg-orange-50 border-l-4 border-orange-500 p-4 rounded">
                     <div className="flex items-start gap-3">
                       <Info className="w-5 h-5 text-orange-600 flex-shrink-0 mt-0.5" />
@@ -637,8 +610,6 @@ function PrivacyAndPolicy() {
                       </div>
                     </div>
                   </div>
-
-                  {/* What happens when deactivated */}
                   <div>
                     <h4 className="font-semibold text-gray-800 text-base mb-3 flex items-center gap-2">
                       <PauseCircle className="w-5 h-5 text-orange-600" />
@@ -679,8 +650,6 @@ function PrivacyAndPolicy() {
                       </li>
                     </ul>
                   </div>
-
-                  {/* What is preserved */}
                   <div>
                     <h4 className="font-semibold text-gray-800 text-base mb-3 flex items-center gap-2">
                       <Shield className="w-5 h-5 text-green-600" />
@@ -717,8 +686,6 @@ function PrivacyAndPolicy() {
                       </li>
                     </ul>
                   </div>
-
-                  {/* Reactivation info */}
                   <div className="bg-green-50 rounded-lg p-4">
                     <h4 className="font-semibold text-green-900 text-sm mb-2">
                       Easy Reactivation:
@@ -730,8 +697,6 @@ function PrivacyAndPolicy() {
                       history will be immediately available.
                     </p>
                   </div>
-
-                  {/* Permanent deletion option */}
                   <div className="bg-red-50 border border-red-200 rounded-lg p-4">
                     <h4 className="font-semibold text-red-900 text-sm mb-2">
                       Need to permanently delete?
@@ -751,8 +716,6 @@ function PrivacyAndPolicy() {
                     </button>
                   </div>
                 </div>
-
-                {/* Modal Footer */}
                 <div className="bg-gray-50 p-5 md:p-6 rounded-b-2xl border-t sticky bottom-0">
                   <div className="flex flex-col-reverse sm:flex-row gap-3">
                     <motion.button

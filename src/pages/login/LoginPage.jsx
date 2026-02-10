@@ -227,7 +227,7 @@ function LoginPage({ open, handleClose }) {
                       <TextField
                         {...field}
                         fullWidth
-                        label="Email"
+                        label="Email / Mobile No."
                         error={!!errors.userName}
                         helperText={errors.userName?.message}
                         InputProps={{
