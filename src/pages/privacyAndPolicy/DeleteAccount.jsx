@@ -55,27 +55,6 @@ export default function DeleteAccount() {
               </div>
             </div>
           </div>
-          <motion.div
-            className="bg-green-50 text-green-900 p-6 rounded-xl shadow-md"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <h3 className="text-lg font-semibold mb-2">Medical Disclaimer</h3>
-
-            <p>
-              AyurMitra is a healthcare management platform that facilitates
-              appointment booking and access to medical records. The app does
-              not provide medical advice, diagnosis, or treatment.
-            </p>
-
-            <p className="mt-2">
-              All medical decisions should be made in consultation with a
-              qualified healthcare professional. In case of a medical emergency,
-              please contact your doctor or nearest medical facility
-              immediately.
-            </p>
-          </motion.div>
 
           <div className="p-6 md:p-8 space-y-6">
             <motion.div
@@ -98,6 +77,27 @@ export default function DeleteAccount() {
               </div>
             </motion.div>
             <motion.div
+              className="bg-amber-50 text-amber-900 border-amber-600 border border-l-4 p-6 rounded-xl shadow-md"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              <h3 className="text-lg font-semibold mb-2">Medical Disclaimer</h3>
+              <ul className="list-disc">
+                <li>
+                  AyurMitra is a healthcare management platform that facilitates
+                  appointment booking and access to medical records. The app
+                  does not provide medical advice, diagnosis, or treatment.
+                </li>
+                <li>
+                  All medical decisions should be made in consultation with a
+                  qualified healthcare professional. In case of a medical
+                  emergency, please contact your doctor or nearest medical
+                  facility immediately.
+                </li>
+              </ul>
+            </motion.div>
+            <motion.div
               className="   text-green-900 flex items-center justify-center p-4"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -113,29 +113,30 @@ export default function DeleteAccount() {
                     by Jnanayogayu
                   </span>
                 </h1>
+                <ul className="list-disc px-4">
+                  <li>
+                    This Privacy Policy explains how AyurMitra collects, uses,
+                    and protects user information while providing healthcare
+                    appointment booking and medical record access services.
+                  </li>
 
-                <p>
-                  This Privacy Policy explains how AyurMitra collects, uses, and
-                  protects user information while providing healthcare
-                  appointment booking and medical record access services.
-                </p>
+                  <li className="mt-2">
+                    We may collect basic personal details, appointment data,
+                    device information, and usage analytics to improve services
+                    and maintain platform security.
+                  </li>
 
-                <p className="mt-2">
-                  We may collect basic personal details, appointment data,
-                  device information, and usage analytics to improve services
-                  and maintain platform security.
-                </p>
+                  <li className="mt-2">
+                    AyurMitra does not provide medical advice or treatment.
+                    Always consult qualified healthcare professionals for
+                    medical decisions.
+                  </li>
 
-                <p className="mt-2">
-                  AyurMitra does not provide medical advice or treatment. Always
-                  consult qualified healthcare professionals for medical
-                  decisions.
-                </p>
-
-                <p className="mt-2">
-                  We implement reasonable security measures but cannot guarantee
-                  complete protection of online data.
-                </p>
+                  <li className="mt-2">
+                    We implement reasonable security measures but cannot
+                    guarantee complete protection of online data.
+                  </li>
+                </ul>
               </motion.div>
             </motion.div>
 
@@ -429,6 +430,7 @@ export default function DeleteAccount() {
             </motion.div>
           </div>
         </div>
+
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
