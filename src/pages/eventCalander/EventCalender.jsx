@@ -732,7 +732,6 @@ const EventCalendar = () => {
       const isSelected = Number(selectedDate) === Number(day);
       const isPast = isPastDate(day);
       const isTodayDate = isToday(day);
-
       days.push(
         <motion.div
           key={day}
