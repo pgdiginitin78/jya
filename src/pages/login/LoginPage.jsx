@@ -1,31 +1,30 @@
-import {
-  Box,
-  Modal,
-  TextField,
-  Button,
-  Typography,
-  InputAdornment,
-  IconButton,
-  Divider,
-} from "@mui/material";
-import React, { useState } from "react";
-import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import CloseIcon from "@mui/icons-material/Close";
 import EmailIcon from "@mui/icons-material/Email";
 import LockIcon from "@mui/icons-material/Lock";
-import CloseIcon from "@mui/icons-material/Close";
-import JYALogoImg from "../../asset/jyaLogo.png";
-import { userLogin } from "../../services/login/LoginServices";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import {
+  Box,
+  Button,
+  Divider,
+  IconButton,
+  InputAdornment,
+  Modal,
+  TextField,
+  Typography,
+} from "@mui/material";
+import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import * as yup from "yup";
+import JYALogoImg from "../../asset/JnanaYogAyuLogo.png";
+import CommonLoader from "../../components/common/commonLoader/CommonLoader";
 import ConfirmationModal from "../../components/common/ConfirmationModal";
 import {
   errorAlert,
   successAlert,
 } from "../../components/common/toast/CustomToast";
-import CommonLoader from "../../components/common/commonLoader/CommonLoader";
-import axios from "axios";
+import { userLogin } from "../../services/login/LoginServices";
 import SignUp from "./SignUp";
 
 const modalStyle = {
@@ -181,11 +180,7 @@ function LoginPage({ open, handleClose, setOpenLogin }) {
                 <img
                   src={JYALogoImg}
                   alt="JYA Logo"
-                  style={{
-                    width: "52px",
-                    height: "auto",
-                    margin: "0 auto 6px",
-                  }}
+                  className="w-[30%] mx-auto"
                   loading="lazy"
                 />
                 <Typography
@@ -372,7 +367,7 @@ function LoginPage({ open, handleClose, setOpenLogin }) {
         confirmationButtonMsg="Confirm"
       />
 
- <CommonLoader />
+      <CommonLoader />
 
       {openSignUpModal && (
         <SignUp

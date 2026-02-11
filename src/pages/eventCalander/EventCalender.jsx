@@ -754,7 +754,7 @@ const EventCalendar = () => {
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
-              className={`absolute bottom-[110px] 2xl:bottom-[20px] w-[5px] h-[5px] animate-pulse rounded-full ${isSelected ? "bg-white" : "bg-lime-600"}`}
+              className={`absolute bottom-[10px] 2xl:bottom-[20px] w-[5px] h-[5px] animate-pulse rounded-full ${isSelected ? "bg-white" : "bg-lime-600"}`}
             />
           )}
         </motion.div>,
@@ -768,7 +768,7 @@ const EventCalendar = () => {
       <motion.div
         initial={{ opacity: 0, y: -15 }}
         animate={{ opacity: 1, y: 0 }}
-        className="max-w-[95rem] mx-auto"
+        className="max-w-[95rem] px-4 md:px-10 2xl:px-0 mx-auto"
       >
         <motion.div
           initial={{ scale: 0.95 }}
@@ -800,7 +800,7 @@ const EventCalendar = () => {
                   className="p-0.5 sm:p-1 rounded bg-lime-100 hover:bg-lime-200 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
                 >
                   <svg
-                    className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-lime-700"
+                    className="w-5 h-5 text-lime-700"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -818,7 +818,7 @@ const EventCalendar = () => {
                   <h2 className="text-sm sm:text-base md:text-lg font-bold bg-gradient-to-r from-lime-600 to-green-600 bg-clip-text text-transparent">
                     {monthsFull[currentMonth]}
                   </h2>
-                  <span className="text-[8px] sm:text-[9px] text-gray-500 font-semibold">
+                  <span className="text-[14px] text-gray-500 font-semibold">
                     2026
                   </span>
                 </div>
@@ -833,7 +833,7 @@ const EventCalendar = () => {
                   className="p-0.5 sm:p-1 rounded bg-lime-100 hover:bg-lime-200 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
                 >
                   <svg
-                    className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-lime-700"
+                    className="w-5 h-5 text-lime-700"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"

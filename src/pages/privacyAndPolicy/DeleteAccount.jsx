@@ -55,6 +55,27 @@ export default function DeleteAccount() {
               </div>
             </div>
           </div>
+          <motion.div
+            className="bg-green-50 text-green-900 p-6 rounded-xl shadow-md"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <h3 className="text-lg font-semibold mb-2">Medical Disclaimer</h3>
+
+            <p>
+              AyurMitra is a healthcare management platform that facilitates
+              appointment booking and access to medical records. The app does
+              not provide medical advice, diagnosis, or treatment.
+            </p>
+
+            <p className="mt-2">
+              All medical decisions should be made in consultation with a
+              qualified healthcare professional. In case of a medical emergency,
+              please contact your doctor or nearest medical facility
+              immediately.
+            </p>
+          </motion.div>
 
           <div className="p-6 md:p-8 space-y-6">
             <motion.div
@@ -114,10 +135,6 @@ export default function DeleteAccount() {
                 <p className="mt-2">
                   We implement reasonable security measures but cannot guarantee
                   complete protection of online data.
-                </p>
-
-                <p className="mt-3 text-xs text-gray-600">
-                  Contact: support@jnanayogayu.com
                 </p>
               </motion.div>
             </motion.div>

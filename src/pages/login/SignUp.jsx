@@ -21,7 +21,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
-import JYALogoImg from "../../asset/jyaLogo.png";
+import JYALogoImg from "../../asset/JnanaYogAyuLogo.png";
 
 import axios from "axios";
 import CommonLoader from "../../components/common/commonLoader/CommonLoader";
@@ -34,7 +34,7 @@ import {
   errorAlert,
   successAlert,
 } from "../../components/common/toast/CustomToast";
-import {signupJYA} from "../../services/login/LoginServices"
+import { signupJYA } from "../../services/login/LoginServices";
 
 const modalStyle = {
   position: "absolute",
@@ -285,7 +285,7 @@ function SignUp({ open, handleClose, setOpenLogin }) {
             <Box className="text-center mb-3">
               <img
                 src={JYALogoImg}
-                className="w-12 mx-auto mb-1"
+                  className="w-[20%] mx-auto"
                 alt="Logo"
                 loading="lazy"
               />

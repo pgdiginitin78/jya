@@ -55,22 +55,6 @@ export default function BookAppointment({ open, handleClose }) {
   });
 
   const clinicFidValue = watch("clinicFid");
-  //     {
-  //     "macId":"22.22",
-  //     "macIp":"12.2",
-  //     "clinicFid":1,
-  //     "patientFid":1,
-  //     "doctorFid":1,
-  //     "serviceFid":"1",
-  //     "appoinmentDate":"2026-02-07",
-  //     "Status":"checkin",
-  //     "SloteEndTime":"9:20 AM",
-  //     "SloteStartTime":"9:00 AM",
-  //     "ServiceDetails":"consultation- Rs 800 /-",
-  //     "taxDeatils":"",
-  //     "EncounterStatus":""
-  // }
-
   const handleBookAppointment = (dataObj) => {};
 
   useEffect(() => {
@@ -110,7 +94,7 @@ export default function BookAppointment({ open, handleClose }) {
       >
         <Box
           sx={style}
-          className="w-[95%] md:w-[85%] h-[90%] lg:h-[55%] rounded-xl bg-white  overflow-y-auto"
+          className="w-[95%] md:w-[85%] 2xl:w-[65%] 2xl:h-[40%] h-[90%] lg:h-[55%] rounded-xl bg-white  overflow-y-auto"
         >
           <div className="flex items-center gap-3">
             <motion.div

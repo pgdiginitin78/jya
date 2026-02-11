@@ -162,7 +162,6 @@ const TestimonialsSection = () => {
     document.body.style.overflow = "auto";
   };
 
-  // Get visible testimonials
   const visibleTestimonials = testimonialList.slice(
     currentIndex * cardsPerView,
     currentIndex * cardsPerView + cardsPerView,
@@ -170,7 +169,7 @@ const TestimonialsSection = () => {
 
   return (
     <>
-      <div className="max-w-[95rem] mx-auto">
+      <div className="max-w-[95rem] px-4 md:px-10 2xl:px-0 mx-auto">
         <section className="py-3 ">
           <div className="flex justify-between items-center">
             <h2 className="text-2xl md:text-3xl text-[#25381f] w-full font-bold tracking-wide">
