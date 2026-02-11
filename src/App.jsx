@@ -75,7 +75,7 @@ function App() {
 
   return (
     <>
-      <div className="App  bg-[#f0f6ec] overflow-hidden">
+      <div className="App bg-gradient-to-br from-lime-50 via-green-50 to-white overflow-hidden">
         <Navbar />
         <AnimatePresence mode="wait">
           <motion.div

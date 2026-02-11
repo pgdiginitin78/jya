@@ -7,10 +7,14 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import {
   Box,
   Button,
+  Checkbox,
   Divider,
+  FormControlLabel,
+  FormHelperText,
   IconButton,
   InputAdornment,
   Modal,
+  Switch,
   TextField,
   Typography,
 } from "@mui/material";
@@ -18,7 +22,7 @@ import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 import JYALogoImg from "../../asset/jyaLogo.png";
-// import { userSignup } from "../../services/signup/SignupServices";
+
 import axios from "axios";
 import CommonLoader from "../../components/common/commonLoader/CommonLoader";
 import ConfirmationModal from "../../components/common/ConfirmationModal";
@@ -30,6 +34,7 @@ import {
   errorAlert,
   successAlert,
 } from "../../components/common/toast/CustomToast";
+import {signupJYA} from "../../services/login/LoginServices"
 
 const modalStyle = {
   position: "absolute",
@@ -77,7 +82,11 @@ const signupValidationSchema = yup.object().shape({
     .required("WhatsApp required")
     .matches(/^[0-9]{10}$/, "Must be 10 digits"),
 
-  emailId: yup.string().required("Email is required").email("Invalid email"),
+  emailId: yup
+    .string()
+    .required("Email is required")
+    .email("Invalid email format")
+    .matches(/^[^\s@]+@[^\s@]+\.(com|in)$/i, "Email must end with .com or .in"),
 
   pinCode: yup
     .string()
@@ -113,16 +122,16 @@ const signupValidationSchema = yup.object().shape({
   passWord: yup
     .string()
     .required("Password required")
-    .min(8, "Min 8 characters")
-    .matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
-      "Need uppercase, lowercase, number, special char",
-    ),
+    .min(4, "Minimum 4 characters required"),
 
   confirmPassword: yup
     .string()
     .required("Confirm password")
     .oneOf([yup.ref("passWord"), null], "Passwords must match"),
+
+  agreeToTerms: yup
+    .boolean()
+    .oneOf([true], "You must accept the terms and conditions"),
 });
 
 function SignUp({ open, handleClose, setOpenLogin }) {
@@ -163,11 +172,13 @@ function SignUp({ open, handleClose, setOpenLogin }) {
       confirmPassword: "",
       macId: "",
       macIp: "",
+      agreeToTerms: false,
     },
   });
 
   const dob = watch("dob");
   const pinCodeValue = watch("pinCode");
+  const agreeToTerms = watch("agreeToTerms");
 
   console.log("signUpError", errors);
 
@@ -200,10 +211,7 @@ function SignUp({ open, handleClose, setOpenLogin }) {
     try {
       setOpenConfirmationModal(false);
       setLoading(true);
-      const response = await axios.post(
-        "http://115.124.123.180:8095/api/signupJYA",
-        formData,
-      );
+      const response = await signupJYA(formData);
 
       const apiData = response?.data;
       console.log("apiData", apiData);
@@ -364,22 +372,49 @@ function SignUp({ open, handleClose, setOpenLogin }) {
                   </div>
                 </div>
 
-                {/* Contact Information */}
                 <div className="border rounded-xl bg-white mt-2">
                   <h4 className="font-semibold text-xl bg-amber-200 pl-2 rounded-t-xl py-1">
                     Contact Information
                   </h4>
                   <div className="grid md:grid-cols-2 gap-4 p-2 pt-3">
-                    <div item xs={12} sm={6}>
+                    <div>
                       <InputField
                         control={control}
                         name="mobileNo"
                         label={"Mobile Number *"}
                         error={errors.mobileNo}
                       />
+                      <FormControlLabel
+                        control={
+                          <Switch
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                setValue("whatsappNo", watch("mobileNo"));
+                              }
+                            }}
+                            sx={{
+                              "& .MuiSwitch-switchBase.Mui-checked": {
+                                color: "#16a34a",
+                              },
+                              "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track":
+                                {
+                                  backgroundColor: "lightgreen",
+                                },
+                            }}
+                          />
+                        }
+                        label="Same as Mobile Number"
+                        sx={{
+                          marginTop: 1,
+                          "& .MuiFormControlLabel-label": {
+                            fontSize: "0.875rem",
+                            color: "#4b5563",
+                          },
+                        }}
+                      />
                     </div>
 
-                    <div>
+                    <div className="">
                       <InputField
                         control={control}
                         name="whatsappNo"
@@ -387,6 +422,7 @@ function SignUp({ open, handleClose, setOpenLogin }) {
                         error={errors.whatsappNo}
                       />
                     </div>
+
                     <div>
                       <InputField
                         control={control}
@@ -609,9 +645,256 @@ function SignUp({ open, handleClose, setOpenLogin }) {
                   </div>
                 </div>
               </div>
+
+              <Box
+                sx={{
+                  mt: 2,
+                  p: 2,
+                  border: "1px solid #e6efe3",
+                  borderRadius: 2,
+                  bgcolor: "#ffffff",
+                }}
+              >
+                <Typography
+                  variant="subtitle2"
+                  sx={{
+                    fontWeight: 600,
+                    color: "#2f3e2e",
+                    mb: 1,
+                  }}
+                >
+                  Terms and Conditions
+                </Typography>
+                <Box
+                  sx={{
+                    maxHeight: "150px",
+                    overflowY: "auto",
+                    p: 1.5,
+                    bgcolor: "#f8fbf6",
+                    borderRadius: 1,
+                    border: "1px solid #e6efe3",
+                    fontSize: "0.8rem",
+                    color: "#4b5563",
+                    lineHeight: 1.6,
+                    "&::-webkit-scrollbar": {
+                      width: "6px",
+                    },
+                    "&::-webkit-scrollbar-track": {
+                      background: "#f1f1f1",
+                      borderRadius: "3px",
+                    },
+                    "&::-webkit-scrollbar-thumb": {
+                      background: "#7aa874",
+                      borderRadius: "3px",
+                    },
+                    "&::-webkit-scrollbar-thumb:hover": {
+                      background: "#6fa55b",
+                    },
+                  }}
+                >
+                  <Typography
+                    variant="body2"
+                    sx={{ mb: 1, fontSize: "0.8rem" }}
+                  >
+                    <strong>1. Acceptance of Terms</strong>
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    sx={{ mb: 1.5, fontSize: "0.8rem" }}
+                  >
+                    By creating an account with JYA (Join Your Ayurveda), you
+                    agree to embark on a holistic wellness journey. These terms
+                    govern your use of our Ayurvedic wellness platform and
+                    services. If you do not agree with any part of these terms,
+                    please do not register.
+                  </Typography>
+
+                  <Typography
+                    variant="body2"
+                    sx={{ mb: 1, fontSize: "0.8rem" }}
+                  >
+                    <strong>2. Wellness Services & Consultation</strong>
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    sx={{ mb: 1.5, fontSize: "0.8rem" }}
+                  >
+                    Our platform provides Ayurvedic consultations, wellness
+                    guidance, herbal product recommendations, and holistic
+                    health resources. All advice is based on traditional
+                    Ayurvedic principles and should complement, not replace,
+                    conventional medical care. Always consult qualified
+                    healthcare professionals for medical conditions.
+                  </Typography>
+
+                  <Typography
+                    variant="body2"
+                    sx={{ mb: 1, fontSize: "0.8rem" }}
+                  >
+                    <strong>3. Health Information & Privacy</strong>
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    sx={{ mb: 1.5, fontSize: "0.8rem" }}
+                  >
+                    We collect your health information, dosha profile, lifestyle
+                    habits, and wellness goals to provide personalized Ayurvedic
+                    recommendations. Your health data is confidential and
+                    processed in accordance with our Privacy Policy and
+                    applicable health data protection regulations.
+                  </Typography>
+
+                  <Typography
+                    variant="body2"
+                    sx={{ mb: 1, fontSize: "0.8rem" }}
+                  >
+                    <strong>4. Accurate Health Information</strong>
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    sx={{ mb: 1.5, fontSize: "0.8rem" }}
+                  >
+                    You agree to provide accurate and complete health
+                    information including medical history, allergies, current
+                    medications, and health conditions. Accurate information is
+                    crucial for safe and effective Ayurvedic recommendations.
+                    Update your health profile whenever your condition changes.
+                  </Typography>
+
+                  <Typography
+                    variant="body2"
+                    sx={{ mb: 1, fontSize: "0.8rem" }}
+                  >
+                    <strong>5. Product Usage & Responsibility</strong>
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    sx={{ mb: 1.5, fontSize: "0.8rem" }}
+                  >
+                    Ayurvedic products and remedies recommended through our
+                    platform should be used as directed. You are responsible for
+                    checking ingredient lists for potential allergens.
+                    Discontinue use and consult a healthcare provider if you
+                    experience adverse reactions. Pregnant or nursing women
+                    should seek medical advice before using any herbal products.
+                  </Typography>
+
+                  <Typography
+                    variant="body2"
+                    sx={{ mb: 1, fontSize: "0.8rem" }}
+                  >
+                    <strong>6. Account Security & Usage</strong>
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    sx={{ mb: 1.5, fontSize: "0.8rem" }}
+                  >
+                    You are responsible for maintaining the confidentiality of
+                    your account credentials. Do not share your account with
+                    others as it contains personal health information. We
+                    reserve the right to suspend accounts that violate our
+                    community guidelines or misuse our wellness services.
+                  </Typography>
+
+                  <Typography
+                    variant="body2"
+                    sx={{ mb: 1, fontSize: "0.8rem" }}
+                  >
+                    <strong>7. Limitation of Liability</strong>
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    sx={{ mb: 1.5, fontSize: "0.8rem" }}
+                  >
+                    While we strive to provide authentic Ayurvedic guidance,
+                    individual results may vary. We are not liable for any
+                    adverse effects from following wellness recommendations or
+                    using products. Our services are educational and
+                    complementary in nature, not a substitute for professional
+                    medical diagnosis or treatment.
+                  </Typography>
+
+                  <Typography
+                    variant="body2"
+                    sx={{ mb: 1, fontSize: "0.8rem" }}
+                  >
+                    <strong>8. Intellectual Property</strong>
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    sx={{ mb: 1.5, fontSize: "0.8rem" }}
+                  >
+                    All content including Ayurvedic recipes, dosha assessments,
+                    wellness plans, and educational materials are proprietary to
+                    JYA. You may use them for personal wellness purposes but may
+                    not reproduce, distribute, or commercialize our content
+                    without permission.
+                  </Typography>
+
+                  <Typography
+                    variant="body2"
+                    sx={{ mb: 1, fontSize: "0.8rem" }}
+                  >
+                    <strong>9. Changes to Terms</strong>
+                  </Typography>
+                  <Typography variant="body2" sx={{ fontSize: "0.8rem" }}>
+                    We reserve the right to modify these terms to better serve
+                    your wellness journey. Continued use of our platform after
+                    changes constitutes acceptance of the modified terms. We
+                    will notify users of significant changes via email or
+                    platform notifications.
+                  </Typography>
+                </Box>
+
+                <Controller
+                  name="agreeToTerms"
+                  control={control}
+                  render={({ field }) => (
+                    <Box>
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            {...field}
+                            checked={field.value}
+                            sx={{
+                              color: errors.agreeToTerms
+                                ? "#d32f2f"
+                                : "#7aa874",
+                              "&.Mui-checked": {
+                                color: "#7aa874",
+                              },
+                            }}
+                          />
+                        }
+                        label={
+                          <Typography
+                            variant="body2"
+                            sx={{
+                              fontSize: "0.85rem",
+                              color: errors.agreeToTerms
+                                ? "#d32f2f"
+                                : "#4b5563",
+                            }}
+                          >
+                            I have read and agree to the Terms and Conditions *
+                          </Typography>
+                        }
+                        sx={{ mt: 1 }}
+                      />
+                      {errors.agreeToTerms && (
+                        <FormHelperText error sx={{ ml: 2 }}>
+                          {errors.agreeToTerms.message}
+                        </FormHelperText>
+                      )}
+                    </Box>
+                  )}
+                />
+              </Box>
+
               <Button
                 type="submit"
                 fullWidth
+                disabled={!agreeToTerms}
                 sx={{
                   borderRadius: 2,
                   py: 0.9,
@@ -619,11 +902,17 @@ function SignUp({ open, handleClose, setOpenLogin }) {
                   textTransform: "none",
                   fontWeight: 600,
                   fontSize: "0.95rem",
-                  background: "linear-gradient(135deg,#c7e8b4 0%,#7fb069 100%)",
-                  color: "#1f2d1f",
+                  background: agreeToTerms
+                    ? "linear-gradient(135deg,#c7e8b4 0%,#7fb069 100%)"
+                    : "#e0e0e0",
+                  color: agreeToTerms ? "#1f2d1f" : "#9e9e9e",
                   "&:hover": {
-                    background:
-                      "linear-gradient(135deg,#b9dea6 0%,#6fa55b 100%)",
+                    background: agreeToTerms
+                      ? "linear-gradient(135deg,#b9dea6 0%,#6fa55b 100%)"
+                      : "#e0e0e0",
+                  },
+                  "&:disabled": {
+                    cursor: "not-allowed",
                   },
                 }}
               >
@@ -647,7 +936,7 @@ function SignUp({ open, handleClose, setOpenLogin }) {
                   fontSize: "0.85rem",
                 }}
               >
-                Already have an account?
+                Already have an account?{" "}
                 <span
                   style={{
                     fontWeight: 600,

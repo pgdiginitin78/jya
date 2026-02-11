@@ -82,7 +82,7 @@ AxiosInstance.interceptors.response.use(
         processQueue(err, null);        
         localStorage.clear();
         logoutUser();      
-        window.location.href = "/login";
+        window.location.href = "/";
         return Promise.reject(err);
       } finally {
         isRefreshing = false;

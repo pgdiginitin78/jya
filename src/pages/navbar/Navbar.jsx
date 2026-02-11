@@ -942,7 +942,7 @@ export default function ModernNavbar() {
       </Drawer>
 
       {openLogin && (
-        <LoginPage open={openLogin} handleClose={() => setOpenLogin(false)} />
+        <LoginPage open={openLogin} handleClose={() => setOpenLogin(false)} setOpenLogin={setOpenLogin}/>
       )}
       {openSignUpModal && (
         <SignUp

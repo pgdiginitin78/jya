@@ -26,6 +26,7 @@ import {
 } from "../../components/common/toast/CustomToast";
 import CommonLoader from "../../components/common/commonLoader/CommonLoader";
 import axios from "axios";
+import SignUp from "./SignUp";
 
 const modalStyle = {
   position: "absolute",
@@ -40,19 +41,21 @@ const modalStyle = {
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  p:1,
+  p: 1,
 };
 
 const loginValidationSchema = yup.object().shape({
-  userName: yup.string().email("Invalid email").required("Email required"),
-  password: yup.string().min(8, "Min 8 chars").required("Password required"),
+  userName: yup.string().required("Email or Mobile required"),
+  password: yup.string().min(4, "Min 4 chars").required("Password required"),
 });
 
-function LoginPage({ open, handleClose }) {
+function LoginPage({ open, handleClose, setOpenLogin }) {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState(null);
   const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const [openSignUpModal, setOpenSignUpModal] = useState(false);
 
   const {
     control,
@@ -61,7 +64,7 @@ function LoginPage({ open, handleClose }) {
     reset,
   } = useForm({
     mode: "onChange",
-    // resolver: yupResolver(loginValidationSchema),
+    resolver: yupResolver(loginValidationSchema),
     defaultValues: { userName: "", password: "" },
   });
 
@@ -72,31 +75,25 @@ function LoginPage({ open, handleClose }) {
 
   const handleUserLogin = async () => {
     try {
-      setOpenConfirmationModal(false);
       setLoading(true);
+      setOpenConfirmationModal(false);
 
-      const response = await axios.post(
-        "http://115.124.123.180:8095/api/loginJYA",
-        formData,
-      );
+      const { data, status } = await userLogin(formData);
 
-      const apiData = response?.data;
-      console.log("apiData", apiData);
+      if (status === 200 && data?.accessToken) {
+        localStorage.setItem("accessToken", data.accessToken);
+        localStorage.setItem("refreshToken", data.refreshToken);
+        localStorage.setItem("user", JSON.stringify(data.user));
+        localStorage.setItem("expiresIn", data.expiresIn);
 
-      if (response.status === 200 && apiData) {
-        localStorage.setItem("accessToken", apiData.accessToken);
-        localStorage.setItem("refreshToken", apiData.refreshToken);
-        localStorage.setItem("user", JSON.stringify(apiData.user));
-        localStorage.setItem("expiresIn", JSON.stringify(apiData.expiresIn));
-
-        successAlert(apiData.message || "Login successful");
+        successAlert(data.message || "Login successful");
 
         setTimeout(() => {
           handleClose();
           reset();
-        }, 1000);
+        }, 800);
       } else {
-        errorAlert("Login failed");
+        throw new Error("Login failed");
       }
     } catch (error) {
       errorAlert(error.response?.data?.message || error.message);
@@ -112,7 +109,7 @@ function LoginPage({ open, handleClose }) {
 
   return (
     <>
-      <Modal open={open} onClose={handleModalClose}>
+      <Modal open={open} disableScrollLock={false}>
         <Box sx={modalStyle}>
           <Box
             sx={{
@@ -126,9 +123,9 @@ function LoginPage({ open, handleClose }) {
                 lg: "85vh",
                 xl: "fit-content",
               },
-       
+
               bgcolor: "#f8fbf6",
-              borderRadius:   3 ,
+              borderRadius: 3,
               boxShadow: "0 10px 40px rgba(0,0,0,0.08)",
               border: "1px solid #e6efe3",
               display: "flex",
@@ -239,8 +236,9 @@ function LoginPage({ open, handleClose }) {
                         }}
                         sx={{
                           "& .MuiOutlinedInput-root": {
-                            borderRadius: 3,
+                            borderRadius: 2,
                             bgcolor: "#ffffff",
+                            height: "46px",
                           },
                           "& .MuiInputBase-input": {
                             fontSize: { xs: "0.875rem", sm: "1rem" },
@@ -283,8 +281,9 @@ function LoginPage({ open, handleClose }) {
                         }}
                         sx={{
                           "& .MuiOutlinedInput-root": {
-                            borderRadius: 3,
+                            borderRadius: 2,
                             bgcolor: "#ffffff",
+                            height: "46px",
                           },
                           "& .MuiInputBase-input": {
                             fontSize: { xs: "0.875rem", sm: "1rem" },
@@ -346,15 +345,17 @@ function LoginPage({ open, handleClose }) {
                     }}
                   >
                     Don't have an account?
-                    <span
+                    <button
+                      type="button"
                       style={{
                         fontWeight: 600,
                         cursor: "pointer",
                         color: "#5d8c57",
                       }}
+                      onClick={() => setOpenSignUpModal(true)}
                     >
                       Sign Up
-                    </span>
+                    </button>
                   </Typography>
                 </Box>
               </form>
@@ -362,7 +363,6 @@ function LoginPage({ open, handleClose }) {
           </Box>
         </Box>
       </Modal>
-
       <ConfirmationModal
         confirmationOpen={openConfirmationModal}
         confirmationHandleClose={() => setOpenConfirmationModal(false)}
@@ -372,7 +372,15 @@ function LoginPage({ open, handleClose }) {
         confirmationButtonMsg="Confirm"
       />
 
-      {loading && <CommonLoader />}
+ <CommonLoader />
+
+      {openSignUpModal && (
+        <SignUp
+          open={openSignUpModal}
+          handleClose={() => setOpenSignUpModal(false)}
+          setOpenLogin={setOpenLogin}
+        />
+      )}
     </>
   );
 }

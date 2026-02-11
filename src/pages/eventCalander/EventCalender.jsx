@@ -1,10 +1,8 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLocation } from "react-router-dom";
-// import BookEventForm from "../bookEventForm/BookEventForm";
 
 export const eventsData2026 = [
-  // ============= JANUARY 2026 =============
   {
     month: "January",
     date: "01/01/2026",
@@ -38,7 +36,6 @@ export const eventsData2026 = [
     benefits: "Cultural learning, seasonal wellness",
     value: 2000,
   },
-
   {
     month: "January",
     date: "23/01/2026",
@@ -71,7 +68,6 @@ export const eventsData2026 = [
     benefits: "Cultural learning, reflection",
     value: 2000,
   },
-  // ============= FEBRUARY 2026 =============
   {
     month: "February",
     date: "01/02/2026",
@@ -80,7 +76,6 @@ export const eventsData2026 = [
     benefits: "Cultural, Spiritual",
     value: null,
   },
-
   {
     month: "February",
     date: "04/02/2026",
@@ -89,7 +84,6 @@ export const eventsData2026 = [
     benefits: "Educational, Wellness",
     value: 2000,
   },
-
   {
     month: "February",
     date: "12/02/2026",
@@ -98,7 +92,6 @@ export const eventsData2026 = [
     benefits: "Cultural",
     value: null,
   },
-
   {
     month: "February",
     date: "15/02/2026",
@@ -115,8 +108,6 @@ export const eventsData2026 = [
     benefits: "Cultural",
     value: 2000,
   },
-
-  // ============= MARCH 2026 =============
   {
     month: "March",
     date: "03/03/2026",
@@ -137,15 +128,14 @@ export const eventsData2026 = [
     month: "March",
     date: "06/03/2026",
     serviceName: "छत्रपती शिवाजी महाराज जयंती",
-    description: "Traditional healing commune & Shivaji Jayanti ",
+    description: "Traditional healing commune & Shivaji Jayanti",
     benefits: "Wellness, Cultural",
     value: 2000,
   },
-
   {
     month: "March",
     date: "08/03/2026",
-    serviceName: "स्वरङ्गपञ्चमी Colour Festival/ International Women’s Day ",
+    serviceName: "स्वरङ्गपञ्चमी Colour Festival/ International Women's Day",
     description: "Healing commune with festivals and awareness.",
     benefits: "Wellness, Cultural",
     value: 2000,
@@ -169,12 +159,11 @@ export const eventsData2026 = [
   {
     month: "March",
     date: "26/03/2026",
-    serviceName: "स्वएकवचन उत्सव : राम नवमी ",
+    serviceName: "स्वएकवचन उत्सव : राम नवमी",
     description: "Celebration of Ram Navami",
     benefits: "Cultural, Spiritual",
     value: 2000,
   },
-  // ============= APRIL 2026 =============
   {
     month: "April",
     date: "01/04/2026",
@@ -195,11 +184,10 @@ export const eventsData2026 = [
     month: "April",
     date: "14/04/2026",
     serviceName: "Solar New Year आंबेडकर जयंती बैसाखी",
-    description: "Celebration of Solar New Year and Ambedkar Jayanti ",
+    description: "Celebration of Solar New Year and Ambedkar Jayanti",
     benefits: "Cultural, Educational",
     value: null,
   },
-
   {
     month: "April",
     date: "21/04/2026",
@@ -224,21 +212,18 @@ export const eventsData2026 = [
     benefits: "Cultural, Spiritual",
     value: 2000,
   },
-  // ============= MAY 2026 =============
   {
     month: "May",
     date: "01/05/2026",
     serviceName: "वैशाख बुद्ध पोर्णिमा Workers Day",
-    description:
-      "Observance of Buddha Poornima and International Workers’ Day ",
+    description: "Observance of Buddha Poornima and International Workers' Day",
     benefits: "Cultural, Educational",
     value: 2000,
   },
-
   {
     month: "May",
     date: "03/05/2026",
-    serviceName: "विश्व हास्य दिवस ",
+    serviceName: "विश्व हास्य दिवस",
     description: "Healing commune combined with International Humor Day.",
     benefits: "Wellness, Cultural",
     value: 2000,
@@ -248,7 +233,7 @@ export const eventsData2026 = [
     date: "10/05/2026",
     serviceName: "मातृ दिन",
     description:
-      "Physician wellness program and life knowledge sessions on Ayurveda with Mother’s Day celebration.",
+      "Physician wellness program and life knowledge sessions on Ayurveda with Mother's Day celebration.",
     benefits: "Wellness, Educational",
     value: 2000,
   },
@@ -263,35 +248,32 @@ export const eventsData2026 = [
   {
     month: "May",
     date: "31/05/2026",
-    serviceName: "विश्व तंबाखू निषेध दिन ",
+    serviceName: "विश्व तंबाखू निषेध दिन",
     description: "World No Tobacco Day observance.",
     benefits: "Wellness, Cultural",
     value: 2000,
   },
-  // ============= JUNE 2026 =============
   {
     month: "June",
     date: "05/06/2026",
-    serviceName: "विश्व पर्यावरण दिन ",
+    serviceName: "विश्व पर्यावरण दिन",
     description: "Healing commune and World Environment Day",
     benefits: "Wellness, Cultural",
     value: 2000,
   },
-
   {
     month: "June",
     date: "17/06/2026",
-    serviceName: "महाराणा प्रताप जयंती, इस्लामी नव वर्ष अल हिज्रा ",
+    serviceName: "महाराणा प्रताप जयंती, इस्लामी नव वर्ष अल हिज्रा",
     description: "Commemorative celebrations.",
     benefits: "Cultural",
     value: null,
   },
-
   {
     month: "June",
     date: "21/06/2026",
     serviceName: "पितृ दिन / आंतरराष्ट्रीय योग दिन / मोठा दिवस",
-    description: "Observance of ancestors and International Yoga Day ",
+    description: "Observance of ancestors and International Yoga Day",
     benefits: "Wellness, Cultural",
     value: 2000,
   },
@@ -306,13 +288,11 @@ export const eventsData2026 = [
   {
     month: "June",
     date: "29/06/2026",
-    serviceName: "वट पोर्णिमा, कबीरदास जयंती ",
-    description: "Religious and cultural celebration ",
+    serviceName: "वट पोर्णिमा, कबीरदास जयंती",
+    description: "Religious and cultural celebration",
     benefits: "Cultural",
     value: null,
   },
-
-  // ============= JULY 2026 =============
   {
     month: "July",
     date: "16/07/2026",
@@ -329,7 +309,6 @@ export const eventsData2026 = [
     benefits: "Cultural, Spiritual",
     value: null,
   },
-  // ============= AUGUST 2026 =============
   {
     month: "August",
     date: "02/08/2026",
@@ -365,7 +344,7 @@ export const eventsData2026 = [
   {
     month: "August",
     date: "26/08/2026",
-    serviceName: "ओणम / ईद ए मिलाद ",
+    serviceName: "ओणम / ईद ए मिलाद",
     description: "Religious and cultural celebration",
     benefits: "Cultural",
     value: null,
@@ -378,7 +357,6 @@ export const eventsData2026 = [
     benefits: "Cultural",
     value: null,
   },
-  // ============= SEPTEMBER 2026 =============
   {
     month: "September",
     date: "04/09/2026",
@@ -391,7 +369,7 @@ export const eventsData2026 = [
     month: "September",
     date: "05/09/2026",
     serviceName: "गोपाल काला दही हंडी, शिक्षक दिन",
-    description: "Dahi Handi and Teacher’s Day",
+    description: "Dahi Handi and Teacher's Day",
     benefits: "Cultural, Educational",
     value: 2000,
   },
@@ -406,7 +384,7 @@ export const eventsData2026 = [
   {
     month: "September",
     date: "14/09/2026",
-    serviceName: "हरतालिका गौरी, मंगळा, मंगळा गौर, गणेश स्थापना, हिन्दी दिवस ",
+    serviceName: "हरतालिका गौरी, मंगळा, मंगळा गौर, गणेश स्थापना, हिन्दी दिवस",
     description: "Religious and national celebrations",
     benefits: "Cultural",
     value: 2000,
@@ -415,7 +393,7 @@ export const eventsData2026 = [
     month: "September",
     date: "15/09/2026",
     serviceName: "ऋषि पंचमी, अभियंता दिन, विश्वेश्वरैया जयंती",
-    description: "Observances of Rishi Panchami and Engineers’ Day",
+    description: "Observances of Rishi Panchami and Engineers' Day",
     benefits: "Cultural, Educational",
     value: 2000,
   },
@@ -467,7 +445,6 @@ export const eventsData2026 = [
     benefits: "Cultural",
     value: null,
   },
-  // ============= OCTOBER 2026 =============
   {
     month: "October",
     date: "02/10/2026",
@@ -549,20 +526,19 @@ export const eventsData2026 = [
     benefits: "Cultural, Wellness",
     value: null,
   },
-  // ============= NOVEMBER 2026 =============
   {
     month: "November",
     date: "04/11/2026",
     serviceName: "दुर्ग बांधणी Fort Construction",
     description: "Traditional fort construction activity at Swagrama",
-    benefits: "Cultural engagement, teamwork, historical learning ",
+    benefits: "Cultural engagement, teamwork, historical learning",
     value: 2000,
   },
   {
     month: "November",
     date: "05/11/2026",
-    serviceName: "गौवत्सद्वादशी Cow Calf Ceremony / वसू बारस VasuBaras ",
-    description: "Ritual celebrating cow and calf; auspicious ceremonies ",
+    serviceName: "गौवत्सद्वादशी Cow Calf Ceremony / वसू बारस VasuBaras",
+    description: "Ritual celebrating cow and calf; auspicious ceremonies",
     benefits: "Strengthens connection with cows, cultural learning",
     value: 2000,
   },
@@ -577,17 +553,16 @@ export const eventsData2026 = [
   {
     month: "November",
     date: "08/11/2026",
-    serviceName: "Dipavali – Lakshmi Pujan नरक चतुर्दशी ",
-    description: "Diwali – Lakshmi Puja and rituals ",
-    benefits: "Spiritual cleansing, prosperity, wellness ",
+    serviceName: "Dipavali – Lakshmi Pujan नरक चतुर्दशी",
+    description: "Diwali – Lakshmi Puja and rituals",
+    benefits: "Spiritual cleansing, prosperity, wellness",
     value: 2000,
   },
-
   {
     month: "November",
     date: "10/11/2026",
-    serviceName: "Dipavali Padwa / Balipratipada / Govardhan Puja ",
-    description: "Diwali festival rituals and Govardhan celebration ",
+    serviceName: "Dipavali Padwa / Balipratipada / Govardhan Puja",
+    description: "Diwali festival rituals and Govardhan celebration",
     benefits: "Spiritual benefits, prosperity",
     value: 2000,
   },
@@ -599,12 +574,11 @@ export const eventsData2026 = [
     benefits: "Family bonding, cultural tradition",
     value: 2000,
   },
-
   {
     month: "November",
     date: "14/11/2026",
     serviceName: "बाल दिवस / नेहरू जयंत",
-    description: "Children’s Day & Nehru Jayanti celebrations",
+    description: "Children's Day & Nehru Jayanti celebrations",
     benefits: "Educational, fun, cultural awareness",
     value: 2000,
   },
@@ -612,7 +586,7 @@ export const eventsData2026 = [
     month: "November",
     date: "21/11/2026",
     serviceName: "तुलसी विवाह Tulasi Vivah",
-    description: "Holy ceremonial marriage of Tulasi plant ",
+    description: "Holy ceremonial marriage of Tulasi plant",
     benefits: "Spiritual merit, cultural immersion",
     value: 2000,
   },
@@ -620,77 +594,54 @@ export const eventsData2026 = [
     month: "November",
     date: "24/11/2026",
     serviceName: "गुरुनानक जयंती GuruNanak Jayanti",
-    description: "Celebration of Guru Nanak’s birth anniversary ",
-    benefits: "Spiritual inspiration, cultural enrichment ",
+    description: "Celebration of Guru Nanak's birth anniversary",
+    benefits: "Spiritual inspiration, cultural enrichment",
     value: 2000,
   },
-
-  // ============= DECEMBER 2026 =============
   {
     month: "December",
     date: "01/12/2026",
-    serviceName: "विश्व एड्स दिन ",
-    description: "Health & spiritual observances ",
+    serviceName: "विश्व एड्स दिन",
+    description: "Health & spiritual observances",
     benefits: "Awareness, wellness, spiritual merit",
     value: 2000,
   },
-
   {
     month: "December",
     date: "14/12/2026",
     serviceName: "विवाह पंचमी",
-    description: "Wedding-related ceremony ",
-    benefits: "Spiritual & cultural benefit ",
+    description: "Wedding-related ceremony",
+    benefits: "Spiritual & cultural benefit",
     value: 2000,
   },
-
   {
     month: "December",
     date: "20/12/2026",
     serviceName: "गीता जयंती / मोक्षदा एकादशी",
-    description: "Health & spiritual observances ",
-    benefits: "Awareness, wellness, spiritual merit ",
+    description: "Health & spiritual observances",
+    benefits: "Awareness, wellness, spiritual merit",
     value: 2000,
   },
-
   {
     month: "December",
     date: "23/12/2026",
-    serviceName: "दत्तात्रय जयंती ",
-    description: "Celebration of Dattatreya Jayanti ",
-    benefits: "Spiritual growth, cultural learning ",
+    serviceName: "दत्तात्रय जयंती",
+    description: "Celebration of Dattatreya Jayanti",
+    benefits: "Spiritual growth, cultural learning",
     value: 2000,
   },
-  // {
-  //   month: "December",
-  //   date: "25/12/2026",
-  //   serviceName: "नाताळ Christmas मेरी क्रिसमस",
-  //   description: "Christmas celebrations",
-  //   benefits: "Cultural awareness, joy",
-  //   value: 2000,
-  // },
-
-  // {
-  //   month: "December",
-  //   date: "31/12/2026",
-  //   serviceName: "Year End New Year Eve",
-  //   description: "End of year celebrations",
-  //   benefits: "Community gathering",
-  //   value: 2000,
-  // },
 ];
 
 const EventCalendar = () => {
-  // Get today's date first (needed for initialization)
   const today = new Date();
   const todayDay = today.getDate();
   const todayMonth = today.getMonth();
   const todayYear = today.getFullYear();
 
   const [selectedDate, setSelectedDate] = useState(null);
-  const [currentMonth, setCurrentMonth] = useState(todayMonth); // Initialize to current month
+  const [currentMonth, setCurrentMonth] = useState(todayMonth);
   const [selectedEvents, setSelectedEvents] = useState([]);
-  const [openBookEventModal, setOpenEventBookModal] = useState(false);
+  const [showEventModal, setShowEventModal] = useState(false);
   const [currentEvent, setCurrentEvent] = useState(null);
   const location = useLocation();
   const passedData = location.state;
@@ -707,7 +658,7 @@ const EventCalendar = () => {
     }
   }, [passedData]);
 
-  const months = [
+  const monthsFull = [
     "January",
     "February",
     "March",
@@ -722,13 +673,8 @@ const EventCalendar = () => {
     "December",
   ];
 
-  const getDaysInMonth = (month) => {
-    return new Date(2026, month + 1, 0).getDate();
-  };
-
-  const getFirstDayOfMonth = (month) => {
-    return new Date(2026, month, 1).getDay();
-  };
+  const getDaysInMonth = (month) => new Date(2026, month + 1, 0).getDate();
+  const getFirstDayOfMonth = (month) => new Date(2026, month, 1).getDay();
 
   const eventsByDate = useMemo(() => {
     const map = {};
@@ -746,7 +692,6 @@ const EventCalendar = () => {
     return eventsByDate[key] || [];
   };
 
-  // Check if a date is in the past
   const isPastDate = (day) => {
     const dateToCheck = new Date(2026, currentMonth, day);
     const currentDate = new Date(todayYear, todayMonth, todayDay);
@@ -755,7 +700,6 @@ const EventCalendar = () => {
     return dateToCheck < currentDate;
   };
 
-  // Check if a date is today
   const isToday = (day) => {
     return (
       day === todayDay && currentMonth === todayMonth && 2026 === todayYear
@@ -763,15 +707,14 @@ const EventCalendar = () => {
   };
 
   const handleDateClick = (day) => {
-    // Prevent clicking on past dates
-    if (isPastDate(day)) {
-      return;
-    }
+    if (isPastDate(day)) return;
 
-    console.log("selectedDay", day);
     setSelectedDate(day);
     const events = getEventsForDate(day);
     setSelectedEvents(events);
+    if (events.length > 0 && window.innerWidth < 1024) {
+      setShowEventModal(true);
+    }
   };
 
   const renderCalendar = () => {
@@ -780,7 +723,7 @@ const EventCalendar = () => {
     const days = [];
 
     for (let i = 0; i < firstDay; i++) {
-      days.push(<div key={`empty-${i}`} className="aspect-square p-1"></div>);
+      days.push(<div key={`empty-${i}`} className="aspect-square"></div>);
     }
 
     for (let day = 1; day <= daysInMonth; day++) {
@@ -790,64 +733,31 @@ const EventCalendar = () => {
       const isPast = isPastDate(day);
       const isTodayDate = isToday(day);
 
-      const formatMarathiText = (text = "", limit = 10) => {
-        const marathiOnly = text.replace(/[A-Za-z0-9]/g, "").trim();
-        return marathiOnly.length > limit
-          ? marathiOnly.slice(0, limit) + "…"
-          : marathiOnly;
-      };
-
       days.push(
         <motion.div
           key={day}
-          whileHover={!isPast ? { scale: 1.05 } : {}}
-          whileTap={!isPast ? { scale: 0.95 } : {}}
+          whileHover={!isPast ? { scale: 1.04 } : {}}
+          whileTap={!isPast ? { scale: 0.96 } : {}}
           onClick={() => handleDateClick(day)}
-          className={`aspect-square p-1 rounded-lg transition-all relative
-            ${
-              isPast
-                ? "opacity-40 cursor-not-allowed bg-gray-100"
-                : "cursor-pointer"
-            }
-            ${
-              isSelected
-                ? "bg-gradient-to-br from-lime-600 to-green-700 text-white shadow-md shadow-lime-500/30"
-                : isTodayDate
-                  ? "bg-white text-black border"
-                  : hasEvents
-                    ? "bg-gradient-to-br from-lime-50 to-green-50 hover:from-lime-100 hover:to-green-100 border border-lime-200"
-                    : "hover:bg-amber-50/50 border"
-            }`}
+          className={`aspect-square rounded-lg transition-all relative cursor-pointer flex items-center justify-center
+            ${isPast ? "opacity-30 cursor-not-allowed bg-gray-50 border" : ""}
+            ${isSelected ? "bg-gradient-to-br from-lime-500 to-green-600 text-white shadow-sm" : ""}
+            ${isTodayDate && !isSelected ? "bg-amber-100 border border-amber-400" : ""}
+            ${hasEvents && !isSelected && !isTodayDate ? "bg-lime-50 border border-lime-300" : ""}
+            ${!hasEvents && !isSelected && !isTodayDate && !isPast ? "bg-white border border-gray-200" : ""}`}
         >
-          <div className="flex flex-col h-full items-center justify-center gap-0.5 md:gap-1">
-            <span
-              className={`font-semibold leading-none
-                text-sm sm:text-base md:text-xl
-                ${isSelected || isTodayDate ? "text-black" : isPast ? "text-gray-400" : "text-stone-700"}
-                `}
-            >
-              {day}
-            </span>
-
-            {hasEvents && !isPast && (
-              <span
-                className={`
-                    text-[9px] sm:text-[10px] md:text-xs
-                    leading-tight text-center px-1
-                    line-clamp-1
-                    ${isSelected ? "text-white/90" : isTodayDate ? "text-white/90" : "text-green-700"}
-                `}
-              >
-                {formatMarathiText(events[0].serviceName, 10)}
-              </span>
-            )}
-
-            {isTodayDate && !isSelected && (
-              <div className="absolute -top-1 -right-1">
-                <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
-              </div>
-            )}
-          </div>
+          <span
+            className={`text-[9px] sm:text-[14px] font-bold ${isSelected ? "text-white" : isPast ? "text-gray-400" : "text-gray-800"}`}
+          >
+            {day}
+          </span>
+          {hasEvents && !isPast && (
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              className={`absolute bottom-[110px] w-[5px] h-[5px] animate-pulse rounded-full ${isSelected ? "bg-white" : "bg-lime-600"}`}
+            />
+          )}
         </motion.div>,
       );
     }
@@ -855,57 +765,43 @@ const EventCalendar = () => {
   };
 
   return (
-    <div className="min-h-screen  p-2 md:px-10 py-6 ">
-      <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
-        <div className="absolute top-20 left-10 w-64 h-64 bg-lime-300 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-green-300 rounded-full blur-3xl"></div>
-      </div>
-
-      <div className="w-full mx-auto relative z-10">
+    <div className="min-h-screen p-1 sm:p-2">
+      <motion.div
+        initial={{ opacity: 0, y: -15 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="max-w-5xl mx-auto"
+      >
         <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-4"
+          initial={{ scale: 0.95 }}
+          animate={{ scale: 1 }}
+          className="text-center mb-1 sm:mb-2"
         >
-          <div className="flex items-center justify-center gap-2 mb-2">
-            <svg
-              className="w-6 h-6 text-lime-700"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-            >
-              <path d="M10 3.5a1.5 1.5 0 013 0V4a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-.5a1.5 1.5 0 000 3h.5a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-.5a1.5 1.5 0 00-3 0v.5a1 1 0 01-1 1H6a1 1 0 01-1-1v-3a1 1 0 00-1-1h-.5a1.5 1.5 0 010-3H4a1 1 0 001-1V6a1 1 0 011-1h3a1 1 0 001-1v-.5z" />
-            </svg>
-            <h1 className="text-3xl py-1 font-bold bg-gradient-to-r from-lime-700 via-green-700 to-lime-800 bg-clip-text text-transparent">
-              स्ववर्षपद Calendar 2026
-            </h1>
-            <svg
-              className="w-6 h-6 text-lime-700"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-            >
-              <path d="M10 3.5a1.5 1.5 0 013 0V4a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-.5a1.5 1.5 0 000 3h.5a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-.5a1.5 1.5 0 00-3 0v.5a1 1 0 01-1 1H6a1 1 0 01-1-1v-3a1 1 0 00-1-1h-.5a1.5 1.5 0 010-3H4a1 1 0 001-1V6a1 1 0 011-1h3a1 1 0 001-1v-.5z" />
-            </svg>
-          </div>
-          <p className="text-stone-600 text-xs md:text-sm font-medium">
-            Discover wellness and cultural events
+          <h1 className="text-base sm:text-xl md:text-2xl font-black bg-gradient-to-r from-lime-600 via-green-600 to-lime-700 bg-clip-text text-transparent">
+            स्ववर्षपद 2026
+          </h1>
+          <p className="text-[8px] sm:text-[10px] text-gray-600 font-medium">
+            Cultural & Wellness Events
           </p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-3 gap-3">
+        <div className="grid lg:grid-cols-3 gap-1.5 sm:gap-2">
           <motion.div
-            initial={{ opacity: 0, x: -20 }}
+            initial={{ opacity: 0, x: -15 }}
             animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.1 }}
             className="lg:col-span-2"
           >
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl shadow-lime-500/10 p-3 md:p-4 border border-lime-100">
-              <div className="flex items-center justify-between mb-3 pb-2 border-b border-lime-200">
-                <button
+            <div className="bg-white/90 backdrop-blur-sm rounded-lg shadow-md p-1.5 sm:p-2 border border-lime-200">
+              <div className="flex items-center justify-between mb-1 pb-1 border-b border-lime-200">
+                <motion.button
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
                   onClick={() => setCurrentMonth(Math.max(0, currentMonth - 1))}
                   disabled={currentMonth === 0}
-                  className="p-1.5 rounded-lg hover:bg-lime-100 disabled:opacity-30 disabled:cursor-not-allowed transition-all text-stone-700"
+                  className="p-0.5 sm:p-1 rounded bg-lime-100 hover:bg-lime-200 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
                 >
                   <svg
-                    className="w-5 h-5"
+                    className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-lime-700"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -917,26 +813,28 @@ const EventCalendar = () => {
                       d="M15 19l-7-7 7-7"
                     />
                   </svg>
-                </button>
+                </motion.button>
 
                 <div className="text-center">
-                  <h2 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-lime-700 to-green-700 bg-clip-text text-transparent">
-                    {months[currentMonth]}
+                  <h2 className="text-sm sm:text-base md:text-lg font-bold bg-gradient-to-r from-lime-600 to-green-600 bg-clip-text text-transparent">
+                    {monthsFull[currentMonth]}
                   </h2>
-                  <span className="text-sm text-stone-500 font-medium">
+                  <span className="text-[8px] sm:text-[9px] text-gray-500 font-semibold">
                     2026
                   </span>
                 </div>
 
-                <button
+                <motion.button
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
                   onClick={() =>
                     setCurrentMonth(Math.min(11, currentMonth + 1))
                   }
                   disabled={currentMonth === 11}
-                  className="p-1.5 rounded-lg hover:bg-lime-100 disabled:opacity-30 disabled:cursor-not-allowed transition-all text-stone-700"
+                  className="p-0.5 sm:p-1 rounded bg-lime-100 hover:bg-lime-200 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
                 >
                   <svg
-                    className="w-5 h-5"
+                    className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-lime-700"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -948,175 +846,108 @@ const EventCalendar = () => {
                       d="M9 5l7 7-7 7"
                     />
                   </svg>
-                </button>
+                </motion.button>
               </div>
 
-              <div className="grid grid-cols-7 gap-1 mb-1">
+              <div className="grid grid-cols-7 gap-[2px] sm:gap-0.5 mb-0.5 sm:mb-1">
                 {["S", "M", "T", "W", "T", "F", "S"].map((day, idx) => (
                   <div
                     key={idx}
-                    className="text-center text-[14px]  font-bold text-stone-600 p-1"
+                    className="text-center text-[8px] sm:text-[14px] font-bold text-gray-600 py-0.5"
                   >
                     {day}
                   </div>
                 ))}
               </div>
 
-              <div className="grid grid-cols-7 gap-1">{renderCalendar()}</div>
-
-              <div className="mt-3 pt-2 border-t border-lime-200 flex flex-wrap gap-3 justify-center text-[10px] md:text-xs">
-                <div className="flex items-center gap-1.5">
-                  <div className="w-2 h-2 rounded-full bg-gradient-to-r from-amber-400 to-orange-500"></div>
-                  <span className="text-stone-600 font-medium">Today</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <div className="w-2 h-2 rounded-full bg-gradient-to-r from-lime-600 to-green-600"></div>
-                  <span className="text-stone-600 font-medium">Has Events</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <div className="w-2 h-2 rounded-full bg-gradient-to-br from-lime-600 to-green-700"></div>
-                  <span className="text-stone-600 font-medium">Selected</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <div className="w-2 h-2 rounded-full bg-gray-300"></div>
-                  <span className="text-stone-600 font-medium">Past Date</span>
-                </div>
+              <div className="grid grid-cols-7 gap-[2px] sm:gap-2">
+                {renderCalendar()}
               </div>
             </div>
           </motion.div>
+
           <motion.div
-            initial={{ opacity: 0, x: 20 }}
+            initial={{ opacity: 0, x: 15 }}
             animate={{ opacity: 1, x: 0 }}
-            className="lg:col-span-1"
+            transition={{ delay: 0.2 }}
+            className="hidden lg:block"
           >
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl shadow-green-500/10  sticky top-0 border border-green-100 max-h-[calc(100vh-2rem)] overflow-y-auto">
+            <div className="bg-white/90 backdrop-blur-sm rounded-lg shadow-md border border-green-200 sticky top-1 max-h-[calc(100vh-0.5rem)] overflow-hidden">
               <AnimatePresence mode="wait">
                 {selectedEvents.length > 0 ? (
                   <motion.div
                     key={selectedDate}
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    className="space-y-2 mb-2"
+                    exit={{ opacity: 0, y: -10 }}
+                    className="overflow-y-auto max-h-[calc(100vh-0.5rem)]"
                   >
-                    <div className="relative w-full h-28 md:h-40 bg-gradient-to-br from-lime-100 via-green-100 to-lime-50 overflow-hidden border border-lime-200">
-                      <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
-                        {selectedEvents?.[0]?.image ? (
-                          <img
-                            src={selectedEvents[0].image}
-                             loading="lazy"
-                            alt="Event"
-                            className="h-full w-full object-cover object-center"
-                          />
-                        ) : (
-                          <svg
-                            className="w-14 h-14 text-lime-600/30"
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                          >
-                            <path d="M10 3.5a1.5 1.5 0 013 0V4a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-.5a1.5 1.5 0 000 3h.5a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-.5a1.5 1.5 0 00-3 0v.5a1 1 0 01-1 1H6a1 1 0 01-1-1v-3a1 1 0 00-1-1h-.5a1.5 1.5 0 010-3H4a1 1 0 001-1V6a1 1 0 011-1h3a1 1 0 001-1v-.5z" />
-                          </svg>
-                        )}
+                    <div className="p-2 bg-gradient-to-br from-lime-500 to-green-600 text-white">
+                      <div className="text-[14px] font-semibold opacity-90">
+                        {selectedEvents[0].date}
                       </div>
-
-                      <div className="absolute top-2 left-2 bg-white/90 backdrop-blur-sm px-2 py-0.5 rounded-full">
-                        <span className="text-[12px] font-bold text-lime-700">
-                          {selectedEvents[0].date}
-                        </span>
-                      </div>
-                      <div className="absolute top-2 text-center align-middle right-2 bg-gradient-to-r from-lime-600 to-green-700 px-2 py-0.5 rounded-full">
-                        <span className="text-[10px] font-bold text-white flex justify-center items-center">
-                          {selectedEvents.length === 1 ? "Event" : "Events"}
-                        </span>
+                      <div className="text-[12px] mt-0.5 opacity-80">
+                        {selectedEvents.length} Event
+                        {selectedEvents.length > 1 ? "s" : ""}
                       </div>
                     </div>
-                    <div className="bg-gradient-to-br from-lime-50/50 to-green-50/50 rounded-xl p-2 m-2 border border-lime-200">
-                      <div className="space-y-2">
-                        {selectedEvents.map((event, idx) => (
-                          <div
-                            key={idx}
-                            className="bg-white rounded-lg p-2 border border-lime-200"
-                          >
-                            <div className="flex items-start gap-1.5 mb-1.5">
-                              <div className="w-5 h-5 rounded-full bg-gradient-to-br from-lime-600 to-green-700 flex items-center justify-center flex-shrink-0">
-                                <span className="text-white text-[10px] font-bold">
-                                  {idx + 1}
-                                </span>
-                              </div>
-                              <h3 className="text-[12px] md:text-xs font-bold text-stone-800 leading-tight flex-1">
-                                {event.serviceName}
-                              </h3>
-                            </div>
 
-                            <div className="flex items-center gap-1 mb-1.5 pl-6">
-                              <svg
-                                className="w-5 h-5 text-green-600  flex-shrink-0"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                />
-                              </svg>
-                              <p className="text-stone-600 text-[12px] leading-snug">
-                                {event.description}
-                              </p>
-                            </div>
-                            <div className="flex items-center gap-1 mb-1.5 pl-6">
-                              <svg
-                                className="w-5 h-5 text-green-700  flex-shrink-0"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                                />
-                              </svg>
-                              <p className="text-[12px] text-stone-600 leading-snug">
-                                <span className="font-bold">Benefits : </span>
-                                {event.benefits}
-                              </p>
-                            </div>
-
-                            <div className="flex items-center  gap-1.5 pl-6">
-                              <motion.button
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                                onClick={() => {
-                                  setOpenEventBookModal(true);
-                                  setCurrentEvent(event);
-                                }}
-                                className="ml-auto px-3 py-1 bg-gradient-to-r from-lime-600 to-green-700 text-white font-bold rounded text-[12px] shadow-sm hover:shadow-md transition-all"
-                              >
-                                Book Event
-                              </motion.button>
-                            </div>
-
-                            {idx < selectedEvents.length - 1 && (
-                              <div className="mt-2 pt-2 border-t border-lime-200"></div>
-                            )}
+                    <div className="p-2 space-y-1.5 py-4">
+                      {selectedEvents.map((event, idx) => (
+                        <motion.div
+                          key={idx}
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: idx * 0.08 }}
+                          className="bg-gradient-to-br from-lime-50 to-green-50 rounded-md p-2 border border-lime-200"
+                        >
+                          <h3 className="text-[14px] font-bold text-gray-800 mb-1">
+                            {event.serviceName}
+                          </h3>
+                          <p className="text-[12px] text-gray-600 mb-1 leading-tight">
+                            {event.description}
+                          </p>
+                          <div className="flex items-center gap-0.5 text-[12px] text-green-700 mb-1.5">
+                            <svg
+                              className="w-3 h-3"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                              />
+                            </svg>
+                            <span >{event.benefits}</span>
                           </div>
-                        ))}
-                      </div>
+                          <motion.button
+                            whileHover={{ scale: 1.03 }}
+                            whileTap={{ scale: 0.97 }}
+                            onClick={() => setCurrentEvent(event)}
+                            className="w-full px-2 py-2 bg-gradient-to-r from-lime-500 to-green-600 text-white font-bold rounded text-[14px] shadow-sm hover:shadow transition-all"
+                          >
+                            Book Event
+                          </motion.button>
+                        </motion.div>
+                      ))}
                     </div>
                   </motion.div>
                 ) : (
                   <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    className="text-center py-8"
+                    className="p-4 text-center py-16"
                   >
-                    <div className="w-16 h-16 bg-gradient-to-br from-lime-100 to-green-100 rounded-full flex items-center justify-center mx-auto mb-3 border-2 border-lime-200">
+                    <motion.div
+                      animate={{ rotate: [0, 8, -8, 0] }}
+                      transition={{ repeat: Infinity, duration: 3 }}
+                      className="w-12 h-12 bg-lime-100 rounded-full flex items-center justify-center mx-auto mb-2"
+                    >
                       <svg
-                        className="w-8 h-8 text-lime-600"
+                        className="w-6 h-6 text-lime-600"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -1128,35 +959,116 @@ const EventCalendar = () => {
                           d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
                         />
                       </svg>
-                    </div>
-                    <h3 className="text-sm font-bold text-stone-700 mb-1">
+                    </motion.div>
+                    <h3 className="text-[14px] font-bold text-gray-700 mb-0.5">
                       Select a Date
                     </h3>
-                    <p className="text-xs text-stone-500">
-                      Click on a date to view event details
+                    <p className="text-[12px] text-gray-500">
+                      Tap to view events
                     </p>
-                    <div className="mt-3 inline-block px-3 py-1.5 bg-lime-50 rounded-lg border border-lime-200">
-                      <span className="text-[10px] text-lime-800 font-medium">
-                        🍃 Discover Wellness Events
-                      </span>
-                    </div>
                   </motion.div>
                 )}
               </AnimatePresence>
             </div>
           </motion.div>
         </div>
-      </div>
-      {/* {openBookEventModal && (
-        <BookEventForm
-          open={openBookEventModal}
-          handleClose={() => {
-            setOpenEventBookModal(false);
-            setCurrentEvent(null);
-          }}
-          eventDetails={currentEvent}
-        />
-      )} */}
+      </motion.div>
+
+      <AnimatePresence>
+        {showEventModal && selectedEvents.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setShowEventModal(false)}
+            className="fixed inset-0 bg-black/50 z-50 lg:hidden flex items-end p-2"
+          >
+            <motion.div
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "100%" }}
+              transition={{ type: "spring", damping: 25 }}
+              onClick={(e) => e.stopPropagation()}
+              className="bg-white rounded-xl w-full max-h-[70vh] overflow-hidden shadow-2xl"
+            >
+              <div className="sticky top-0 bg-gradient-to-br from-lime-500 to-green-600 text-white p-2 rounded-t-xl">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="text-[10px] font-bold">
+                      {selectedEvents[0].date}
+                    </div>
+                    <div className="text-[8px] opacity-90">
+                      {selectedEvents.length} Event
+                      {selectedEvents.length > 1 ? "s" : ""}
+                    </div>
+                  </div>
+                  <motion.button
+                    whileTap={{ scale: 0.9 }}
+                    onClick={() => setShowEventModal(false)}
+                    className="p-1 bg-white/20 rounded-full"
+                  >
+                    <svg
+                      className="w-3.5 h-3.5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                  </motion.button>
+                </div>
+              </div>
+
+              <div className="p-2 space-y-1.5 overflow-y-auto max-h-[calc(70vh-3rem)]">
+                {selectedEvents.map((event, idx) => (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: idx * 0.08 }}
+                    className="bg-gradient-to-br from-lime-50 to-green-50 rounded-lg p-2 border border-lime-200"
+                  >
+                    <h3 className="text-[10px] font-bold text-gray-800 mb-1">
+                      {event.serviceName}
+                    </h3>
+                    <p className="text-[8px] text-gray-600 mb-1 leading-relaxed">
+                      {event.description}
+                    </p>
+                    <div className="flex items-center gap-0.5 text-[8px] text-green-700 mb-1.5">
+                      <svg
+                        className="w-2.5 h-2.5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
+                      </svg>
+                      <span>{event.benefits}</span>
+                    </div>
+                    <motion.button
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => setCurrentEvent(event)}
+                      className="w-full px-2.5 py-1 bg-gradient-to-r from-lime-500 to-green-600 text-white font-bold rounded-md text-[9px] shadow-sm"
+                    >
+                      Book Event
+                    </motion.button>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
