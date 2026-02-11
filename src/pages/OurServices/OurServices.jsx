@@ -181,7 +181,7 @@ export default function OurServices() {
 
       <div
         id="services"
-        className="relative z-10 w-full mx-auto px-4 sm:px-6 lg:px-14 py-6 sm:py-8 space-y-12"
+        className="relative z-10 max-w-[95rem] mx-auto  py-6 sm:py-8 space-y-12"
       >
         <ServicesGrid
           services={services}
@@ -225,7 +225,7 @@ function HeroSection() {
 
   return (
     <motion.section ref={ref} style={{ opacity, y }} className=" mt-40">
-      <div className="max-w-5xl mx-auto">
+      <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ scale: 0, rotate: -180 }}
           animate={{ scale: 1, rotate: 0 }}

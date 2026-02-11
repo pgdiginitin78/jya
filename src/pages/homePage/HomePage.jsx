@@ -835,7 +835,7 @@ export default function HomePage() {
 
   return (
     <>
-      <div className="pt-16 px-4 md:px-10">
+      <div className="pt-16 px-4 md:px-10 2xl:px-20">
         <div className="w-full py-8 md:py-10 ">
           <section className="w-full mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 md:gap-6 items-center">
@@ -922,7 +922,7 @@ export default function HomePage() {
                 </motion.div>
               </div>
               <div className="flex justify-center lg:justify-end items-center z-0 w-full px-4 sm:px-8 md:px-12 lg:px-16 xl:px-24 2xl:px-12">
-                <div className="relative h-[390px] w-full max-w-[1000px] overflow-visible">
+                <div className="relative h-[390px] w-full  overflow-visible">
                   {slides.map((slide, index) => {
                     const offset = getOffset(index);
                     return (
@@ -965,7 +965,7 @@ export default function HomePage() {
       </div>
       <div>
         <section id="about" className="py-2 pt-5 px-6 lg:px-10">
-          <div className="w-full mx-auto">
+          <div className="max-w-[95rem] mx-auto">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-6">
               <h2 className="text-xl md:text-2xl xl:text-3xl font-bold tracking-wider text-[#263d21] text-left sm:text-left flex items-center gap-2">
                 <span>About JYA</span>
@@ -1107,7 +1107,7 @@ export default function HomePage() {
       </div>
       <section id="services" className="py-4 px-4 md:px-10">
         <section id="ourServicesSection" className="">
-          <div className="max-w-7xl mx-auto">
+          <div className="max-w-[95rem] mx-auto">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-3xl font-bold text-[#263d21] tracking-wide">
                 Our Services
@@ -1210,80 +1210,82 @@ export default function HomePage() {
           </div>
         </section>
       </section>
-      <section className="px-4 md:px-10 py-12">
-        <motion.article
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="rounded-2xl overflow-hidden bg-white shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 group"
-        >
-          <div className="grid grid-cols-1 md:grid-cols-3 bg-gradient-to-r from-white to-green-50">
-            <div className="h-56 md:h-full relative overflow-hidden">
-              <img
-                src={learningCourseImg}
-                loading="lazy"
-                alt="Learning & Courses"
-                className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:brightness-110"
-                draggable={false}
-              />
+      <section id="services" className="py-4 px-4 md:px-10">
+        <section className=" py-12 max-w-[95rem] mx-auto">
+          <motion.article
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="rounded-2xl  overflow-hidden bg-white shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 group"
+          >
+            <div className="grid grid-cols-1 md:grid-cols-3 bg-gradient-to-r from-white to-green-50">
+              <div className="h-56 md:h-full relative overflow-hidden">
+                <img
+                  src={learningCourseImg}
+                  loading="lazy"
+                  alt="Learning & Courses"
+                  className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:brightness-110"
+                  draggable={false}
+                />
 
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent md:hidden" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent md:hidden" />
 
-              <h3 className="absolute bottom-4 left-4 text-xl font-semibold text-white md:hidden drop-shadow-lg">
-                Learning & Courses
-              </h3>
-            </div>
+                <h3 className="absolute bottom-4 left-4 text-xl font-semibold text-white md:hidden drop-shadow-lg">
+                  Learning & Courses
+                </h3>
+              </div>
 
-            <div className="p-6 col-span-2">
-              <h3 className="text-2xl xl:text-3xl tracking-tight font-bold text-[#263d21] mb-3 hidden md:block group-hover:text-green-800 transition">
-                Learning & Courses
-              </h3>
+              <div className="p-6 col-span-2">
+                <h3 className="text-2xl xl:text-3xl tracking-tight font-bold text-[#263d21] mb-3 hidden md:block group-hover:text-green-800 transition">
+                  Learning & Courses
+                </h3>
 
-              <p className="text-[#263d21] text-sm mb-6 leading-relaxed group-hover:translate-x-[3px] transition duration-500">
-                Hands-on learning: Organic farming, wellness therapies, rural
-                management, and certified vocational training.
-              </p>
+                <p className="text-[#263d21] text-sm mb-6 leading-relaxed group-hover:translate-x-[3px] transition duration-500">
+                  Hands-on learning: Organic farming, wellness therapies, rural
+                  management, and certified vocational training.
+                </p>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {learningCoursesSectionList.map((item, index) => (
-                  <motion.div
-                    key={item.title}
-                    initial={{ opacity: 0, y: 18 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.45, delay: index * 0.06 }}
-                    whileHover={{ y: -8 }}
-                    className="bg-white rounded-xl overflow-hidden border border-green-100 shadow-sm hover:shadow-xl transition-all duration-500 hover:border-green-300"
-                  >
-                    <div className="overflow-hidden">
-                      <img
-                        src={item.image}
-                        loading="lazy"
-                        alt={item.title}
-                        className="w-full h-36 object-cover bg-bottom hover:scale-110 transition duration-700"
-                        draggable={false}
-                      />
-                    </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {learningCoursesSectionList.map((item, index) => (
+                    <motion.div
+                      key={item.title}
+                      initial={{ opacity: 0, y: 18 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.45, delay: index * 0.06 }}
+                      whileHover={{ y: -8 }}
+                      className="bg-white rounded-xl overflow-hidden border border-green-100 shadow-sm hover:shadow-xl transition-all duration-500 hover:border-green-300"
+                    >
+                      <div className="overflow-hidden">
+                        <img
+                          src={item.image}
+                          loading="lazy"
+                          alt={item.title}
+                          className="w-full h-36 object-cover bg-bottom hover:scale-110 transition duration-700"
+                          draggable={false}
+                        />
+                      </div>
 
-                    <div className="p-3 text-center">
-                      <h4 className="font-semibold text-[#263d21]">
-                        {item.title}
-                      </h4>
-                    </div>
-                  </motion.div>
-                ))}
+                      <div className="p-3 text-center">
+                        <h4 className="font-semibold text-[#263d21]">
+                          {item.title}
+                        </h4>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
-        </motion.article>
+          </motion.article>
+        </section>
       </section>
       <div>
         <EventCalendar />
       </div>
 
       <section id="events" className="py-5 px-4 md:px-10">
-        <div className="w-full mx-auto">
+        <div className="max-w-[95rem] mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 18 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -1360,8 +1362,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section id="team" className="py-7 px-4 md:px-10">
-        <div className="w-full mx-auto">
+      <section id="team" className="py-7 px-4 md:px-10 w-full">
+        <div className="max-w-[95rem] mx-auto">
           <motion.h3
             initial={{ opacity: 0, y: 18 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -1401,7 +1403,7 @@ export default function HomePage() {
       </section>
 
       <section className="py-16 px-4 md:px-10 bg-gradient-to-b from-amber-50/30 to-green-50/30">
-        <div className="w-full mx-auto max-w-7xl">
+        <div className="w-full mx-auto max-w-[95rem]">
           <div className="text-center mb-12">
             <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-amber-700 via-green-700 to-emerald-700 bg-clip-text text-transparent">
               Gallery
@@ -1593,7 +1595,7 @@ export default function HomePage() {
 
       <section
         id="articleSection"
-        className="py-5 md:py-6 px-4 md:px-10 overflow-hidden"
+        className="py-5 md:py-6 overflow-hidden max-w-[95rem] mx-auto"
       >
         {/* HEADER */}
         <div className="flex flex-col md:flex-row justify-between mb-6 items-center gap-6 w-full">
@@ -1615,7 +1617,7 @@ export default function HomePage() {
           </a>
         </div>
 
-        <div className="relative px-8 md:px-12">
+        <div className="relative px-8 md:px-8">
           <button
             onClick={prev}
             disabled={index === 0}
@@ -1637,7 +1639,7 @@ export default function HomePage() {
           </button>
           <div
             ref={containerRef}
-            className="flex gap-4 md:gap-6 overflow-x-hidden scroll-smooth py-4"
+            className="flex gap-4 md:gap-6 overflow-hidden py-4"
             style={{
               scrollSnapType: "x mandatory",
             }}

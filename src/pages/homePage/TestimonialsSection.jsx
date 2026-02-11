@@ -170,8 +170,8 @@ const TestimonialsSection = () => {
 
   return (
     <>
-      <div className="">
-        <section className="py-3 px-4 md:px-10">
+      <div className="max-w-[95rem] mx-auto">
+        <section className="py-3 ">
           <div className="flex justify-between items-center">
             <h2 className="text-2xl md:text-3xl text-[#25381f] w-full font-bold tracking-wide">
               Testimonials

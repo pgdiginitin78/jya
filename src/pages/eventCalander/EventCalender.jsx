@@ -754,7 +754,7 @@ const EventCalendar = () => {
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
-              className={`absolute bottom-[110px] w-[5px] h-[5px] animate-pulse rounded-full ${isSelected ? "bg-white" : "bg-lime-600"}`}
+              className={`absolute bottom-[110px] 2xl:bottom-[20px] w-[5px] h-[5px] animate-pulse rounded-full ${isSelected ? "bg-white" : "bg-lime-600"}`}
             />
           )}
         </motion.div>,
@@ -768,7 +768,7 @@ const EventCalendar = () => {
       <motion.div
         initial={{ opacity: 0, y: -15 }}
         animate={{ opacity: 1, y: 0 }}
-        className="max-w-5xl mx-auto"
+        className="max-w-[95rem] mx-auto"
       >
         <motion.div
           initial={{ scale: 0.95 }}

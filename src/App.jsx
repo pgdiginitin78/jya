@@ -21,7 +21,7 @@ import DeleteAccount from "./pages/privacyAndPolicy/DeleteAccount";
 
 function PageSkeleton() {
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6">
+    <div className="w-full mx-auto px-4 py-6">
       <Skeleton variant="rectangular" height={260} sx={{ borderRadius: 2 }} />
       <Skeleton height={48} sx={{ mt: 2 }} />
       <Skeleton height={32} width="60%" />

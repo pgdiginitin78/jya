@@ -243,7 +243,7 @@ const AboutUs = () => {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.7 }}
-        className="px-4 lg:px-10 py-6"
+        className="max-w-[95rem] mx-auto  py-6"
       >
         <div className=" mx-auto grid lg:grid-cols-3 gap-10">
           <div className="lg:col-span-2 bg-white rounded-3xl p-10 shadow-xl border hover:shadow-2xl transition-all">
@@ -289,7 +289,7 @@ const AboutUs = () => {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.7 }}
-        className="px-4 lg:px-20 py-6"
+        className="max-w-[95rem] mx-auto py-6"
         id="founders"
       >
         <div className="w-full mx-auto ">
@@ -593,10 +593,10 @@ const AboutUs = () => {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.7 }}
-        className="px-4 lg:px-20 py-6"
+        className="max-w-[95rem] mx-auto py-6"
         id="framework"
       >
-        <div className="max-w-6xl mx-auto">
+        <div className="w-full">
           <div className="text-center mb-12">
             <h1 className="text-3xl font-bold mb-4 text-green-800">
               JYA 100-Year Living Framework™

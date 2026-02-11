@@ -31,10 +31,9 @@ export default function DeleteAccount() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="max-w-4xl mx-auto"
+        className="min-w-4xl max-w-7xl mx-auto"
       >
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
-          {/* Header */}
           <div className="bg-gradient-to-r from-red-600 to-red-700 text-white p-6 md:p-8">
             <div className="flex items-center gap-4">
               <motion.div
@@ -50,15 +49,14 @@ export default function DeleteAccount() {
                   Delete Account
                 </h1>
                 <p className="text-red-100 text-sm mt-1">
-                  We're sorry to see you go
+                  AyurMitra (by Jnanayogayu) allows users to request permanent
+                  deletion of their account and associated data.
                 </p>
               </div>
             </div>
           </div>
 
-          {/* Content */}
           <div className="p-6 md:p-8 space-y-6">
-            {/* Warning Banner */}
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -78,9 +76,53 @@ export default function DeleteAccount() {
                 </div>
               </div>
             </motion.div>
+            <motion.div
+              className="   text-green-900 flex items-center justify-center p-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+            >
+              <motion.div
+                className="max-w-3xl bg-green-100 border-green-300 rounded-xl shadow-md p-5 text-sm border leading-relaxed"
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+              >
+                <h1 className="text-xl font-semibold mb-3 text-center">
+                  Privacy Policy – AyurMitra
+                  <span className="block text-xs text-green-700">
+                    by Jnanayogayu
+                  </span>
+                </h1>
+
+                <p>
+                  This Privacy Policy explains how AyurMitra collects, uses, and
+                  protects user information while providing healthcare
+                  appointment booking and medical record access services.
+                </p>
+
+                <p className="mt-2">
+                  We may collect basic personal details, appointment data,
+                  device information, and usage analytics to improve services
+                  and maintain platform security.
+                </p>
+
+                <p className="mt-2">
+                  AyurMitra does not provide medical advice or treatment. Always
+                  consult qualified healthcare professionals for medical
+                  decisions.
+                </p>
+
+                <p className="mt-2">
+                  We implement reasonable security measures but cannot guarantee
+                  complete protection of online data.
+                </p>
+
+                <p className="mt-3 text-xs text-gray-600">
+                  Contact: support@jnanayogayu.com
+                </p>
+              </motion.div>
+            </motion.div>
 
             <div className="grid md:grid-cols-2 gap-6">
-              {/* What will be deleted */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -130,8 +172,6 @@ export default function DeleteAccount() {
                   ))}
                 </ul>
               </motion.div>
-
-              {/* What we may retain */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -162,8 +202,6 @@ export default function DeleteAccount() {
                 </ul>
               </motion.div>
             </div>
-
-            {/* Timeline Info */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -180,8 +218,6 @@ export default function DeleteAccount() {
                 receive a confirmation email once the process is complete.
               </p>
             </motion.div>
-
-            {/* Alternative Option */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -203,8 +239,6 @@ export default function DeleteAccount() {
                 Switch to Deactivate Account →
               </motion.button>
             </motion.div>
-
-            {/* Confirmation Form */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -219,7 +253,6 @@ export default function DeleteAccount() {
               </p>
 
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-                {/* Username Field */}
                 <div>
                   <label
                     htmlFor="username"
@@ -258,8 +291,6 @@ export default function DeleteAccount() {
                     )}
                   </AnimatePresence>
                 </div>
-
-                {/* Password Field */}
                 <div>
                   <label
                     htmlFor="password"
@@ -311,8 +342,6 @@ export default function DeleteAccount() {
                     )}
                   </AnimatePresence>
                 </div>
-
-                {/* Confirmation Checkbox */}
                 <div className="bg-red-50 border border-red-200 rounded-lg p-4">
                   <label className="flex items-start gap-3 cursor-pointer group">
                     <input
@@ -342,8 +371,6 @@ export default function DeleteAccount() {
                     )}
                   </AnimatePresence>
                 </div>
-
-                {/* Action Buttons */}
                 <div className="flex flex-col-reverse sm:flex-row gap-3 pt-4">
                   <motion.button
                     type="button"
@@ -385,8 +412,6 @@ export default function DeleteAccount() {
             </motion.div>
           </div>
         </div>
-
-        {/* Footer Note */}
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

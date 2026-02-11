@@ -480,7 +480,7 @@ export default function GalleryApp() {
             </button>
 
             <div
-              className="relative w-full max-w-[1400px] h-[400px] sm:h-[460px] flex justify-center"
+              className="relative w-full  h-[400px] sm:h-[460px] flex justify-center"
               onMouseEnter={stopAutoplay}
               onMouseLeave={startAutoplay}
             >

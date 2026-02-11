@@ -138,7 +138,7 @@ const AyurvedaBlog = () => {
         transition={{ duration: 1 }}
         className="relative py-16 md:py-24 px-4 overflow-hidden"
       >
-        <div className="max-w-7xl mx-auto text-center relative z-10 pt-28">
+        <div className="w-full mx-auto text-center relative z-10 pt-28">
           <motion.div
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
@@ -182,7 +182,7 @@ const AyurvedaBlog = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 mb-12"
+        className="w-full mx-auto px-4 sm:px-6 lg:px-12 mb-12"
       >
         <div className="bg-white/60 backdrop-blur-sm rounded-2xl shadow-lg p-4 md:p-6">
           <div className="flex flex-wrap gap-3 justify-center">
@@ -210,7 +210,7 @@ const AyurvedaBlog = () => {
       </motion.section>
 
       {/* Blog Grid */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 pb-20">
+      <section className="w-full mx-auto px-4 sm:px-6 lg:px-12 pb-20">
         <motion.div
           layout
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
