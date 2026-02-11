@@ -757,7 +757,7 @@ const EventCalendar = () => {
               className={`absolute bottom-[10px] 2xl:bottom-[20px] w-[5px] h-[5px] animate-pulse rounded-full ${isSelected ? "bg-white" : "bg-lime-600"}`}
             />
           )}
-        </motion.div>,
+        </motion.div>
       );
     }
     return days;
