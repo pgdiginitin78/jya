@@ -243,45 +243,47 @@ const AboutUs = () => {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.7 }}
-        className="max-w-[95rem] mx-auto  py-6"
+        className="px-4 lg:px-10"
       >
-        <div className=" mx-auto grid lg:grid-cols-3 gap-10">
-          <div className="lg:col-span-2 bg-white rounded-3xl p-10 shadow-xl border hover:shadow-2xl transition-all">
-            <h2 className="text-3xl font-bold text-gray-900 mb-5">
-              Our Philosophy
-            </h2>
-            <div className="text-gray-700 space-y-3">
-              <p>
-                At JYA, we combine ancient Ayurvedic wisdom with modern
-                understanding to offer holistic tools, learning, therapies, and
-                community practices.
-              </p>
-              <ul className="list-disc pl-6 space-y-1 mt-5">
-                <li>Ancient knowledge made practical.</li>
-                <li>Community-centered health ecosystems.</li>
-                <li>Nature-first approaches for longevity.</li>
+        <section className="max-w-[95rem] mx-auto  py-6">
+          <div className=" mx-auto grid lg:grid-cols-3 gap-10">
+            <div className="lg:col-span-2 bg-white rounded-3xl p-10 shadow-xl border hover:shadow-2xl transition-all">
+              <h2 className="text-3xl font-bold text-gray-900 mb-5">
+                Our Philosophy
+              </h2>
+              <div className="text-gray-700 space-y-3">
+                <p>
+                  At JYA, we combine ancient Ayurvedic wisdom with modern
+                  understanding to offer holistic tools, learning, therapies,
+                  and community practices.
+                </p>
+                <ul className="list-disc pl-6 space-y-1 mt-5">
+                  <li>Ancient knowledge made practical.</li>
+                  <li>Community-centered health ecosystems.</li>
+                  <li>Nature-first approaches for longevity.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div className="bg-lime-600 text-white rounded-3xl p-10 shadow-xl hover:shadow-2xl transition-all">
+              <h3 className="text-2xl font-semibold mb-6">What We Offer</h3>
+              <ul className="space-y-4">
+                <li className="flex items-start gap-3">
+                  <CheckCircle />
+                  <span>Holistic tools & learning</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <LocalHospital />
+                  <span>Therapies & Panchakarma</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <People />
+                  <span>Community practices</span>
+                </li>
               </ul>
             </div>
           </div>
-
-          <div className="bg-lime-600 text-white rounded-3xl p-10 shadow-xl hover:shadow-2xl transition-all">
-            <h3 className="text-2xl font-semibold mb-6">What We Offer</h3>
-            <ul className="space-y-4">
-              <li className="flex items-start gap-3">
-                <CheckCircle />
-                <span>Holistic tools & learning</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <LocalHospital />
-                <span>Therapies & Panchakarma</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <People />
-                <span>Community practices</span>
-              </li>
-            </ul>
-          </div>
-        </div>
+        </section>
       </motion.section>
 
       <motion.section
@@ -289,106 +291,108 @@ const AboutUs = () => {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.7 }}
-        className="max-w-[95rem] mx-auto py-6"
+        className="px-4 lg:px-10"
         id="founders"
       >
-        <div className="w-full mx-auto ">
-          <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
-            Our Founders & Team
-          </h2>
-          <div className="relative ">
-            <button
-              onClick={() =>
-                setCurrentFounderPage(
-                  (prev) => (prev - 1 + founderPages) % founderPages,
-                )
-              }
-              className="absolute left-0 lg:-left-10 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-amber-800 text-white flex items-center justify-center shadow-xl hover:scale-110 transition-transform"
-            >
-              <ChevronLeft />
-            </button>
+        <section className="max-w-[95rem] mx-auto  py-6">
+          <div className="w-full mx-auto ">
+            <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
+              Our Founders & Team
+            </h2>
+            <div className="relative ">
+              <button
+                onClick={() =>
+                  setCurrentFounderPage(
+                    (prev) => (prev - 1 + founderPages) % founderPages,
+                  )
+                }
+                className="absolute left-0 lg:left-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-amber-800 text-white flex items-center justify-center shadow-xl hover:scale-110 transition-transform"
+              >
+                <ChevronLeft />
+              </button>
 
-            <div className="py-3 px-4">
-              <div className="w-full overflow-hidden">
-                <motion.div
-                  animate={{ x: `-${currentFounderPage * 100}%` }}
-                  transition={{ type: "tween", duration: 0.7 }}
-                  className="flex"
-                >
-                  {Array.from({ length: founderPages }).map((_, pageIdx) => (
-                    <div key={pageIdx} className="w-full flex-shrink-0">
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-2 py-3">
-                        {founders
-                          .slice(
-                            pageIdx * foundersPerPage,
-                            (pageIdx + 1) * foundersPerPage,
-                          )
-                          .map((founder, idx) => (
-                            <motion.div
-                              key={idx}
-                              initial={{ opacity: 0, x: 100 }}
-                              animate={{ opacity: 1, x: 0 }}
-                              exit={{ opacity: 0, x: -100 }}
-                              transition={{
-                                duration: 0.5,
-                                ease: "easeInOut",
-                              }}
-                              whileHover={{ scale: 1.02, y: -6 }}
-                              onClick={() => {
-                                setSelectedFounder(founder);
-                                setModalOpen(true);
-                              }}
-                              className="bg-white rounded-2xl border p-6 cursor-pointer flex flex-col justify-between hover:shadow-2xl transition-all"
-                            >
-                              <div className="flex items-center space-x-4 mb-4">
-                                <div className="h-28 w-28 shrink-0">
-                                  <img
-                                    src={founder.image}
-                                    alt={founder.initials}
-                                    loading="lazy"
-                                    className="h-full w-full rounded-full object-cover"
-                                  />
+              <div className="py-3 px-4">
+                <div className="w-full overflow-hidden">
+                  <motion.div
+                    animate={{ x: `-${currentFounderPage * 100}%` }}
+                    transition={{ type: "tween", duration: 0.7 }}
+                    className="flex"
+                  >
+                    {Array.from({ length: founderPages }).map((_, pageIdx) => (
+                      <div key={pageIdx} className="w-full flex-shrink-0">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-2 py-3">
+                          {founders
+                            .slice(
+                              pageIdx * foundersPerPage,
+                              (pageIdx + 1) * foundersPerPage,
+                            )
+                            .map((founder, idx) => (
+                              <motion.div
+                                key={idx}
+                                initial={{ opacity: 0, x: 100 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                exit={{ opacity: 0, x: -100 }}
+                                transition={{
+                                  duration: 0.5,
+                                  ease: "easeInOut",
+                                }}
+                                whileHover={{ scale: 1.02, y: -6 }}
+                                onClick={() => {
+                                  setSelectedFounder(founder);
+                                  setModalOpen(true);
+                                }}
+                                className="bg-white rounded-2xl border p-6 cursor-pointer flex flex-col justify-between hover:shadow-2xl transition-all"
+                              >
+                                <div className="flex items-center space-x-4 mb-4">
+                                  <div className="h-28 w-28 shrink-0">
+                                    <img
+                                      src={founder.image}
+                                      alt={founder.initials}
+                                      loading="lazy"
+                                      className="h-full w-full rounded-full object-cover"
+                                    />
+                                  </div>
+                                  <h3 className="font-bold text-base leading-tight text-gray-900">
+                                    {founder.title}
+                                  </h3>
                                 </div>
-                                <h3 className="font-bold text-base leading-tight text-gray-900">
-                                  {founder.title}
-                                </h3>
-                              </div>
-                              <p className="text-gray-600 text-sm">
-                                {founder.desc}
-                              </p>
-                            </motion.div>
-                          ))}
+                                <p className="text-gray-600 text-sm">
+                                  {founder.desc}
+                                </p>
+                              </motion.div>
+                            ))}
+                        </div>
                       </div>
-                    </div>
-                  ))}
-                </motion.div>
+                    ))}
+                  </motion.div>
+                </div>
               </div>
+
+              <button
+                onClick={() =>
+                  setCurrentFounderPage((prev) => (prev + 1) % founderPages)
+                }
+                className="absolute right-0 lg:right-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-amber-800 text-white flex items-center justify-center shadow-xl hover:scale-110 transition-transform"
+              >
+                <ChevronRight />
+              </button>
             </div>
 
-            <button
-              onClick={() =>
-                setCurrentFounderPage((prev) => (prev + 1) % founderPages)
-              }
-              className="absolute right-0 lg:-right-10 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-amber-800 text-white flex items-center justify-center shadow-xl hover:scale-110 transition-transform"
-            >
-              <ChevronRight />
-            </button>
+            <div className="flex justify-center gap-3 mt-4">
+              {Array.from({ length: founderPages }).map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setCurrentFounderPage(idx)}
+                  className={`h-3 rounded-full transition-all ${
+                    currentFounderPage === idx
+                      ? "w-8 bg-amber-800"
+                      : "w-3 bg-gray-300"
+                  }`}
+                />
+              ))}
+            </div>
           </div>
-
-          <div className="flex justify-center gap-3 mt-4">
-            {Array.from({ length: founderPages }).map((_, idx) => (
-              <button
-                key={idx}
-                onClick={() => setCurrentFounderPage(idx)}
-                className={`h-3 rounded-full transition-all ${
-                  currentFounderPage === idx
-                    ? "w-8 bg-amber-800"
-                    : "w-3 bg-gray-300"
-                }`}
-              />
-            ))}
-          </div>
-        </div>
+        </section>
       </motion.section>
 
       {modalOpen && (
@@ -593,141 +597,144 @@ const AboutUs = () => {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.7 }}
-        className="max-w-[95rem] mx-auto py-6"
+        className="px-4 lg:px-10"
         id="framework"
       >
-        <div className="w-full">
-          <div className="text-center mb-12">
-            <h1 className="text-3xl font-bold mb-4 text-green-800">
-              JYA 100-Year Living Framework™
-            </h1>
-            <p className="text-xl mb-4 text-amber-800">
-              A timeless blueprint for stress-free, balanced, and natural living
-            </p>
-            <p className="text-base text-gray-700 max-w-3xl mx-auto">
-              JYA's 100-Year Living Framework™ integrates ancient Ayurvedic
-              wisdom, yogic principles, behavioral science, and modern medical
-              understanding.
-            </p>
-          </div>
-
-          <h2 className="text-3xl font-bold text-center mb-4 text-green-800">
-            THE SIX PILLARS OF 100-YEAR LIVING™
-          </h2>
-
-          <div className="relative">
-            <button
-              onClick={() =>
-                setCurrentPillarPage(
-                  (prev) => (prev - 1 + pillarPages) % pillarPages,
-                )
-              }
-              className="absolute left-2 lg:-left-10 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-gradient-to-br from-amber-700 to-amber-900 text-white flex items-center justify-center shadow-xl hover:scale-110 transition-transform"
-            >
-              <ChevronLeft />
-            </button>
-
-            <div className="py-3 px-4">
-              <div className="w-full overflow-hidden">
-                <motion.div
-                  animate={{ x: `-${currentPillarPage * 100}%` }}
-                  transition={{ type: "tween", duration: 0.7 }}
-                  className="flex"
-                >
-                  {Array.from({ length: pillarPages }).map((_, pageIdx) => (
-                    <div key={pageIdx} className="w-full flex-shrink-0">
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-2 py-3">
-                        {pillars
-                          .slice(
-                            pageIdx * pillarsPerPage,
-                            (pageIdx + 1) * pillarsPerPage,
-                          )
-                          .map((pillar, idx) => (
-                            <motion.div
-                              key={idx}
-                              whileHover={{ scale: 1.02, y: -6 }}
-                              className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/50 min-h-[220px] flex flex-col justify-between"
-                            >
-                              <div>
-                                <div className="inline-block px-3.5 py-1 rounded-full mb-2 bg-amber-100">
-                                  <span className="text-lg font-bold text-green-800">
-                                    {pageIdx * pillarsPerPage + idx + 1}
-                                  </span>
-                                </div>
-                                <h3 className="text-xl font-bold text-green-800">
-                                  {pillar.title}
-                                </h3>
-                                <p className="text-sm italic mb-2 text-amber-800">
-                                  {pillar.sanskrit}
-                                </p>
-                                <p className="text-sm text-gray-700">
-                                  {pillar.subtitle}
-                                </p>
-                              </div>
-                              <div>
-                                <h4 className="text-sm font-semibold mt-4 mb-2 text-amber-800">
-                                  Includes:
-                                </h4>
-                                <ul className="text-gray-700 text-sm space-y-1">
-                                  {pillar.includes.map((item, i) => (
-                                    <li key={i}>• {item}</li>
-                                  ))}
-                                </ul>
-                              </div>
-                            </motion.div>
-                          ))}
-                      </div>
-                    </div>
-                  ))}
-                </motion.div>
-              </div>
+        <section className="max-w-[95rem] mx-auto  py-6">
+          <div className="w-full">
+            <div className="text-center mb-12">
+              <h1 className="text-3xl font-bold mb-4 text-green-800">
+                JYA 100-Year Living Framework™
+              </h1>
+              <p className="text-xl mb-4 text-amber-800">
+                A timeless blueprint for stress-free, balanced, and natural
+                living
+              </p>
+              <p className="text-base text-gray-700 max-w-3xl mx-auto">
+                JYA's 100-Year Living Framework™ integrates ancient Ayurvedic
+                wisdom, yogic principles, behavioral science, and modern medical
+                understanding.
+              </p>
             </div>
 
-            <button
-              onClick={() =>
-                setCurrentPillarPage((prev) => (prev + 1) % pillarPages)
-              }
-              className="absolute right-2 lg:-right-10 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-gradient-to-br from-amber-700 to-amber-900 text-white flex items-center justify-center shadow-xl hover:scale-110 transition-transform"
-            >
-              <ChevronRight />
-            </button>
-          </div>
+            <h2 className="text-3xl font-bold text-center mb-4 text-green-800">
+              THE SIX PILLARS OF 100-YEAR LIVING™
+            </h2>
 
-          <div className="flex justify-center gap-3 mt-4">
-            {Array.from({ length: pillarPages }).map((_, idx) => (
+            <div className="relative">
               <button
-                key={idx}
-                onClick={() => setCurrentPillarPage(idx)}
-                className={`h-3 rounded-full transition-all ${
-                  currentPillarPage === idx
-                    ? "w-8 bg-amber-800"
-                    : "w-3 bg-gray-300"
-                }`}
-              />
-            ))}
-          </div>
+                onClick={() =>
+                  setCurrentPillarPage(
+                    (prev) => (prev - 1 + pillarPages) % pillarPages,
+                  )
+                }
+                className="absolute left-2 lg:left-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-gradient-to-br from-amber-700 to-amber-900 text-white flex items-center justify-center shadow-xl hover:scale-110 transition-transform"
+              >
+                <ChevronLeft />
+              </button>
 
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center p-10 bg-white/90 rounded-3xl shadow-xl mt-6"
-          >
-            <div className="inline-flex items-center gap-2 bg-green-100 px-6 py-2 rounded-full mb-4">
-              <AutoAwesome className="text-green-700 text-3xl" />
-              <span className="text-lg font-semibold text-green-700">
-                JYA PROMISE
-              </span>
+              <div className="py-3 px-4">
+                <div className="w-full overflow-hidden">
+                  <motion.div
+                    animate={{ x: `-${currentPillarPage * 100}%` }}
+                    transition={{ type: "tween", duration: 0.7 }}
+                    className="flex"
+                  >
+                    {Array.from({ length: pillarPages }).map((_, pageIdx) => (
+                      <div key={pageIdx} className="w-full flex-shrink-0">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-2 py-3">
+                          {pillars
+                            .slice(
+                              pageIdx * pillarsPerPage,
+                              (pageIdx + 1) * pillarsPerPage,
+                            )
+                            .map((pillar, idx) => (
+                              <motion.div
+                                key={idx}
+                                whileHover={{ scale: 1.02, y: -6 }}
+                                className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/50 min-h-[220px] flex flex-col justify-between"
+                              >
+                                <div>
+                                  <div className="inline-block px-3.5 py-1 rounded-full mb-2 bg-amber-100">
+                                    <span className="text-lg font-bold text-green-800">
+                                      {pageIdx * pillarsPerPage + idx + 1}
+                                    </span>
+                                  </div>
+                                  <h3 className="text-xl font-bold text-green-800">
+                                    {pillar.title}
+                                  </h3>
+                                  <p className="text-sm italic mb-2 text-amber-800">
+                                    {pillar.sanskrit}
+                                  </p>
+                                  <p className="text-sm text-gray-700">
+                                    {pillar.subtitle}
+                                  </p>
+                                </div>
+                                <div>
+                                  <h4 className="text-sm font-semibold mt-4 mb-2 text-amber-800">
+                                    Includes:
+                                  </h4>
+                                  <ul className="text-gray-700 text-sm space-y-1">
+                                    {pillar.includes.map((item, i) => (
+                                      <li key={i}>• {item}</li>
+                                    ))}
+                                  </ul>
+                                </div>
+                              </motion.div>
+                            ))}
+                        </div>
+                      </div>
+                    ))}
+                  </motion.div>
+                </div>
+              </div>
+
+              <button
+                onClick={() =>
+                  setCurrentPillarPage((prev) => (prev + 1) % pillarPages)
+                }
+                className="absolute right-2 lg:right-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-gradient-to-br from-amber-700 to-amber-900 text-white flex items-center justify-center shadow-xl hover:scale-110 transition-transform"
+              >
+                <ChevronRight />
+              </button>
             </div>
-            <p className="text-xl font-bold text-green-800">
-              Live Better. Live Light. Live 100, Naturally.
-            </p>
-            <p className="text-gray-700 mt-3 max-w-3xl mx-auto">
-              JYA's ecosystem includes guided routines, community programs,
-              Ayurveda-based living tools, and nature-led interventions.
-            </p>
-          </motion.div>
-        </div>
+
+            <div className="flex justify-center gap-3 mt-4">
+              {Array.from({ length: pillarPages }).map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setCurrentPillarPage(idx)}
+                  className={`h-3 rounded-full transition-all ${
+                    currentPillarPage === idx
+                      ? "w-8 bg-amber-800"
+                      : "w-3 bg-gray-300"
+                  }`}
+                />
+              ))}
+            </div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center p-10 bg-white/90 rounded-3xl shadow-xl mt-6"
+            >
+              <div className="inline-flex items-center gap-2 bg-green-100 px-6 py-2 rounded-full mb-4">
+                <AutoAwesome className="text-green-700 text-3xl" />
+                <span className="text-lg font-semibold text-green-700">
+                  JYA PROMISE
+                </span>
+              </div>
+              <p className="text-xl font-bold text-green-800">
+                Live Better. Live Light. Live 100, Naturally.
+              </p>
+              <p className="text-gray-700 mt-3 max-w-3xl mx-auto">
+                JYA's ecosystem includes guided routines, community programs,
+                Ayurveda-based living tools, and nature-led interventions.
+              </p>
+            </motion.div>
+          </div>
+        </section>
       </motion.section>
     </div>
   );

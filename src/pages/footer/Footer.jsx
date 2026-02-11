@@ -95,7 +95,7 @@ const Footer = () => {
         className="relative overflow-hidden frosted-glass-footer "
       >
         <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#8b6f47] via-[#c9a86a] to-[#8b6f47]" />
-        <div className="relative z-10 w-full  mx-auto  py-8 max-w-[95rem]">
+        <div className="relative z-10 w-  mx-auto px-4 lg:px-10 2xl:px-0 py-8 max-w-[95rem]">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-6">
             <div className="flex flex-col gap-4">
               <div className="bg-gradient-to-br from-white/80 to-white/60 p-6 md:p-8 rounded-2xl backdrop-blur-md border-2 border-[#8b6f47]/20 shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-400">

@@ -21,7 +21,7 @@ import { useNavigate } from "react-router-dom";
 function PrivacyAndPolicy() {
   const [openModal, setOpenModal] = useState(false);
   const [modalType, setModalType] = useState("");
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const fadeInUp = {
     hidden: { opacity: 0, y: 20 },
@@ -261,7 +261,7 @@ function PrivacyAndPolicy() {
       </motion.div>
 
       <motion.div
-        className="max-w-6xl mx-auto px-4 py-8 md:py-10"
+        className="max-w-[95rem] mx-auto px-4  lg:px-10 2xl:px-0 py-8 md:py-10"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true }}
@@ -283,7 +283,7 @@ function PrivacyAndPolicy() {
         </div>
       </motion.div>
 
-      <div className="max-w-6xl mx-auto px-4 pb-10 md:pb-12">
+      <div className="max-w-[95rem] mx-auto px-4 lg:px-10 2xl:px-0 pb-10 md:pb-12">
         <motion.div
           variants={staggerContainer}
           initial="hidden"
@@ -330,7 +330,7 @@ function PrivacyAndPolicy() {
       </div>
 
       <motion.div
-        className="max-w-6xl mx-auto px-4 pb-10"
+        className="max-w-[95rem] mx-auto px-4 lg:px-10 2xl:px-0 pb-10"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true }}
@@ -390,8 +390,8 @@ function PrivacyAndPolicy() {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 // onClick={() => handleOpenModal("delete")}
-                onClick={()=>{
-                  navigate("/deleteAccount")
+                onClick={() => {
+                  navigate("/deleteAccount");
                 }}
                 className="w-full bg-red-600 text-white px-4 py-2 rounded-lg font-semibold text-sm shadow hover:bg-red-700 transition-colors duration-300 flex items-center justify-center gap-2"
               >
@@ -403,349 +403,350 @@ function PrivacyAndPolicy() {
         </div>
       </motion.div>
 
-      <Modal
-        open={openModal}
-        onClose={handleCloseModal}
-        closeAfterTransition
-        slots={{ backdrop: Backdrop }}
-        slotProps={{
-          backdrop: {
-            timeout: 500,
-            sx: { backgroundColor: "rgba(0, 0, 0, 0.7)" },
-          },
-        }}
-      >
-        <Fade in={openModal}>
-          <Box sx={modalStyle}>
-            {modalType === "delete" ? (
-              <div className="relative">
-                <div className="bg-gradient-to-r from-red-600 to-red-700 text-white p-5 md:p-6 sticky top-0 z-10 ">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="bg-white/20 p-2 rounded-lg">
-                        <Trash2 className="w-6 h-6" />
+      {openModal && (
+        <Modal
+          open={openModal}
+          onClose={handleCloseModal}
+          closeAfterTransition
+          slots={{ backdrop: Backdrop }}
+          slotProps={{
+            backdrop: {
+              timeout: 500,
+              sx: { backgroundColor: "rgba(0, 0, 0, 0.7)" },
+            },
+          }}
+        >
+          <Fade in={openModal}>
+            <Box sx={modalStyle}>
+              {modalType === "delete" ? (
+                <div className="relative">
+                  <div className="bg-gradient-to-r from-red-600 to-red-700 text-white p-5 md:p-6 sticky top-0 z-10 ">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className="bg-white/20 p-2 rounded-lg">
+                          <Trash2 className="w-6 h-6" />
+                        </div>
+                        <h3 className="text-xl md:text-2xl font-bold">
+                          Delete Account
+                        </h3>
                       </div>
-                      <h3 className="text-xl md:text-2xl font-bold">
-                        Delete Account
-                      </h3>
-                    </div>
-                    <button
-                      onClick={handleCloseModal}
-                      className="bg-white/20 hover:bg-white/30 p-1.5 rounded-lg transition-colors"
-                    >
-                      <X className="w-5 h-5" />
-                    </button>
-                  </div>
-                </div>
-                <div className="p-5 md:p-6 space-y-5">
-                  <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded">
-                    <div className="flex items-start gap-3">
-                      <AlertTriangle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
-                      <div>
-                        <h4 className="font-semibold text-red-900 text-sm mb-1">
-                          Warning: This action is permanent
-                        </h4>
-                        <p className="text-red-800 text-xs">
-                          Once you delete your account, there is no going back.
-                          Please be certain.
-                        </p>
-                      </div>
+                      <button
+                        onClick={handleCloseModal}
+                        className="bg-white/20 hover:bg-white/30 p-1.5 rounded-lg transition-colors"
+                      >
+                        <X className="w-5 h-5" />
+                      </button>
                     </div>
                   </div>
-                  <div>
-                    <h4 className="font-semibold text-gray-800 text-base mb-3 flex items-center gap-2">
-                      <Info className="w-5 h-5 text-blue-600" />
-                      What will be deleted:
-                    </h4>
-                    <ul className="space-y-2 text-sm text-gray-700">
-                      <li className="flex items-start gap-2">
-                        <span className="text-red-500 mt-1">•</span>
-                        <span>
-                          <strong>Personal Information:</strong> Name, email,
-                          phone number, and address
-                        </span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-red-500 mt-1">•</span>
-                        <span>
-                          <strong>Health Records:</strong> All consultation
-                          history, Prakriti/Vikriti assessments, and treatment
-                          plans
-                        </span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-red-500 mt-1">•</span>
-                        <span>
-                          <strong>Order History:</strong> Purchase records and
-                          transaction details
-                        </span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-red-500 mt-1">•</span>
-                        <span>
-                          <strong>Preferences:</strong> Saved settings, wellness
-                          goals, and personalized recommendations
-                        </span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-red-500 mt-1">•</span>
-                        <span>
-                          <strong>Subscriptions:</strong> Active subscriptions
-                          and membership benefits
-                        </span>
-                      </li>
-                    </ul>
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-gray-800 text-base mb-3 flex items-center gap-2">
-                      <Lock className="w-5 h-5 text-amber-600" />
-                      What we may retain:
-                    </h4>
-                    <ul className="space-y-2 text-sm text-gray-700">
-                      <li className="flex items-start gap-2">
-                        <span className="text-amber-500 mt-1">•</span>
-                        <span>
-                          Anonymized data for analytics and research purposes
-                        </span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-amber-500 mt-1">•</span>
-                        <span>
-                          Transaction records required for legal and tax
-                          compliance
-                        </span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-amber-500 mt-1">•</span>
-                        <span>
-                          Backup data in our systems for up to 30 days
-                        </span>
-                      </li>
-                    </ul>
-                  </div>
-                  <div className="bg-gray-50 rounded-lg p-4">
-                    <h4 className="font-semibold text-gray-800 text-sm mb-2">
-                      Deletion Timeline:
-                    </h4>
-                    <p className="text-xs text-gray-600">
-                      Your account will be deactivated immediately. Complete
-                      data deletion from all systems will be processed within 30
-                      days. You'll receive a confirmation email once the process
-                      is complete.
-                    </p>
-                  </div>
-                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                    <h4 className="font-semibold text-blue-900 text-sm mb-2">
-                      Not ready for permanent deletion?
-                    </h4>
-                    <p className="text-xs text-blue-800 mb-2">
-                      Consider deactivating your account instead. You can take a
-                      break and reactivate anytime without losing your data.
-                    </p>
-                    <button
-                      onClick={() => {
-                        handleCloseModal();
-                        setTimeout(() => handleOpenModal("deactivate"), 300);
-                      }}
-                      className="text-blue-600 hover:text-blue-800 text-xs font-semibold underline"
-                    >
-                      Switch to Deactivate Account
-                    </button>
-                  </div>
-                </div>
-                <div className="bg-gray-50 p-5 md:p-6 rounded-b-2xl border-t sticky bottom-0">
-                  <div className="flex flex-col-reverse sm:flex-row gap-3">
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      onClick={handleCloseModal}
-                      className="flex-1 bg-gray-200 text-gray-700 px-5 py-2.5 rounded-lg font-semibold text-sm hover:bg-gray-300 transition-colors"
-                    >
-                      Cancel
-                    </motion.button>
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      onClick={handleDeleteAccount}
-                      className="flex-1 bg-red-600 text-white px-5 py-2.5 rounded-lg font-semibold text-sm hover:bg-red-700 transition-colors flex items-center justify-center gap-2"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                      Yes, Delete My Account
-                    </motion.button>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div className="relative">
-                <div className="bg-gradient-to-r from-orange-500 to-orange-600 text-white p-5 md:p-6 sticky top-0 z-10">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="bg-white/20 p-2 rounded-lg">
-                        <PauseCircle className="w-6 h-6" />
-                      </div>
-                      <h3 className="text-xl md:text-2xl font-bold">
-                        Deactivate Account
-                      </h3>
-                    </div>
-                    <button
-                      onClick={handleCloseModal}
-                      className="bg-white/20 hover:bg-white/30 p-1.5 rounded-lg transition-colors"
-                    >
-                      <X className="w-5 h-5" />
-                    </button>
-                  </div>
-                </div>
-                <div className="p-5 md:p-6 space-y-5">
-                  <div className="bg-orange-50 border-l-4 border-orange-500 p-4 rounded">
-                    <div className="flex items-start gap-3">
-                      <Info className="w-5 h-5 text-orange-600 flex-shrink-0 mt-0.5" />
-                      <div>
-                        <h4 className="font-semibold text-orange-900 text-sm mb-1">
-                          Temporary Account Pause
-                        </h4>
-                        <p className="text-orange-800 text-xs">
-                          Your account will be hidden but can be reactivated
-                          anytime by logging back in.
-                        </p>
+                  <div className="p-5 md:p-6 space-y-5">
+                    <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded">
+                      <div className="flex items-start gap-3">
+                        <AlertTriangle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                        <div>
+                          <h4 className="font-semibold text-red-900 text-sm mb-1">
+                            Warning: This action is permanent
+                          </h4>
+                          <p className="text-red-800 text-xs">
+                            Once you delete your account, there is no going
+                            back. Please be certain.
+                          </p>
+                        </div>
                       </div>
                     </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-800 text-base mb-3 flex items-center gap-2">
+                        <Info className="w-5 h-5 text-blue-600" />
+                        What will be deleted:
+                      </h4>
+                      <ul className="space-y-2 text-sm text-gray-700">
+                        <li className="flex items-start gap-2">
+                          <span className="text-red-500 mt-1">•</span>
+                          <span>
+                            <strong>Personal Information:</strong> Name, email,
+                            phone number, and address
+                          </span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-red-500 mt-1">•</span>
+                          <span>
+                            <strong>Health Records:</strong> All consultation
+                            history, Prakriti/Vikriti assessments, and treatment
+                            plans
+                          </span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-red-500 mt-1">•</span>
+                          <span>
+                            <strong>Order History:</strong> Purchase records and
+                            transaction details
+                          </span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-red-500 mt-1">•</span>
+                          <span>
+                            <strong>Preferences:</strong> Saved settings,
+                            wellness goals, and personalized recommendations
+                          </span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-red-500 mt-1">•</span>
+                          <span>
+                            <strong>Subscriptions:</strong> Active subscriptions
+                            and membership benefits
+                          </span>
+                        </li>
+                      </ul>
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-800 text-base mb-3 flex items-center gap-2">
+                        <Lock className="w-5 h-5 text-amber-600" />
+                        What we may retain:
+                      </h4>
+                      <ul className="space-y-2 text-sm text-gray-700">
+                        <li className="flex items-start gap-2">
+                          <span className="text-amber-500 mt-1">•</span>
+                          <span>
+                            Anonymized data for analytics and research purposes
+                          </span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-amber-500 mt-1">•</span>
+                          <span>
+                            Transaction records required for legal and tax
+                            compliance
+                          </span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-amber-500 mt-1">•</span>
+                          <span>
+                            Backup data in our systems for up to 30 days
+                          </span>
+                        </li>
+                      </ul>
+                    </div>
+                    <div className="bg-gray-50 rounded-lg p-4">
+                      <h4 className="font-semibold text-gray-800 text-sm mb-2">
+                        Deletion Timeline:
+                      </h4>
+                      <p className="text-xs text-gray-600">
+                        Your account will be deactivated immediately. Complete
+                        data deletion from all systems will be processed within
+                        30 days. You'll receive a confirmation email once the
+                        process is complete.
+                      </p>
+                    </div>
+                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                      <h4 className="font-semibold text-blue-900 text-sm mb-2">
+                        Not ready for permanent deletion?
+                      </h4>
+                      <p className="text-xs text-blue-800 mb-2">
+                        Consider deactivating your account instead. You can take
+                        a break and reactivate anytime without losing your data.
+                      </p>
+                      <button
+                        onClick={() => {
+                          handleCloseModal();
+                          setTimeout(() => handleOpenModal("deactivate"), 300);
+                        }}
+                        className="text-blue-600 hover:text-blue-800 text-xs font-semibold underline"
+                      >
+                        Switch to Deactivate Account
+                      </button>
+                    </div>
                   </div>
-                  <div>
-                    <h4 className="font-semibold text-gray-800 text-base mb-3 flex items-center gap-2">
-                      <PauseCircle className="w-5 h-5 text-orange-600" />
-                      While your account is deactivated:
-                    </h4>
-                    <ul className="space-y-2 text-sm text-gray-700">
-                      <li className="flex items-start gap-2">
-                        <span className="text-orange-500 mt-1">•</span>
-                        <span>
-                          Your profile will be hidden from public view
-                        </span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-orange-500 mt-1">•</span>
-                        <span>
-                          You won't receive any email notifications or wellness
-                          tips
-                        </span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-orange-500 mt-1">•</span>
-                        <span>
-                          Active subscriptions will be paused (no charges during
-                          deactivation)
-                        </span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-orange-500 mt-1">•</span>
-                        <span>
-                          You cannot book new consultations or make purchases
-                        </span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-orange-500 mt-1">•</span>
-                        <span>
-                          Scheduled appointments will need to be rescheduled
-                        </span>
-                      </li>
-                    </ul>
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-gray-800 text-base mb-3 flex items-center gap-2">
-                      <Shield className="w-5 h-5 text-green-600" />
-                      What stays safe and preserved:
-                    </h4>
-                    <ul className="space-y-2 text-sm text-gray-700">
-                      <li className="flex items-start gap-2">
-                        <span className="text-green-500 mt-1">•</span>
-                        <span>
-                          <strong>All your data:</strong> Personal info, health
-                          records, and consultation history
-                        </span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-green-500 mt-1">•</span>
-                        <span>
-                          <strong>Order history:</strong> Past purchases and
-                          transaction records
-                        </span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-green-500 mt-1">•</span>
-                        <span>
-                          <strong>Preferences:</strong> Saved settings and
-                          wellness goals
-                        </span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-green-500 mt-1">•</span>
-                        <span>
-                          <strong>Membership status:</strong> Your tier and
-                          benefits remain intact
-                        </span>
-                      </li>
-                    </ul>
-                  </div>
-                  <div className="bg-green-50 rounded-lg p-4">
-                    <h4 className="font-semibold text-green-900 text-sm mb-2">
-                      Easy Reactivation:
-                    </h4>
-                    <p className="text-xs text-green-800">
-                      Simply log in with your email and password anytime to
-                      reactivate your account. Everything will be exactly as you
-                      left it - your health records, preferences, and order
-                      history will be immediately available.
-                    </p>
-                  </div>
-                  <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                    <h4 className="font-semibold text-red-900 text-sm mb-2">
-                      Need to permanently delete?
-                    </h4>
-                    <p className="text-xs text-red-800 mb-2">
-                      If you want to completely remove all your data from our
-                      systems, you can choose to delete your account instead.
-                    </p>
-                    <button
-                      onClick={() => {
-                        handleCloseModal();
-                        setTimeout(() => handleOpenModal("delete"), 300);
-                      }}
-                      className="text-red-600 hover:text-red-800 text-xs font-semibold underline"
-                    >
-                      Switch to Delete Account
-                    </button>
-                  </div>
-                </div>
-                <div className="bg-gray-50 p-5 md:p-6 rounded-b-2xl border-t sticky bottom-0">
-                  <div className="flex flex-col-reverse sm:flex-row gap-3">
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      onClick={handleCloseModal}
-                      className="flex-1 bg-gray-200 text-gray-700 px-5 py-2.5 rounded-lg font-semibold text-sm hover:bg-gray-300 transition-colors"
-                    >
-                      Cancel
-                    </motion.button>
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      onClick={handleDeactivateAccount}
-                      className="flex-1 bg-orange-500 text-white px-5 py-2.5 rounded-lg font-semibold text-sm hover:bg-orange-600 transition-colors flex items-center justify-center gap-2"
-                    >
-                      <PauseCircle className="w-4 h-4" />
-                      Yes, Deactivate My Account
-                    </motion.button>
+                  <div className="bg-gray-50 p-5 md:p-6 rounded-b-2xl border-t sticky bottom-0">
+                    <div className="flex flex-col-reverse sm:flex-row gap-3">
+                      <motion.button
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={handleCloseModal}
+                        className="flex-1 bg-gray-200 text-gray-700 px-5 py-2.5 rounded-lg font-semibold text-sm hover:bg-gray-300 transition-colors"
+                      >
+                        Cancel
+                      </motion.button>
+                      <motion.button
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={handleDeleteAccount}
+                        className="flex-1 bg-red-600 text-white px-5 py-2.5 rounded-lg font-semibold text-sm hover:bg-red-700 transition-colors flex items-center justify-center gap-2"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                        Yes, Delete My Account
+                      </motion.button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            )}
-          </Box>
-        </Fade>
-      </Modal>
+              ) : (
+                <div className="relative">
+                  <div className="bg-gradient-to-r from-orange-500 to-orange-600 text-white p-5 md:p-6 sticky top-0 z-10">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className="bg-white/20 p-2 rounded-lg">
+                          <PauseCircle className="w-6 h-6" />
+                        </div>
+                        <h3 className="text-xl md:text-2xl font-bold">
+                          Deactivate Account
+                        </h3>
+                      </div>
+                      <button
+                        onClick={handleCloseModal}
+                        className="bg-white/20 hover:bg-white/30 p-1.5 rounded-lg transition-colors"
+                      >
+                        <X className="w-5 h-5" />
+                      </button>
+                    </div>
+                  </div>
+                  <div className="p-5 md:p-6 space-y-5">
+                    <div className="bg-orange-50 border-l-4 border-orange-500 p-4 rounded">
+                      <div className="flex items-start gap-3">
+                        <Info className="w-5 h-5 text-orange-600 flex-shrink-0 mt-0.5" />
+                        <div>
+                          <h4 className="font-semibold text-orange-900 text-sm mb-1">
+                            Temporary Account Pause
+                          </h4>
+                          <p className="text-orange-800 text-xs">
+                            Your account will be hidden but can be reactivated
+                            anytime by logging back in.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-800 text-base mb-3 flex items-center gap-2">
+                        <PauseCircle className="w-5 h-5 text-orange-600" />
+                        While your account is deactivated:
+                      </h4>
+                      <ul className="space-y-2 text-sm text-gray-700">
+                        <li className="flex items-start gap-2">
+                          <span className="text-orange-500 mt-1">•</span>
+                          <span>
+                            Your profile will be hidden from public view
+                          </span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-orange-500 mt-1">•</span>
+                          <span>
+                            You won't receive any email notifications or
+                            wellness tips
+                          </span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-orange-500 mt-1">•</span>
+                          <span>
+                            Active subscriptions will be paused (no charges
+                            during deactivation)
+                          </span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-orange-500 mt-1">•</span>
+                          <span>
+                            You cannot book new consultations or make purchases
+                          </span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-orange-500 mt-1">•</span>
+                          <span>
+                            Scheduled appointments will need to be rescheduled
+                          </span>
+                        </li>
+                      </ul>
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-800 text-base mb-3 flex items-center gap-2">
+                        <Shield className="w-5 h-5 text-green-600" />
+                        What stays safe and preserved:
+                      </h4>
+                      <ul className="space-y-2 text-sm text-gray-700">
+                        <li className="flex items-start gap-2">
+                          <span className="text-green-500 mt-1">•</span>
+                          <span>
+                            <strong>All your data:</strong> Personal info,
+                            health records, and consultation history
+                          </span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-green-500 mt-1">•</span>
+                          <span>
+                            <strong>Order history:</strong> Past purchases and
+                            transaction records
+                          </span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-green-500 mt-1">•</span>
+                          <span>
+                            <strong>Preferences:</strong> Saved settings and
+                            wellness goals
+                          </span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-green-500 mt-1">•</span>
+                          <span>
+                            <strong>Membership status:</strong> Your tier and
+                            benefits remain intact
+                          </span>
+                        </li>
+                      </ul>
+                    </div>
+                    <div className="bg-green-50 rounded-lg p-4">
+                      <h4 className="font-semibold text-green-900 text-sm mb-2">
+                        Easy Reactivation:
+                      </h4>
+                      <p className="text-xs text-green-800">
+                        Simply log in with your email and password anytime to
+                        reactivate your account. Everything will be exactly as
+                        you left it - your health records, preferences, and
+                        order history will be immediately available.
+                      </p>
+                    </div>
+                    <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                      <h4 className="font-semibold text-red-900 text-sm mb-2">
+                        Need to permanently delete?
+                      </h4>
+                      <p className="text-xs text-red-800 mb-2">
+                        If you want to completely remove all your data from our
+                        systems, you can choose to delete your account instead.
+                      </p>
+                      <button
+                        onClick={() => {
+                          handleCloseModal();
+                          setTimeout(() => handleOpenModal("delete"), 300);
+                        }}
+                        className="text-red-600 hover:text-red-800 text-xs font-semibold underline"
+                      >
+                        Switch to Delete Account
+                      </button>
+                    </div>
+                  </div>
+                  <div className="bg-gray-50 p-5 md:p-6 rounded-b-2xl border-t sticky bottom-0">
+                    <div className="flex flex-col-reverse sm:flex-row gap-3">
+                      <motion.button
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={handleCloseModal}
+                        className="flex-1 bg-gray-200 text-gray-700 px-5 py-2.5 rounded-lg font-semibold text-sm hover:bg-gray-300 transition-colors"
+                      >
+                        Cancel
+                      </motion.button>
+                      <motion.button
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={handleDeactivateAccount}
+                        className="flex-1 bg-orange-500 text-white px-5 py-2.5 rounded-lg font-semibold text-sm hover:bg-orange-600 transition-colors flex items-center justify-center gap-2"
+                      >
+                        <PauseCircle className="w-4 h-4" />
+                        Yes, Deactivate My Account
+                      </motion.button>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </Box>
+          </Fade>
+        </Modal>
+      )}
 
-      {/* Updates Section */}
       <motion.div
-        className="max-w-6xl mx-auto px-4 pb-10"
+        className="max-w-[95rem] mx-auto px-4 lg:px-10 2xl:px-0 pb-10"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true }}
@@ -771,45 +772,8 @@ function PrivacyAndPolicy() {
         </div>
       </motion.div>
 
-      {/* Contact Section */}
       <motion.div
-        className="bg-gradient-to-r from-green-600 to-emerald-700 text-white py-8 md:py-10 px-4"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-        variants={fadeInUp}
-      >
-        <div className="max-w-4xl mx-auto text-center">
-          <Mail className="w-10 h-10 md:w-12 md:h-12 mx-auto mb-4" />
-          <h2 className="text-2xl md:text-3xl font-bold mb-3">Contact Us</h2>
-          <p className="text-base md:text-lg text-green-100 mb-5 leading-relaxed">
-            If you have any questions, concerns, or requests regarding this
-            Privacy Policy or how we handle your information, please don't
-            hesitate to reach out to us.
-          </p>
-          <div className="space-y-2 text-sm md:text-base">
-            <p className="flex items-center justify-center gap-2 flex-wrap">
-              <Mail className="w-4 h-4" />
-              <span>Email: privacy@ayurvedawellness.com</span>
-            </p>
-            <p className="flex items-center justify-center gap-2 flex-wrap">
-              <Globe className="w-4 h-4" />
-              <span>Website: www.ayurvedawellness.com</span>
-            </p>
-          </div>
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="mt-6 bg-white text-green-700 px-6 py-2.5 rounded-full font-semibold text-sm md:text-base shadow-lg hover:bg-green-50 transition-colors duration-300"
-          >
-            Contact Privacy Team
-          </motion.button>
-        </div>
-      </motion.div>
-
-      {/* Footer Note */}
-      <motion.div
-        className="max-w-6xl mx-auto px-4 py-6 text-center"
+        className="max-w-[95rem] mx-auto px-4 lg:px-10 2xl:px-0 py-6 text-center"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}

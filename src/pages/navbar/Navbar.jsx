@@ -18,7 +18,7 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { Tooltip } from "@mui/material";
 
-import JYALogoImg from "../../asset/jyaLogo.png";
+import JYALogoImg from "../../asset/JnanaYogAyuLogo.png";
 import LoginPage from "../login/LoginPage";
 import SignUp from "../login/SignUp";
 import { logoutUser } from "../../Actions";
@@ -446,8 +446,6 @@ export default function ModernNavbar() {
                 Contact Us
               </NavLink>
             </div>
-
-            {/* Right Side - User/Auth Buttons */}
             <div className="flex items-center gap-3">
               {user?.userName ? (
                 <Box
@@ -537,7 +535,6 @@ export default function ModernNavbar() {
                 </div>
               )}
 
-              {/* Mobile Menu Button */}
               <IconButton
                 onClick={() => setMobileOpen(true)}
                 sx={{
@@ -557,7 +554,6 @@ export default function ModernNavbar() {
         </nav>
       </header>
 
-      {/* Mobile Drawer */}
       <Drawer
         anchor="right"
         open={mobileOpen}
@@ -570,7 +566,6 @@ export default function ModernNavbar() {
         }}
       >
         <div className="h-full flex flex-col mobile-drawer">
-          {/* Drawer Header */}
           <div className="flex items-center justify-between px-5 py-4 border-b border-gray-200 bg-gradient-to-r from-[#90ba88] to-[#a8d0a0]">
             <div className="font-bold text-xl text-[#1a2e1a]">Menu</div>
             <IconButton
@@ -582,7 +577,6 @@ export default function ModernNavbar() {
           </div>
 
           <div className="px-4 py-4 space-y-2 overflow-auto flex-1">
-            {/* User Info (Mobile) */}
             {user?.userName && (
               <>
                 <Box
@@ -658,7 +652,6 @@ export default function ModernNavbar() {
               </>
             )}
 
-            {/* Login/Register Buttons (Mobile) */}
             {!user?.userName && (
               <div className="flex gap-2 mb-4">
                 <Button
@@ -706,8 +699,6 @@ export default function ModernNavbar() {
             )}
 
             <Divider className="!my-4" />
-
-            {/* Mobile Navigation Links */}
             <NavLink
               to="/"
               onClick={() => setMobileOpen(false)}
@@ -719,8 +710,6 @@ export default function ModernNavbar() {
             >
               Home
             </NavLink>
-
-            {/* About Us Accordion */}
             <div>
               <button
                 onClick={() => setMobileAboutOpen((s) => !s)}
@@ -755,8 +744,6 @@ export default function ModernNavbar() {
                 )}
               </AnimatePresence>
             </div>
-
-            {/* Services Accordion */}
             <div>
               <button
                 onClick={() => setMobileServicesOpen((s) => !s)}
@@ -777,7 +764,7 @@ export default function ModernNavbar() {
                     {...mobilePanelMotion}
                     className="ml-3 mt-1 space-y-1 overflow-hidden"
                   >
-                    {/* Wellness Submenu */}
+                    {" "}
                     <div>
                       <button
                         onClick={() => setMobileWellnessOpen((s) => !s)}
@@ -811,7 +798,6 @@ export default function ModernNavbar() {
                         )}
                       </AnimatePresence>
                     </div>
-
                     {nav.services.flat.slice(0, 2).map((item) => (
                       <NavLink
                         key={item.label}
@@ -822,8 +808,6 @@ export default function ModernNavbar() {
                         {item.label}
                       </NavLink>
                     ))}
-
-                    {/* Community Submenu */}
                     <div>
                       <button
                         onClick={() => setMobileCommunityOpen((s) => !s)}
@@ -857,7 +841,6 @@ export default function ModernNavbar() {
                         )}
                       </AnimatePresence>
                     </div>
-
                     <NavLink
                       to="/services/learning"
                       onClick={() => setMobileOpen(false)}
@@ -869,8 +852,6 @@ export default function ModernNavbar() {
                 )}
               </AnimatePresence>
             </div>
-
-            {/* Resources Accordion */}
             <div>
               <button
                 onClick={() => setMobileResourcesOpen((s) => !s)}
@@ -917,8 +898,6 @@ export default function ModernNavbar() {
             >
               Contact Us
             </NavLink>
-
-            {/* Logout Button (Mobile) */}
             {user?.userName && (
               <>
                 <Divider className="!my-4" />
@@ -940,9 +919,12 @@ export default function ModernNavbar() {
           </div>
         </div>
       </Drawer>
-
       {openLogin && (
-        <LoginPage open={openLogin} handleClose={() => setOpenLogin(false)} setOpenLogin={setOpenLogin}/>
+        <LoginPage
+          open={openLogin}
+          handleClose={() => setOpenLogin(false)}
+          setOpenLogin={setOpenLogin}
+        />
       )}
       {openSignUpModal && (
         <SignUp

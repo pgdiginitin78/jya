@@ -242,7 +242,7 @@ const ContactPage = () => {
         </div>
       </motion.div>
 
-      <div className="px-4 sm:px-6 lg:px-20 py-12 lg:py-20">
+      <div className="px-4 sm:px-6 lg:px-10 2xl:px-20 py-12 lg:py-20">
         <motion.div 
           initial="hidden"
           whileInView="visible"

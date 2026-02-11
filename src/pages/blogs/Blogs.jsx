@@ -129,8 +129,6 @@ const AyurvedaBlog = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50">
-
-
       {/* Hero Section */}
       <motion.section
         initial={{ opacity: 0 }}
@@ -176,114 +174,115 @@ const AyurvedaBlog = () => {
           </div>
         </div>
       </motion.section>
-
-      {/* Category Filter */}
-      <motion.section
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="w-full mx-auto px-4 sm:px-6 lg:px-12 mb-12"
-      >
-        <div className="bg-white/60 backdrop-blur-sm rounded-2xl shadow-lg p-4 md:p-6">
-          <div className="flex flex-wrap gap-3 justify-center">
-            {categories.map((category, index) => (
-              <motion.button
-                key={category.id}
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: index * 0.1 }}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setSelectedCategory(category.id)}
-                className={`flex items-center space-x-2 px-5 py-3 rounded-full font-medium transition-all ${
-                  selectedCategory === category.id
-                    ? "bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-md"
-                    : "bg-white text-gray-700 hover:bg-amber-50 hover:text-amber-700"
-                }`}
-              >
-                {category.icon}
-                <span className="text-sm md:text-base">{category.label}</span>
-              </motion.button>
-            ))}
-          </div>
-        </div>
-      </motion.section>
-
-      {/* Blog Grid */}
-      <section className="w-full mx-auto px-4 sm:px-6 lg:px-12 pb-20">
-        <motion.div
-          layout
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+      <div className="max-w-[95rem] mx-auto">
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="w-full mx-auto px-4 sm:px-6 lg:px-10 2xl:px-0 mb-12"
         >
-          {filteredPosts.map((post, index) => (
-            <motion.article
-              key={post.id}
-              layout
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              whileHover={{ y: -10 }}
-              className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300"
-            >
-              <div className="relative overflow-hidden h-56">
-                <motion.img
-                  whileHover={{ scale: 1.1 }}
-                  transition={{ duration: 0.6 }}
-                  src={post.image}
-                  alt={post.title}
-                  className="w-full h-full object-cover"
-                   loading="lazy"
-                />
-                <div
-                  className={`absolute top-4 right-4 bg-gradient-to-br ${post.color} p-3 rounded-full shadow-lg backdrop-blur-sm`}
-                >
-                  {React.cloneElement(post.icon, {
-                    className: "text-gray-700",
-                  })}
-                </div>
-              </div>
-
-              <div className="p-6">
-                <div className="flex items-center justify-between mb-3">
-                  <span className="text-xs font-semibold text-amber-600 uppercase tracking-wider">
-                    {post.category}
-                  </span>
-                  <span className="text-xs text-gray-500">{post.readTime}</span>
-                </div>
-
-                <h3 className="text-xl font-bold text-gray-800 mb-3 leading-tight hover:text-amber-600 transition-colors">
-                  {post.title}
-                </h3>
-
-                <p className="text-gray-600 text-sm leading-relaxed mb-4">
-                  {post.excerpt}
-                </p>
-
+          <div className="bg-white/60 backdrop-blur-sm rounded-2xl shadow-lg p-4 md:p-6">
+            <div className="flex flex-wrap gap-3 justify-center">
+              {categories.map((category, index) => (
                 <motion.button
-                  whileHover={{ x: 5 }}
-                  className="inline-flex items-center text-amber-600 font-semibold text-sm group"
+                  key={category.id}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: index * 0.1 }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setSelectedCategory(category.id)}
+                  className={`flex items-center space-x-2 px-5 py-3 rounded-full font-medium transition-all ${
+                    selectedCategory === category.id
+                      ? "bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-md"
+                      : "bg-white text-gray-700 hover:bg-amber-50 hover:text-amber-700"
+                  }`}
                 >
-                  Read Full Article
-                  <svg
-                    className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
+                  {category.icon}
+                  <span className="text-sm md:text-base">{category.label}</span>
                 </motion.button>
-              </div>
-            </motion.article>
-          ))}
-        </motion.div>
-      </section>
+              ))}
+            </div>
+          </div>
+        </motion.section>
+
+        <section className="w-full mx-auto px-4 sm:px-6 lg:px-10 2xl:px-0  pb-20">
+          <motion.div
+            layout
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          >
+            {filteredPosts.map((post, index) => (
+              <motion.article
+                key={post.id}
+                layout
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                whileHover={{ y: -10 }}
+                className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300"
+              >
+                <div className="relative overflow-hidden h-56">
+                  <motion.img
+                    whileHover={{ scale: 1.1 }}
+                    transition={{ duration: 0.6 }}
+                    src={post.image}
+                    alt={post.title}
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                  <div
+                    className={`absolute top-4 right-4 bg-gradient-to-br ${post.color} p-3 rounded-full shadow-lg backdrop-blur-sm`}
+                  >
+                    {React.cloneElement(post.icon, {
+                      className: "text-gray-700",
+                    })}
+                  </div>
+                </div>
+
+                <div className="p-6">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-xs font-semibold text-amber-600 uppercase tracking-wider">
+                      {post.category}
+                    </span>
+                    <span className="text-xs text-gray-500">
+                      {post.readTime}
+                    </span>
+                  </div>
+
+                  <h3 className="text-xl font-bold text-gray-800 mb-3 leading-tight hover:text-amber-600 transition-colors">
+                    {post.title}
+                  </h3>
+
+                  <p className="text-gray-600 text-sm leading-relaxed mb-4">
+                    {post.excerpt}
+                  </p>
+
+                  <motion.button
+                    whileHover={{ x: 5 }}
+                    className="inline-flex items-center text-amber-600 font-semibold text-sm group"
+                  >
+                    Read Full Article
+                    <svg
+                      className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
+                  </motion.button>
+                </div>
+              </motion.article>
+            ))}
+          </motion.div>
+        </section>
+      </div>
     </div>
   );
 };
