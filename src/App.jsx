@@ -38,39 +38,70 @@ function App() {
   const location = useLocation();
 
   useEffect(() => {
-    const expiresIn = localStorage.getItem("expiresIn");
-    console.log("No refresh token found", expiresIn);
+    let interval;
+
     const refreshTokenApi = async () => {
       try {
-        const refreshToken = localStorage.getItem("refreshToken");
+        const accessToken = localStorage.getItem("accessToken");
+        const expiresIn = localStorage.getItem("expiresIn");
 
-        if (!refreshToken) {
+        if (!accessToken) {
+          console.log("No refresh token found");
           return;
         }
-        console.log("Calling refresh token API...");
+
+        console.log("Calling refresh token API...", accessToken);
         const res = await API.post("refresh-token", {
-          refreshToken: refreshToken,
+          refreshToken: accessToken,
         });
+
         const apiData = res.data;
         localStorage.setItem("accessToken", apiData.accessToken);
         localStorage.setItem("refreshToken", apiData.refreshToken);
         localStorage.setItem("expiresIn", apiData.expiresIn);
+        localStorage.setItem("tokenSetTime", Date.now()); 
 
         console.log("Token refreshed successfully");
+
+        if (interval) {
+          clearInterval(interval);
+        }
+
+        const expiresInMs = (parseInt(apiData.expiresIn) - expiresIn) * 1000;
+        interval = setInterval(refreshTokenApi, expiresInMs);
       } catch (err) {
         console.error("Token refresh failed:", err);
 
         if (err.response?.status === 401 || err.response?.status === 403) {
-          localStorage.clear();
-          window.location.href = "/";
+          // localStorage.clear();
+          // window.location.href = "/";
         }
       }
     };
 
-    refreshTokenApi();
-    const interval = setInterval(refreshTokenApi, expiresIn * 1000);
+    const accessToken = localStorage.getItem("accessToken");
+    const expiresIn = localStorage.getItem("expiresIn");
+    const tokenSetTime = localStorage.getItem("tokenSetTime");
 
-    return () => clearInterval(interval);
+    if (accessToken) {
+      if (tokenSetTime && expiresIn) {
+        const currentTime = Date.now();
+        const timeElapsed = (currentTime - parseInt(tokenSetTime)) / 1000;
+
+        if (timeElapsed >= parseInt(expiresIn)) {
+          console.log("Token expired, calling refresh API");
+          refreshTokenApi();
+        }
+      } else {
+        refreshTokenApi();
+      }
+    }
+
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+    };
   }, []);
 
   return (
@@ -97,7 +128,6 @@ function App() {
                 <Route path="/resources/gallery" element={<Gallary />} />
                 <Route path="/contact" element={<ContactUs />} />
                 <Route path="/deleteAccount" element={<DeleteAccount />} />
-
               </Routes>
             </Suspense>
           </motion.div>

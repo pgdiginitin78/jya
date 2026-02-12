@@ -1,7 +1,8 @@
 import { Divider } from "@mui/material";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
+import { Calendar, Clock, Stethoscope, User, FileText } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import CancelButtonModal from "../../components/common/button/CancelButtonModal";
@@ -11,9 +12,10 @@ import DropdownField from "../../components/common/formFields/DropdownField";
 import InputField from "../../components/common/formFields/InputField";
 import {
   getClinicList,
-  getDoctorsData,
+  getDoctorsByClinicId,
+  getLocationList,
+  getServicesByClinicId,
 } from "../../services/bookAppointment/BookAppointmentServices";
-import { errorAlert } from "../../components/common/toast/CustomToast";
 
 const style = {
   position: "absolute",
@@ -22,22 +24,98 @@ const style = {
   transform: "translate(-50%, -50%)",
   bgcolor: "background.paper",
   boxShadow: 24,
-  p: 2,
+  outline: "none",
 };
 
+const containerVariants = {
+  hidden: { opacity: 0, scale: 0.95 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      duration: 0.3,
+      ease: "easeOut",
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const sectionVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.4,
+      ease: "easeOut",
+    },
+  },
+};
+
+function TimeSlotChip({ slot, isSelected, onSelect }) {
+  return (
+    <motion.button
+      type="button"
+      onClick={onSelect}
+      disabled={!slot.available}
+      whileHover={slot.available ? { scale: 1.05 } : {}}
+      whileTap={slot.available ? { scale: 0.95 } : {}}
+      className={`
+        relative px-3 py-2.5 rounded-lg font-medium text-sm transition-all duration-200
+        ${
+          !slot.available
+            ? "bg-slate-100 text-slate-400 cursor-not-allowed line-through"
+            : isSelected
+              ? "bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg shadow-emerald-500/30 ring-2 ring-emerald-300"
+              : "bg-white text-slate-700 hover:bg-emerald-50 border-2 border-slate-200 hover:border-emerald-400"
+        }
+      `}
+    >
+      {slot.time}
+      {isSelected && (
+        <motion.div
+          layoutId="selected-slot"
+          className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-lg"
+          style={{ zIndex: -1 }}
+          initial={false}
+          transition={{ type: "spring", stiffness: 500, damping: 30 }}
+        />
+      )}
+    </motion.button>
+  );
+}
+
+const mockSlots = [
+  { id: 1, time: "09:00 AM", available: true },
+  { id: 2, time: "09:30 AM", available: true },
+  { id: 3, time: "10:00 AM", available: false },
+  { id: 4, time: "10:30 AM", available: true },
+  { id: 5, time: "11:00 AM", available: true },
+  { id: 6, time: "11:30 AM", available: true },
+  { id: 7, time: "02:00 PM", available: true },
+  { id: 8, time: "02:30 PM", available: true },
+  { id: 9, time: "03:00 PM", available: false },
+  { id: 10, time: "03:30 PM", available: true },
+  { id: 11, time: "04:00 PM", available: true },
+  { id: 12, time: "04:30 PM", available: true },
+];
+
 export default function BookAppointment({ open, handleClose }) {
+  const [locationListOptions, setLocationListOptions] = useState([]);
   const [clinicsOptions, setClinicOptions] = useState([]);
   const [doctorOptions, setDoctorOptions] = useState([]);
-
+  const [selectedTimeSlot, setSelectedTimeSlot] = useState(null);
+  const [availableSlots, setAvailableSlots] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [selectedDoctor, setSelectedDoctor] = useState(null);
+  const [servicesOptions, setServicesOptions] = useState([]);
   const {
-    register,
     handleSubmit,
     control,
     watch,
     trigger,
     formState: { errors },
   } = useForm({
-    // resolver: yupResolver(schema),
     defaultValues: {
       clinicFid: null,
       patientFid: null,
@@ -50,176 +128,520 @@ export default function BookAppointment({ open, handleClose }) {
       ServiceDetails: "",
       taxDeatils: "",
       EncounterStatus: "",
+      location: null,
     },
     mode: "onChange",
   });
 
   const clinicFidValue = watch("clinicFid");
+  const locationValue = watch("location");
+
+  const fetchTimeSlots = (doctorFid) => {
+    setLoading(true);
+    setSelectedTimeSlot(null);
+
+    setTimeout(() => {
+      setAvailableSlots(mockSlots);
+      setLoading(false);
+    }, 800);
+  };
+
+  const handleReset = () => {
+    setSelectedDoctor(null);
+    setAvailableSlots([]);
+    setSelectedTimeSlot(null);
+    document.querySelectorAll("select, input").forEach((input) => {
+      input.value = "";
+    });
+  };
+
   const handleBookAppointment = (dataObj) => {};
 
   useEffect(() => {
-    getClinicList()
+    getLocationList()
       .then((res) => {
         const data = res?.data?.data;
         if (data?.length) {
-          setClinicOptions(
+          setLocationListOptions(
             data.map((item) => ({
               ...item,
               id: item.fid,
               value: item.fid,
-              label: item.clinicName,
+              label: item.locationName,
             })),
           );
         }
       })
-      .catch((err) => console.log(err.message || "Failed to fetch clinics"));
+      .catch((error) => error);
   }, []);
 
   useEffect(() => {
-    if (clinicFidValue?.id > 0) {
-      getDoctorsData(clinicFidValue?.id)
+    if (locationValue?.id > 0) {
+      getClinicList(locationValue?.id)
         .then((res) => {
-          setDoctorOptions(res.data.data);
+          const data = res?.data?.data;
+          if (data?.length) {
+            setClinicOptions(
+              data.map((item) => ({
+                ...item,
+                id: item.clinicid,
+                value: item.clinicid,
+                label: item.clinicName,
+              })),
+            );
+          }
+        })
+        .catch((err) => console.log(err.message || "Failed to fetch clinics"));
+    }
+  }, [locationValue]);
+  console.log("clinicFidValue", clinicFidValue);
+
+  useEffect(() => {
+    if (clinicFidValue?.id > 0) {
+      getDoctorsByClinicId(clinicFidValue?.id)
+        .then((res) => {
+          const data = res?.data?.data;
+          if (data?.length) {
+            setDoctorOptions(
+              data.map((item) => ({
+                ...item,
+                id: item.userId,
+                value: item.userId,
+                label: `${item.firstName} ${item.lName}`,
+              })),
+            );
+          }
+        })
+        .catch((error) => error);
+
+      getServicesByClinicId(clinicFidValue?.id)
+        .then((res) => {
+          const data = res?.data?.data;
+          if (data?.length) {
+            setServicesOptions(
+              data.map((item) => ({
+                ...item,
+                id: item.serviceFid,
+                value: item.serviceFid,
+                label: `${item.serviceName}`,
+              })),
+            );
+          }
         })
         .catch((error) => error);
     }
   }, [clinicFidValue]);
 
   return (
-    <div>
+    <>
       <Modal
         open={open}
+        onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box
-          sx={style}
-          className="w-[95%] md:w-[85%] 2xl:w-[65%] 2xl:h-[40%] h-[90%] lg:h-[55%] rounded-xl bg-white  overflow-y-auto"
-        >
-          <div className="flex items-center gap-3">
-            <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ type: "spring", stiffness: 200, damping: 10 }}
-              className="w-10 h-10 rounded-xl bg-gradient-to-br from-green-500 to-lime-300 flex items-center justify-center shadow-lg"
-            >
-              <svg
-                className="w-5 h-5 text-white"
-                fill="none"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
+        <Box sx={style} className="rounded-xl">
+          <AnimatePresence>
+            {open && (
+              <motion.div
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+                exit="hidden"
+                className="w-[95vw] sm:w-[85vw] md:w-[75vw] lg:w-[900px] xl:w-[1000px] max-w-[1200px]"
               >
-                <path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
-            </motion.div>
-            <h1 className="text-xl md:text-2xl text-green-600 font-bold ">
-              Book Appointment
-            </h1>
-          </div>
-          <CancelButtonModal onClick={handleClose} />
-          <Divider
-            sx={{
-              height: "2px",
-              background:
-                "linear-gradient(to right, transparent, #10b981, transparent)",
-              border: "none",
-              my: 2,
-            }}
-          />
+                <div className="relative bg-gradient-to-br from-white via-emerald-50/30 to-white rounded-2xl shadow-2xl border border-emerald-100 overflow-hidden">
+                  <div className="sticky top-0 z-20 bg-white/95 backdrop-blur-md border-b border-emerald-100 px-4 sm:px-6 py-4 shadow-sm">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <motion.div
+                          initial={{ scale: 0, rotate: -180 }}
+                          animate={{ scale: 1, rotate: 0 }}
+                          transition={{
+                            type: "spring",
+                            stiffness: 200,
+                            damping: 15,
+                          }}
+                          className="w-11 h-11 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center shadow-lg shadow-emerald-500/30"
+                        >
+                          <svg
+                            className="w-6 h-6 text-white"
+                            fill="none"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                          </svg>
+                        </motion.div>
+                        <div>
+                          <h1 className="text-lg sm:text-xl md:text-2xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
+                            Book an Appointment
+                          </h1>
+                          <p className="text-xs text-slate-500 hidden sm:block">
+                            Schedule your visit with our healthcare
+                            professionals
+                          </p>
+                        </div>
+                      </div>
+                      <CancelButtonModal onClick={handleClose} />
+                    </div>
+                  </div>
 
-          <form
-            action=""
-            onSubmit={handleSubmit(handleBookAppointment)}
-            className="grid md:grid-cols-2 lg:grid-cols-3 gap-4"
-          >
-            <div>
-              <DropdownField
-                control={control}
-                name="clinicFid"
-                placeholder={"Clinic"}
-                dataArray={clinicsOptions}
-              />
-            </div>
-               <div>
-              <DropdownField
-                control={control}
-                name="doctorFid"
-                placeholder={"Select Doctor"}
-                dataArray={doctorOptions}
-              />
-            </div>
-            <div>
-              <DropdownField
-                control={control}
-                name="patientFid"
-                placeholder={"Select Patient"}
-                dataArray={[]}
-              />
-            </div>
-         
-            <div>
-              <DropdownField
-                control={control}
-                name="serviceFid"
-                placeholder={"Select Service"}
-                dataArray={[]}
-              />
-            </div>
-            <div>
-              <DatePickerField
-                control={control}
-                name="appoinmentDate"
-                label={"Appoinment Date"}
-                inputFormat={"dd-MM-yyyy"}
-                disablePast={true}
-              />
-            </div>
-            <div>
-              <DropdownField
-                control={control}
-                name="Status"
-                placeholder={"Status"}
-              />
-            </div>
-            <div>
-              <InputField
-                control={control}
-                name="ServiceDetails"
-                label="Service Details"
-              />
-            </div>
-            <div>
-              <InputField
-                control={control}
-                name="taxDeatils"
-                label={"Tax Deatils"}
-              />
-            </div>
-            <div>
-              <InputField
-                control={control}
-                name="EncounterStatus"
-                label="EncounterStatus"
-              />
-            </div>
-            <div className="md:col-span-2 lg:col-span-3 flex justify-end items-center space-x-2">
-              <CommonButton
-                type="button"
-                label="Reset"
-                className={"border border-red-600 text-red-600"}
-              />
-              <CommonButton
-                type="submit"
-                label="Book Appointment"
-                className={"bg-green-600 text-white"}
-              />
-            </div>
-          </form>
+                  <div className="max-h-[calc(90vh-88px)] overflow-y-auto px-4 sm:px-6 py-6 custom-scrollbar">
+                    <form
+                      onSubmit={handleSubmit(handleBookAppointment)}
+                      className="space-y-5"
+                    >
+                      <div className="grid lg:grid-cols-3 gap-5">
+                        <motion.div
+                          variants={sectionVariants}
+                          className="lg:col-span-2 space-y-5"
+                        >
+                          <div className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden border border-slate-200">
+                            <div className="bg-gradient-to-r from-emerald-500 to-teal-500 px-4 py-2 flex items-center gap-2">
+                              <div className="p-1.5 bg-white/20 backdrop-blur-sm rounded-lg">
+                                <User className="w-5 h-5 text-white" />
+                              </div>
+                              <h2 className="text-base sm:text-lg font-bold text-white">
+                                Patient Information
+                              </h2>
+                            </div>
+                            <div className="p-4 sm:p-5">
+                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <DropdownField
+                                  control={control}
+                                  name="location"
+                                  placeholder="Select Location"
+                                  dataArray={locationListOptions}
+                                />
+                                <DropdownField
+                                  control={control}
+                                  name="clinicFid"
+                                  placeholder="Select Clinic"
+                                  dataArray={clinicsOptions}
+                                />
+                                <DropdownField
+                                  control={control}
+                                  name="serviceFid"
+                                  placeholder="Select Service"
+                                />
+                                <DropdownField
+                                  control={control}
+                                  name="patientFid"
+                                  placeholder="Select Patient"
+                                />
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden border border-slate-200">
+                            <div className="bg-gradient-to-r from-lime-400 to-emerald-400 px-4 py-2 flex items-center gap-2">
+                              <div className="p-1.5 bg-white/20 backdrop-blur-sm rounded-lg">
+                                <Calendar className="w-5 h-5 text-white" />
+                              </div>
+                              <h2 className="text-base sm:text-lg font-bold text-white">
+                                Schedule Details
+                              </h2>
+                            </div>
+                            <div className="p-4 sm:p-5">
+                              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                                <DropdownField
+                                  control={control}
+                                  name="doctorFid"
+                                  placeholder="Select Doctor"
+                                  dataArray={doctorOptions}
+                                />
+                                <DatePickerField
+                                  control={control}
+                                  name="appointmentDate"
+                                  label="Appointment Date"
+                                  inputFormat="dd-MM-yyyy"
+                                  disablePast={true}
+                                />
+                                <DropdownField
+                                  control={control}
+                                  name="Status"
+                                  placeholder="Select Status"
+                                />
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden border border-slate-200">
+                            <div className="bg-gradient-to-r from-emerald-500 to-green-500 px-4 py-2 flex items-center gap-2">
+                              <div className="p-1.5 bg-white/20 backdrop-blur-sm rounded-lg">
+                                <FileText className="w-5 h-5 text-white" />
+                              </div>
+                              <h2 className="text-base sm:text-lg font-bold text-white">
+                                Additional Details
+                              </h2>
+                            </div>
+                            <div className="p-4 sm:p-5">
+                              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                                <InputField
+                                  control={control}
+                                  name="ServiceDetails"
+                                  label="Service Details"
+                                />
+                                <InputField
+                                  control={control}
+                                  name="taxDetails"
+                                  label="Tax Details"
+                                />
+                                <InputField
+                                  control={control}
+                                  name="EncounterStatus"
+                                  label="Encounter Status"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </motion.div>
+
+                        <motion.div
+                          variants={sectionVariants}
+                          className="lg:col-span-1"
+                        >
+                          <div className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden border border-slate-200 lg:sticky lg:top-0">
+                            <div className="bg-gradient-to-r from-amber-500 to-orange-500 px-4 py-2 flex items-center gap-2">
+                              <div className="p-1.5 bg-white/20 backdrop-blur-sm rounded-lg">
+                                <Clock className="w-5 h-5 text-white" />
+                              </div>
+                              <h2 className="text-base sm:text-lg font-bold text-white">
+                                Available Slots
+                              </h2>
+                            </div>
+
+                            <div className="p-4 sm:p-5">
+                              <AnimatePresence mode="wait">
+                                {!selectedDoctor ? (
+                                  <motion.div
+                                    key="no-doctor"
+                                    initial={{ opacity: 0, scale: 0.95 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    exit={{ opacity: 0, scale: 0.95 }}
+                                    className="flex flex-col items-center justify-center py-12 text-center"
+                                  >
+                                    <div className="w-16 h-16 bg-gradient-to-br from-slate-100 to-slate-200 rounded-full flex items-center justify-center mb-4 shadow-inner">
+                                      <Stethoscope className="w-8 h-8 text-slate-400" />
+                                    </div>
+                                    <p className="text-slate-600 text-sm font-medium mb-1">
+                                      No Doctor Selected
+                                    </p>
+                                    <p className="text-slate-400 text-xs px-4">
+                                      Please select a doctor and date to view
+                                      available time slots
+                                    </p>
+                                  </motion.div>
+                                ) : loading ? (
+                                  <motion.div
+                                    key="loading"
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    exit={{ opacity: 0 }}
+                                    className="flex flex-col items-center justify-center py-12"
+                                  >
+                                    <div className="relative">
+                                      <div className="w-12 h-12 border-4 border-emerald-200 border-t-emerald-600 rounded-full animate-spin"></div>
+                                      <div className="absolute inset-0 w-12 h-12 border-4 border-transparent border-b-teal-600 rounded-full animate-spin animation-delay-150"></div>
+                                    </div>
+                                    <p className="text-slate-600 text-sm font-medium mt-4">
+                                      Loading available slots...
+                                    </p>
+                                  </motion.div>
+                                ) : availableSlots.length === 0 ? (
+                                  <motion.div
+                                    key="no-slots"
+                                    initial={{ opacity: 0, scale: 0.95 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    exit={{ opacity: 0, scale: 0.95 }}
+                                    className="flex flex-col items-center justify-center py-12 text-center"
+                                  >
+                                    <div className="w-16 h-16 bg-gradient-to-br from-orange-100 to-orange-200 rounded-full flex items-center justify-center mb-4 shadow-inner">
+                                      <Clock className="w-8 h-8 text-orange-500" />
+                                    </div>
+                                    <p className="text-slate-600 text-sm font-medium mb-1">
+                                      No Slots Available
+                                    </p>
+                                    <p className="text-slate-400 text-xs px-4">
+                                      No available slots for the selected date
+                                    </p>
+                                  </motion.div>
+                                ) : (
+                                  <motion.div
+                                    key="slots"
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    exit={{ opacity: 0 }}
+                                    className="space-y-4 max-h-[450px] overflow-y-auto pr-1 custom-scrollbar"
+                                  >
+                                    {availableSlots.some((slot) =>
+                                      slot.time.includes("AM"),
+                                    ) && (
+                                      <div>
+                                        <div className="flex items-center gap-2 mb-3">
+                                          <div className="w-2 h-2 rounded-full bg-amber-400"></div>
+                                          <p className="text-xs font-bold text-slate-700 uppercase tracking-wider">
+                                            Morning
+                                          </p>
+                                        </div>
+                                        <div className="grid grid-cols-2 gap-2">
+                                          {availableSlots
+                                            .filter((slot) =>
+                                              slot.time.includes("AM"),
+                                            )
+                                            .map((slot) => (
+                                              <TimeSlotChip
+                                                key={slot.id}
+                                                slot={slot}
+                                                isSelected={
+                                                  selectedTimeSlot?.id ===
+                                                  slot.id
+                                                }
+                                                onSelect={() =>
+                                                  slot.available &&
+                                                  setSelectedTimeSlot(slot)
+                                                }
+                                              />
+                                            ))}
+                                        </div>
+                                      </div>
+                                    )}
+
+                                    {availableSlots.some((slot) =>
+                                      slot.time.includes("PM"),
+                                    ) && (
+                                      <div>
+                                        <div className="flex items-center gap-2 mb-3">
+                                          <div className="w-2 h-2 rounded-full bg-indigo-400"></div>
+                                          <p className="text-xs font-bold text-slate-700 uppercase tracking-wider">
+                                            Afternoon
+                                          </p>
+                                        </div>
+                                        <div className="grid grid-cols-2 gap-2">
+                                          {availableSlots
+                                            .filter((slot) =>
+                                              slot.time.includes("PM"),
+                                            )
+                                            .map((slot) => (
+                                              <TimeSlotChip
+                                                key={slot.id}
+                                                slot={slot}
+                                                isSelected={
+                                                  selectedTimeSlot?.id ===
+                                                  slot.id
+                                                }
+                                                onSelect={() =>
+                                                  slot.available &&
+                                                  setSelectedTimeSlot(slot)
+                                                }
+                                              />
+                                            ))}
+                                        </div>
+                                      </div>
+                                    )}
+
+                                    {selectedTimeSlot && (
+                                      <motion.div
+                                        initial={{
+                                          opacity: 0,
+                                          y: 10,
+                                          scale: 0.95,
+                                        }}
+                                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                                        className="mt-4 p-4 bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl border-2 border-emerald-200 shadow-sm"
+                                      >
+                                        <div className="flex items-center justify-between">
+                                          <div>
+                                            <p className="text-xs text-emerald-600 font-semibold mb-1 uppercase tracking-wide">
+                                              Selected Time
+                                            </p>
+                                            <p className="text-lg font-bold text-emerald-900">
+                                              {selectedTimeSlot.time}
+                                            </p>
+                                          </div>
+                                          <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-full flex items-center justify-center">
+                                            <svg
+                                              className="w-5 h-5 text-white"
+                                              fill="none"
+                                              strokeLinecap="round"
+                                              strokeLinejoin="round"
+                                              strokeWidth="2"
+                                              viewBox="0 0 24 24"
+                                              stroke="currentColor"
+                                            >
+                                              <path d="M5 13l4 4L19 7" />
+                                            </svg>
+                                          </div>
+                                        </div>
+                                      </motion.div>
+                                    )}
+                                  </motion.div>
+                                )}
+                              </AnimatePresence>
+                            </div>
+                          </div>
+                        </motion.div>
+                      </div>
+
+                      <motion.div
+                        variants={sectionVariants}
+                        className="flex flex-col sm:flex-row justify-end items-center gap-3 pt-4 border-t border-slate-200"
+                      >
+                        <CommonButton
+                          type="button"
+                          label="Reset Form"
+                          onClick={handleReset}
+                          className="w-full sm:w-auto px-6 py-2.5 bg-white border-2 border-red-500 text-red-600 hover:bg-red-50 rounded-lg font-semibold transition-all duration-200 hover:scale-105 hover:shadow-md"
+                        />
+                        <CommonButton
+                          type="submit"
+                          label="Book Appointment"
+                          className="w-full sm:w-auto px-6 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 text-white hover:from-emerald-700 hover:to-teal-700 rounded-lg font-semibold shadow-lg shadow-emerald-500/30 transition-all duration-200 hover:scale-105"
+                        />
+                      </motion.div>
+                    </form>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </Box>
       </Modal>
-    </div>
+
+      <style jsx global>{`
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: #10b981;
+          border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: #059669;
+        }
+        .custom-scrollbar {
+          scrollbar-width: thin;
+          scrollbar-color: #10b981 transparent;
+        }
+        @keyframes spin-delay {
+          from {
+            transform: rotate(0deg);
+          }
+          to {
+            transform: rotate(360deg);
+          }
+        }
+        .animation-delay-150 {
+          animation-delay: 150ms;
+        }
+      `}</style>
+    </>
   );
 }

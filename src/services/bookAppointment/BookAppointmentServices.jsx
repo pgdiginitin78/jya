@@ -1,13 +1,45 @@
+import AxiosInstance from "../../AxiosInstance";
 
+//http://115.124.123.180:8095/api/locationList
 
-//clinics
+export const getLocationList = () => {
+  return AxiosInstance.get(`locationList`);
+};
 
-import AxiosInstance from "../../AxiosInstance"
+export const getClinicList = (LocationId) => {
+  return AxiosInstance.get(`ClinicList?LocationId=${LocationId}`);
+};
 
-export const getClinicList = ()=>{
-  return AxiosInstance.get(`/clinics`)
-}
+export const getDoctorsByClinicId = (clinicId) => {
+  return AxiosInstance.get(`Doctors?ClinicFid=${clinicId}`);
+};
 
-export const getDoctorsData = (clinicId)=>{
-  return AxiosInstance.get(`/Doctors?ClinicFid=${clinicId}`)
-}
+export const getPatientDataByMobileNo = (contactNumber) => {
+  return AxiosInstance.get(`Patients?contactNumber=${contactNumber}`);
+};
+
+export const getServicesByClinicId = (clinicId) => {
+  return AxiosInstance.get(`Services?ClinicFid=${clinicId}`);
+};
+
+export const bookAppointment = (saveObj) => {
+  return AxiosInstance.post(`bookAppointment`, saveObj);
+};
+
+export const getDoctorAvailableSlots = (doctorId, appointmentDate) => {
+  return AxiosInstance.get(
+    `DoctorAvailableSlots?doctorId=${doctorId}&appointmentDate=${appointmentDate}`,
+  );
+};
+
+export const getPrescriptionsByPatient = (patientFid) => {
+  return AxiosInstance.get(`PrescriptionsByPatient?patientFid=${patientFid}`);
+};
+
+export const getDoctorsProfile = (DoctorFid) => {
+  return AxiosInstance.get(`DoctorsProfile?DoctorFid=${DoctorFid}`);
+};
+
+export const AddPatient = (saveObj) => {
+  return AxiosInstance.post(`AddPatient`, saveObj);
+};

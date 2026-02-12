@@ -21,6 +21,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
+import { motion, AnimatePresence } from "framer-motion";
 import JYALogoImg from "../../asset/JnanaYogAyuLogo.png";
 
 import axios from "axios";
@@ -35,6 +36,11 @@ import {
   successAlert,
 } from "../../components/common/toast/CustomToast";
 import { signupJYA } from "../../services/login/LoginServices";
+import { format } from "date-fns";
+import CancelButtonModal from "../../components/common/button/CancelButtonModal";
+
+// Import the Ayurveda Success Dialog
+import AyurvedaSuccessDialog from "./AyurvedaSuccessDialog";
 
 const modalStyle = {
   position: "absolute",
@@ -46,20 +52,15 @@ const modalStyle = {
   overflowY: "auto",
 };
 
-// Validation Schema
 const signupValidationSchema = yup.object().shape({
   FirstName: yup
     .string()
     .required("First name is required")
-    .min(2, "Min 2 characters")
-    .max(50, "Max 50 characters")
     .matches(/^[a-zA-Z\s]+$/, "Only letters allowed"),
 
   lastName: yup
     .string()
     .required("Last name is required")
-    .min(2, "Min 2 characters")
-    .max(50, "Max 50 characters")
     .matches(/^[a-zA-Z\s]+$/, "Only letters allowed"),
 
   dob: yup
@@ -93,12 +94,7 @@ const signupValidationSchema = yup.object().shape({
     .required("Pin code required")
     .matches(/^[0-9]{6}$/, "Must be 6 digits"),
 
-  address: yup
-    .string()
-    .required("Address required")
-    .min(10, "Min 10 characters")
-    .max(200, "Max 200 characters"),
-
+  address: yup.string().required("Address required"),
   locality: yup
     .string()
     .required("Locality required")
@@ -110,13 +106,11 @@ const signupValidationSchema = yup.object().shape({
 
   country: yup.string().required("Country required").min(2, "Min 2 characters"),
 
-  landmark: yup.string().optional().max(100, "Max 100 characters"),
+  landmark: yup.string().optional().min(2, "Min 2 characters"),
 
   userName: yup
     .string()
     .required("Username required")
-    .min(4, "Min 4 characters")
-    .max(20, "Max 20 characters")
     .matches(/^[a-zA-Z0-9_]+$/, "Only letters, numbers, underscore"),
 
   passWord: yup
@@ -134,12 +128,48 @@ const signupValidationSchema = yup.object().shape({
     .oneOf([true], "You must accept the terms and conditions"),
 });
 
-function SignUp({ open, handleClose, setOpenLogin }) {
+// Animation Variants
+const modalVariants = {
+  hidden: { opacity: 0, scale: 0.95 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      duration: 0.3,
+      ease: "easeOut",
+    },
+  },
+  exit: {
+    opacity: 0,
+    scale: 0.95,
+    transition: {
+      duration: 0.2,
+    },
+  },
+};
+
+const sectionVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: (custom) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: custom * 0.1,
+      duration: 0.4,
+      ease: "easeOut",
+    },
+  }),
+};
+
+function SignUp({ open, handleClose, setOpenLogin,setOpenSuccessDialog,setSuccessMessage }) {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [formData, setFormData] = useState(null);
   const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [ipAddress, setIpAddress] = useState(null);
+
+
 
   const {
     control,
@@ -171,8 +201,9 @@ function SignUp({ open, handleClose, setOpenLogin }) {
       passWord: "",
       confirmPassword: "",
       macId: "",
-      macIp: "",
+      macIp: ipAddress,
       agreeToTerms: false,
+      relation: "self",
     },
   });
 
@@ -181,6 +212,49 @@ function SignUp({ open, handleClose, setOpenLogin }) {
   const agreeToTerms = watch("agreeToTerms");
 
   console.log("signUpError", errors);
+
+  const onSubmit = (data) => {
+    const formattedData = {
+      ...data,
+      dob: data.dob ? format(new Date(data.dob), "yyyy-MM-dd") : "",
+    };
+    setFormData(formattedData);
+    setOpenConfirmationModal(true);
+  };
+
+  const handleUserSignup = async () => {
+    try {
+      setOpenConfirmationModal(false);
+      setLoading(true);
+
+      const response = await signupJYA(formData);
+      const apiData = response?.data;
+
+      if (response.status === 200 && apiData) {
+        setSuccessMessage(apiData);
+        handleClose();
+        setOpenSuccessDialog(true);
+        reset();
+      } else {
+        errorAlert("Registration failed");
+      }
+    } catch (error) {
+      const errorMessage = error?.response?.data?.message || error?.message;
+      errorAlert(errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleModalClose = () => {
+    reset();
+    handleClose();
+  };
+
+  const handleSuccessDialogClose = () => {
+    setOpenSuccessDialog(false);
+    reset();
+  };
 
   React.useEffect(() => {
     if (dob) {
@@ -201,42 +275,6 @@ function SignUp({ open, handleClose, setOpenLogin }) {
       }
     }
   }, [dob, setValue]);
-
-  const onSubmit = (data) => {
-    setFormData(data);
-    setOpenConfirmationModal(true);
-  };
-
-  const handleUserSignup = async () => {
-    try {
-      setOpenConfirmationModal(false);
-      setLoading(true);
-      const response = await signupJYA(formData);
-
-      const apiData = response?.data;
-      console.log("apiData", apiData);
-
-      if (response.status === 200 && apiData) {
-        successAlert(apiData.message || "Login successful");
-
-        setTimeout(() => {
-          handleClose();
-          reset();
-        }, 1000);
-      } else {
-        errorAlert("Login failed");
-      }
-    } catch (error) {
-      errorAlert(error.response?.data?.message || error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleModalClose = () => {
-    reset();
-    handleClose();
-  };
 
   useEffect(() => {
     const fetchPinData = async () => {
@@ -262,699 +300,730 @@ function SignUp({ open, handleClose, setOpenLogin }) {
     fetchPinData();
   }, [pinCodeValue]);
 
+  useEffect(() => {
+    fetch("https://api.ipify.org?format=json")
+      .then((res) => res.json())
+      .then((data) => {
+        setIpAddress(data.ip);
+      })
+      .catch((error) => console.error("Error:", error));
+  }, []);
+
   return (
     <>
-      <Modal open={open}>
+      <Modal open={open} onClose={handleModalClose}>
         <Box sx={modalStyle}>
-          <Box
-            className="w-[95vw] sm:w-[650px] md:w-[750px] rounded-2xl p-4 sm:p-5"
-            sx={{
-              bgcolor: "#f8fbf6",
-              boxShadow: "0 8px 32px rgba(0,0,0,0.08)",
-              border: "1px solid #e6efe3",
-            }}
-          >
-            <IconButton
-              onClick={handleModalClose}
-              sx={{ position: "absolute", right: 8, top: 8, zIndex: 10 }}
-              size="small"
-            >
-              <CloseIcon fontSize="small" />
-            </IconButton>
-
-            <Box className="text-center mb-3">
-              <img
-                src={JYALogoImg}
-                  className="w-[20%] mx-auto"
-                alt="Logo"
-                loading="lazy"
-              />
-              <Typography
-                variant="h6"
-                sx={{ fontWeight: 700, color: "#2f3e2e", fontSize: "1.15rem" }}
+          <AnimatePresence>
+            {open && (
+              <motion.div
+                variants={modalVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                className="w-[95vw] sm:w-[90vw] md:w-[750px] lg:w-[900px] xl:w-[750px]"
               >
-                Create Your Account
-              </Typography>
-              <Typography variant="caption" sx={{ color: "#6b7d6a" }}>
-                Join us on your wellness journey
-              </Typography>
-            </Box>
-
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <div className="">
-                <div className="border rounded-xl bg-white">
-                  <h4 className="font-semibold text-xl bg-[#c7e8b4] pl-2 rounded-t-xl py-1">
-                    Personal Information
-                  </h4>
-                  <div className="grid md:grid-cols-2 gap-4 p-2 pt-3">
-                    <div>
-                      <InputField
-                        control={control}
-                        name="FirstName"
-                        label={"First Name *"}
-                        error={errors.FirstName}
-                      />
-                    </div>
-
-                    <div>
-                      <InputField
-                        control={control}
-                        name="lastName"
-                        label={"Last Name"}
-                        error={errors.lastName}
-                      />
-                    </div>
-
-                    <div item xs={12} sm={5}>
-                      <DatePickerField
-                        control={control}
-                        name="dob"
-                        label="Date Of Birth"
-                        disableFuture={true}
-                        inputFormat={"dd-MM-yyyy"}
-                        error={errors.dob}
-                      />
-                    </div>
-
-                    <div item xs={6} sm={2}>
-                      <InputField
-                        control={control}
-                        name="age"
-                        label={"Age *"}
-                        error={errors.age}
-                      />
-                    </div>
-
-                    <div item xs={6} sm={5}>
-                      <RadioField
-                        control={control}
-                        name="gender"
-                        label="Gender *"
-                        dataArray={[
-                          {
-                            id: "Male",
-                            value: "Male",
-                            label: "Male",
-                          },
-                          {
-                            id: "Female",
-                            value: "Female",
-                            label: "Female",
-                          },
-                          {
-                            id: "Other",
-                            value: "Other",
-                            label: "Other",
-                          },
-                        ]}
-                      />
+                <div className="relative bg-gradient-to-br from-[#f8fbf6] to-white rounded-xl shadow-2xl border border-[#e6efe3] max-h-[90vh] overflow-hidden">
+                  <div className="sticky top-0 z-10 bg-white/95 backdrop-blur-sm border-b border-[#e6efe3] px-4 sm:px-6 py-4">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <motion.img
+                          initial={{ rotate: -180, opacity: 0 }}
+                          animate={{ rotate: 0, opacity: 1 }}
+                          transition={{ duration: 0.5 }}
+                          src={JYALogoImg}
+                          className="w-12 h-12 sm:w-14 sm:h-14"
+                          alt="Logo"
+                          loading="lazy"
+                        />
+                        <div>
+                          <h2 className="text-xl sm:text-2xl font-bold text-[#2f3e2e] tracking-tight">
+                            Create Your Account
+                          </h2>
+                          <p className="text-xs sm:text-sm text-[#6b7d6a]">
+                            Join us on your wellness journey
+                          </p>
+                        </div>
+                      </div>
+                      <CancelButtonModal onClick={handleModalClose} />
                     </div>
                   </div>
-                </div>
 
-                <div className="border rounded-xl bg-white mt-2">
-                  <h4 className="font-semibold text-xl bg-amber-200 pl-2 rounded-t-xl py-1">
-                    Contact Information
-                  </h4>
-                  <div className="grid md:grid-cols-2 gap-4 p-2 pt-3">
-                    <div>
-                      <InputField
-                        control={control}
-                        name="mobileNo"
-                        label={"Mobile Number *"}
-                        error={errors.mobileNo}
-                      />
-                      <FormControlLabel
-                        control={
-                          <Switch
-                            onChange={(e) => {
-                              if (e.target.checked) {
-                                setValue("whatsappNo", watch("mobileNo"));
-                              }
-                            }}
-                            sx={{
-                              "& .MuiSwitch-switchBase.Mui-checked": {
-                                color: "#16a34a",
-                              },
-                              "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track":
-                                {
-                                  backgroundColor: "lightgreen",
-                                },
-                            }}
-                          />
-                        }
-                        label="Same as Mobile Number"
-                        sx={{
-                          marginTop: 1,
-                          "& .MuiFormControlLabel-label": {
-                            fontSize: "0.875rem",
-                            color: "#4b5563",
-                          },
-                        }}
-                      />
-                    </div>
+                  <div className="overflow-y-auto max-h-[calc(90vh-88px)] px-4 sm:px-6 py-6 custom-scrollbar">
+                    <form
+                      onSubmit={handleSubmit(onSubmit)}
+                      className="space-y-5"
+                    >
+                      <motion.div
+                        custom={0}
+                        variants={sectionVariants}
+                        initial="hidden"
+                        animate="visible"
+                        className="group"
+                      >
+                        <div className="bg-white rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden border border-[#e6efe3]">
+                          <div className="bg-gradient-to-r from-[#c7e8b4] to-[#b9dea6] px-4 py-3">
+                            <h3 className="text-lg sm:text-xl font-bold text-[#2f3e2e] flex items-center gap-2">
+                              <span className="w-8 h-8 bg-white/30 rounded-full flex items-center justify-center text-sm">
+                                1
+                              </span>
+                              Personal Information
+                            </h3>
+                          </div>
+                          <div className="p-4 sm:p-6">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+                              <InputField
+                                control={control}
+                                name="FirstName"
+                                label="First Name *"
+                                error={errors.FirstName}
+                              />
+                              <InputField
+                                control={control}
+                                name="lastName"
+                                label="Last Name *"
+                                error={errors.lastName}
+                              />
+                              <DatePickerField
+                                control={control}
+                                name="dob"
+                                label="Date Of Birth *"
+                                disableFuture={true}
+                                inputFormat="dd-MM-yyyy"
+                                error={errors.dob}
+                              />
+                              <InputField
+                                control={control}
+                                name="age"
+                                label="Age *"
+                                error={errors.age}
+                              />
+                              <div className="sm:col-span-2">
+                                <RadioField
+                                  control={control}
+                                  name="gender"
+                                  label="Gender *"
+                                  dataArray={[
+                                    {
+                                      id: "Male",
+                                      value: "Male",
+                                      label: "Male",
+                                    },
+                                    {
+                                      id: "Female",
+                                      value: "Female",
+                                      label: "Female",
+                                    },
+                                    {
+                                      id: "Other",
+                                      value: "Other",
+                                      label: "Other",
+                                    },
+                                  ]}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </motion.div>
+                      <motion.div
+                        custom={1}
+                        variants={sectionVariants}
+                        initial="hidden"
+                        animate="visible"
+                        className="group"
+                      >
+                        <div className="bg-white rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden border border-[#e6efe3]">
+                          <div className="bg-gradient-to-r from-amber-200 to-amber-100 px-4 py-3">
+                            <h3 className="text-lg sm:text-xl font-bold text-[#2f3e2e] flex items-center gap-2">
+                              <span className="w-8 h-8 bg-white/30 rounded-full flex items-center justify-center text-sm">
+                                2
+                              </span>
+                              Contact Information
+                            </h3>
+                          </div>
+                          <div className="p-4 sm:p-6">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+                              <div className="space-y-2">
+                                <InputField
+                                  control={control}
+                                  name="mobileNo"
+                                  label="Mobile Number *"
+                                  error={errors.mobileNo}
+                                />
+                                <FormControlLabel
+                                  control={
+                                    <Switch
+                                      onChange={(e) => {
+                                        if (e.target.checked) {
+                                          setValue(
+                                            "whatsappNo",
+                                            watch("mobileNo"),
+                                          );
+                                        }
+                                      }}
+                                      sx={{
+                                        "& .MuiSwitch-switchBase.Mui-checked": {
+                                          color: "#16a34a",
+                                        },
+                                        "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track":
+                                          {
+                                            backgroundColor: "lightgreen",
+                                          },
+                                      }}
+                                    />
+                                  }
+                                  label="Same as Mobile Number"
+                                  sx={{
+                                    "& .MuiFormControlLabel-label": {
+                                      fontSize: "0.875rem",
+                                      color: "#4b5563",
+                                    },
+                                  }}
+                                />
+                              </div>
+                              <InputField
+                                control={control}
+                                name="whatsappNo"
+                                label="WhatsApp Number *"
+                                error={errors.whatsappNo}
+                              />
+                              <div className="sm:col-span-2">
+                                <InputField
+                                  control={control}
+                                  type="email"
+                                  name="emailId"
+                                  label="Email *"
+                                  error={errors.emailId}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </motion.div>
+                      <motion.div
+                        custom={2}
+                        variants={sectionVariants}
+                        initial="hidden"
+                        animate="visible"
+                        className="group"
+                      >
+                        <div className="bg-white rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden border border-[#e6efe3]">
+                          <div className="bg-gradient-to-r from-teal-200 to-teal-100 px-4 py-3">
+                            <h3 className="text-lg sm:text-xl font-bold text-[#2f3e2e] flex items-center gap-2">
+                              <span className="w-8 h-8 bg-white/30 rounded-full flex items-center justify-center text-sm">
+                                3
+                              </span>
+                              Address Information
+                            </h3>
+                          </div>
+                          <div className="p-4 sm:p-6">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+                              <InputField
+                                control={control}
+                                name="pinCode"
+                                label="Pin Code *"
+                                error={errors.pinCode}
+                              />
+                              <InputField
+                                control={control}
+                                name="locality"
+                                label="Locality *"
+                                error={errors.locality}
+                              />
+                              <InputField
+                                control={control}
+                                name="city"
+                                label="City *"
+                                error={errors.city}
+                              />
+                              <InputField
+                                control={control}
+                                name="state"
+                                label="State *"
+                                error={errors.state}
+                              />
+                              <InputField
+                                control={control}
+                                name="country"
+                                label="Country *"
+                                error={errors.country}
+                              />
+                              <InputField
+                                control={control}
+                                name="landmark"
+                                label="Landmark"
+                                error={errors.landmark}
+                              />
+                              <div className="sm:col-span-2">
+                                <InputArea
+                                  control={control}
+                                  name="address"
+                                  label="Address *"
+                                  error={errors.address}
+                                  minRows={2}
+                                  maxRows={3}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </motion.div>
+                      <motion.div
+                        custom={3}
+                        variants={sectionVariants}
+                        initial="hidden"
+                        animate="visible"
+                        className="group"
+                      >
+                        <div className="bg-white rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden border border-[#e6efe3]">
+                          <div className="bg-gradient-to-r from-green-200 to-green-100 px-4 py-3">
+                            <h3 className="text-lg sm:text-xl font-bold text-[#2f3e2e] flex items-center gap-2">
+                              <span className="w-8 h-8 bg-white/30 rounded-full flex items-center justify-center text-sm">
+                                4
+                              </span>
+                              Account Information
+                            </h3>
+                          </div>
+                          <div className="p-4 sm:p-6">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+                              <div className="sm:col-span-2">
+                                <Controller
+                                  name="userName"
+                                  control={control}
+                                  render={({ field }) => (
+                                    <TextField
+                                      {...field}
+                                      fullWidth
+                                      size="small"
+                                      label="Username *"
+                                      error={!!errors.userName}
+                                      helperText={errors.userName?.message}
+                                      InputProps={{
+                                        startAdornment: (
+                                          <InputAdornment position="start">
+                                            <PersonIcon
+                                              sx={{
+                                                color: "#7aa874",
+                                                fontSize: 20,
+                                              }}
+                                            />
+                                          </InputAdornment>
+                                        ),
+                                      }}
+                                      sx={{
+                                        "& .MuiOutlinedInput-root": {
+                                          borderRadius: 2,
+                                          bgcolor: "#ffffff",
+                                          transition: "all 0.3s",
+                                          "&:hover": {
+                                            boxShadow:
+                                              "0 2px 8px rgba(122, 168, 116, 0.15)",
+                                          },
+                                        },
+                                      }}
+                                    />
+                                  )}
+                                />
+                              </div>
 
-                    <div className="">
-                      <InputField
-                        control={control}
-                        name="whatsappNo"
-                        label={"Whatsapp Number *"}
-                        error={errors.whatsappNo}
-                      />
-                    </div>
-
-                    <div>
-                      <InputField
-                        control={control}
-                        type={"email"}
-                        name="emailId"
-                        label={"Email *"}
-                        error={errors.emailId}
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div className="border rounded-xl bg-white mt-2">
-                  <h4 className="font-semibold text-xl bg-teal-200 pl-2 rounded-t-xl py-1">
-                    Address Information
-                  </h4>
-                  <div className="grid md:grid-cols-2 gap-4 p-2 pt-3">
-                    <div>
-                      <InputField
-                        control={control}
-                        name="country"
-                        label={"Country *"}
-                        error={errors.country}
-                      />
-                    </div>
-                    <div>
-                      <InputField
-                        control={control}
-                        name="state"
-                        label={"State *"}
-                        error={errors.state}
-                      />
-                    </div>
-                    <div>
-                      <InputField
-                        control={control}
-                        name="city"
-                        label={"City *"}
-                        error={errors.city}
-                      />
-                    </div>
-
-                    <div>
-                      <InputField
-                        control={control}
-                        name="pinCode"
-                        label={"Pin Code *"}
-                        error={errors.pinCode}
-                      />
-                    </div>
-                    <div>
-                      <InputField
-                        control={control}
-                        name="locality"
-                        label={"Locality *"}
-                        error={errors.locality}
-                      />
-                    </div>
-
-                    <div>
-                      <InputField
-                        control={control}
-                        name="landmark"
-                        label={"Landmark *"}
-                        error={errors.landmark}
-                      />
-                    </div>
-
-                    <div className="col-span-2">
-                      <InputArea
-                        control={control}
-                        name="address"
-                        label={"Address *"}
-                        error={errors.address}
-                        minRows={2}
-                        maxRows={3}
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div className="border rounded-xl bg-white mt-2">
-                  <h4 className="font-semibold text-xl bg-green-200 pl-2 rounded-t-xl py-1">
-                    Account Information
-                  </h4>
-                  <div className="grid md:grid-cols-2 gap-4 p-2 pt-3">
-                    <div item xs={12}>
-                      <Controller
-                        name="userName"
-                        control={control}
-                        render={({ field }) => (
-                          <TextField
-                            {...field}
-                            fullWidth
-                            size="small"
-                            label="Username"
-                            error={!!errors.userName}
-                            helperText={errors.userName?.message}
-                            InputProps={{
-                              startAdornment: (
-                                <InputAdornment position="start">
-                                  <PersonIcon
-                                    sx={{ color: "#7aa874", fontSize: 18 }}
-                                  />
-                                </InputAdornment>
-                              ),
-                            }}
-                            sx={{
-                              "& .MuiOutlinedInput-root": {
-                                borderRadius: 2,
-                                bgcolor: "#ffffff",
-                              },
-                            }}
-                          />
-                        )}
-                      />
-                    </div>
-
-                    <div item xs={12} sm={6}>
-                      <Controller
-                        name="passWord"
-                        control={control}
-                        render={({ field }) => (
-                          <TextField
-                            {...field}
-                            fullWidth
-                            size="small"
-                            label="Password"
-                            type={showPassword ? "text" : "password"}
-                            error={!!errors.passWord}
-                            helperText={errors.passWord?.message}
-                            InputProps={{
-                              startAdornment: (
-                                <InputAdornment position="start">
-                                  <LockIcon
-                                    sx={{ color: "#7aa874", fontSize: 18 }}
-                                  />
-                                </InputAdornment>
-                              ),
-                              endAdornment: (
-                                <InputAdornment position="end">
-                                  <IconButton
+                              <Controller
+                                name="passWord"
+                                control={control}
+                                render={({ field }) => (
+                                  <TextField
+                                    {...field}
+                                    fullWidth
                                     size="small"
-                                    onClick={() =>
-                                      setShowPassword(!showPassword)
-                                    }
-                                  >
-                                    {showPassword ? (
-                                      <VisibilityOffIcon
-                                        sx={{ fontSize: 18 }}
-                                      />
-                                    ) : (
-                                      <VisibilityIcon sx={{ fontSize: 18 }} />
-                                    )}
-                                  </IconButton>
-                                </InputAdornment>
-                              ),
-                            }}
-                            sx={{
-                              "& .MuiOutlinedInput-root": {
-                                borderRadius: 2,
-                                bgcolor: "#ffffff",
-                              },
-                            }}
-                          />
-                        )}
-                      />
-                    </div>
-
-                    <div item xs={12} sm={6}>
-                      <Controller
-                        name="confirmPassword"
-                        control={control}
-                        render={({ field }) => (
-                          <TextField
-                            {...field}
-                            fullWidth
-                            size="small"
-                            label="Confirm Password"
-                            type={showConfirmPassword ? "text" : "password"}
-                            error={!!errors.confirmPassword}
-                            helperText={errors.confirmPassword?.message}
-                            InputProps={{
-                              startAdornment: (
-                                <InputAdornment position="start">
-                                  <LockIcon
-                                    sx={{ color: "#7aa874", fontSize: 18 }}
+                                    label="Password *"
+                                    onPaste={(e) => e.preventDefault()}
+                                    type={showPassword ? "text" : "password"}
+                                    error={!!errors.passWord}
+                                    helperText={errors.passWord?.message}
+                                    InputProps={{
+                                      startAdornment: (
+                                        <InputAdornment position="start">
+                                          <LockIcon
+                                            sx={{
+                                              color: "#7aa874",
+                                              fontSize: 20,
+                                            }}
+                                          />
+                                        </InputAdornment>
+                                      ),
+                                      endAdornment: (
+                                        <InputAdornment position="end">
+                                          <IconButton
+                                            size="small"
+                                            onClick={() =>
+                                              setShowPassword(!showPassword)
+                                            }
+                                          >
+                                            {showPassword ? (
+                                              <VisibilityOffIcon
+                                                sx={{ fontSize: 20 }}
+                                              />
+                                            ) : (
+                                              <VisibilityIcon
+                                                sx={{ fontSize: 20 }}
+                                              />
+                                            )}
+                                          </IconButton>
+                                        </InputAdornment>
+                                      ),
+                                    }}
+                                    sx={{
+                                      "& .MuiOutlinedInput-root": {
+                                        borderRadius: 2,
+                                        bgcolor: "#ffffff",
+                                        transition: "all 0.3s",
+                                        "&:hover": {
+                                          boxShadow:
+                                            "0 2px 8px rgba(122, 168, 116, 0.15)",
+                                        },
+                                      },
+                                    }}
                                   />
-                                </InputAdornment>
-                              ),
-                              endAdornment: (
-                                <InputAdornment position="end">
-                                  <IconButton
+                                )}
+                              />
+
+                              <Controller
+                                name="confirmPassword"
+                                control={control}
+                                render={({ field }) => (
+                                  <TextField
+                                    {...field}
+                                    fullWidth
                                     size="small"
-                                    onClick={() =>
-                                      setShowConfirmPassword(
-                                        !showConfirmPassword,
-                                      )
+                                    label="Confirm Password *"
+                                    type={
+                                      showConfirmPassword ? "text" : "password"
                                     }
-                                  >
-                                    {showConfirmPassword ? (
-                                      <VisibilityOffIcon
-                                        sx={{ fontSize: 18 }}
+                                    onPaste={(e) => e.preventDefault()}
+                                    error={!!errors.confirmPassword}
+                                    helperText={errors.confirmPassword?.message}
+                                    InputProps={{
+                                      startAdornment: (
+                                        <InputAdornment position="start">
+                                          <LockIcon
+                                            sx={{
+                                              color: "#7aa874",
+                                              fontSize: 20,
+                                            }}
+                                          />
+                                        </InputAdornment>
+                                      ),
+                                      endAdornment: (
+                                        <InputAdornment position="end">
+                                          <IconButton
+                                            size="small"
+                                            onClick={() =>
+                                              setShowConfirmPassword(
+                                                !showConfirmPassword,
+                                              )
+                                            }
+                                          >
+                                            {showConfirmPassword ? (
+                                              <VisibilityOffIcon
+                                                sx={{ fontSize: 20 }}
+                                              />
+                                            ) : (
+                                              <VisibilityIcon
+                                                sx={{ fontSize: 20 }}
+                                              />
+                                            )}
+                                          </IconButton>
+                                        </InputAdornment>
+                                      ),
+                                    }}
+                                    sx={{
+                                      "& .MuiOutlinedInput-root": {
+                                        borderRadius: 2,
+                                        bgcolor: "#ffffff",
+                                        transition: "all 0.3s",
+                                        "&:hover": {
+                                          boxShadow:
+                                            "0 2px 8px rgba(122, 168, 116, 0.15)",
+                                        },
+                                      },
+                                    }}
+                                  />
+                                )}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </motion.div>
+                      <motion.div
+                        custom={4}
+                        variants={sectionVariants}
+                        initial="hidden"
+                        animate="visible"
+                      >
+                        <div className="bg-white rounded-2xl shadow-md border border-[#e6efe3] overflow-hidden">
+                          <div className="p-4 sm:p-6">
+                            <h4 className="text-base sm:text-lg font-bold text-[#2f3e2e] mb-3">
+                              Terms and Conditions
+                            </h4>
+                            <div className="max-h-48 overflow-y-auto p-3 sm:p-4 bg-[#f8fbf6] rounded-xl border border-[#e6efe3] text-xs sm:text-sm text-[#4b5563] leading-relaxed custom-scrollbar">
+                              <p className="mb-3">
+                                <strong>1. Acceptance of Terms</strong>
+                              </p>
+                              <p className="mb-4">
+                                By creating an account with JYA (Join Your
+                                Ayurveda), you agree to embark on a holistic
+                                wellness journey. These terms govern your use of
+                                our Ayurvedic wellness platform and services. If
+                                you do not agree with any part of these terms,
+                                please do not register.
+                              </p>
+
+                              <p className="mb-3">
+                                <strong>
+                                  2. Wellness Services & Consultation
+                                </strong>
+                              </p>
+                              <p className="mb-4">
+                                Our platform provides Ayurvedic consultations,
+                                wellness guidance, herbal product
+                                recommendations, and holistic health resources.
+                                All advice is based on traditional Ayurvedic
+                                principles and should complement, not replace,
+                                conventional medical care. Always consult
+                                qualified healthcare professionals for medical
+                                conditions.
+                              </p>
+
+                              <p className="mb-3">
+                                <strong>3. Health Information & Privacy</strong>
+                              </p>
+                              <p className="mb-4">
+                                We collect your health information, dosha
+                                profile, lifestyle habits, and wellness goals to
+                                provide personalized Ayurvedic recommendations.
+                                Your health data is confidential and processed
+                                in accordance with our Privacy Policy and
+                                applicable health data protection regulations.
+                              </p>
+
+                              <p className="mb-3">
+                                <strong>4. Accurate Health Information</strong>
+                              </p>
+                              <p className="mb-4">
+                                You agree to provide accurate and complete
+                                health information including medical history,
+                                allergies, current medications, and health
+                                conditions. Accurate information is crucial for
+                                safe and effective Ayurvedic recommendations.
+                                Update your health profile whenever your
+                                condition changes.
+                              </p>
+
+                              <p className="mb-3">
+                                <strong>
+                                  5. Product Usage & Responsibility
+                                </strong>
+                              </p>
+                              <p className="mb-4">
+                                Ayurvedic products and remedies recommended
+                                through our platform should be used as directed.
+                                You are responsible for checking ingredient
+                                lists for potential allergens. Discontinue use
+                                and consult a healthcare provider if you
+                                experience adverse reactions. Pregnant or
+                                nursing women should seek medical advice before
+                                using any herbal products.
+                              </p>
+
+                              <p className="mb-3">
+                                <strong>6. Account Security & Usage</strong>
+                              </p>
+                              <p className="mb-4">
+                                You are responsible for maintaining the
+                                confidentiality of your account credentials. Do
+                                not share your account with others as it
+                                contains personal health information. We reserve
+                                the right to suspend accounts that violate our
+                                community guidelines or misuse our wellness
+                                services.
+                              </p>
+
+                              <p className="mb-3">
+                                <strong>7. Limitation of Liability</strong>
+                              </p>
+                              <p className="mb-4">
+                                While we strive to provide authentic Ayurvedic
+                                guidance, individual results may vary. We are
+                                not liable for any adverse effects from
+                                following wellness recommendations or using
+                                products. Our services are educational and
+                                complementary in nature, not a substitute for
+                                professional medical diagnosis or treatment.
+                              </p>
+
+                              <p className="mb-3">
+                                <strong>8. Intellectual Property</strong>
+                              </p>
+                              <p className="mb-4">
+                                All content including Ayurvedic recipes, dosha
+                                assessments, wellness plans, and educational
+                                materials are proprietary to JYA. You may use
+                                them for personal wellness purposes but may not
+                                reproduce, distribute, or commercialize our
+                                content without permission.
+                              </p>
+
+                              <p className="mb-3">
+                                <strong>9. Changes to Terms</strong>
+                              </p>
+                              <p>
+                                We reserve the right to modify these terms to
+                                better serve your wellness journey. Continued
+                                use of our platform after changes constitutes
+                                acceptance of the modified terms. We will notify
+                                users of significant changes via email or
+                                platform notifications.
+                              </p>
+                            </div>
+
+                            <Controller
+                              name="agreeToTerms"
+                              control={control}
+                              render={({ field }) => (
+                                <Box>
+                                  <FormControlLabel
+                                    control={
+                                      <Checkbox
+                                        {...field}
+                                        checked={field.value}
+                                        sx={{
+                                          color: errors.agreeToTerms
+                                            ? "#d32f2f"
+                                            : "#7aa874",
+                                          "&.Mui-checked": {
+                                            color: "#7aa874",
+                                          },
+                                        }}
                                       />
-                                    ) : (
-                                      <VisibilityIcon sx={{ fontSize: 18 }} />
-                                    )}
-                                  </IconButton>
-                                </InputAdornment>
-                              ),
-                            }}
-                            sx={{
-                              "& .MuiOutlinedInput-root": {
-                                borderRadius: 2,
-                                bgcolor: "#ffffff",
-                              },
-                            }}
-                          />
-                        )}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <Box
-                sx={{
-                  mt: 2,
-                  p: 2,
-                  border: "1px solid #e6efe3",
-                  borderRadius: 2,
-                  bgcolor: "#ffffff",
-                }}
-              >
-                <Typography
-                  variant="subtitle2"
-                  sx={{
-                    fontWeight: 600,
-                    color: "#2f3e2e",
-                    mb: 1,
-                  }}
-                >
-                  Terms and Conditions
-                </Typography>
-                <Box
-                  sx={{
-                    maxHeight: "150px",
-                    overflowY: "auto",
-                    p: 1.5,
-                    bgcolor: "#f8fbf6",
-                    borderRadius: 1,
-                    border: "1px solid #e6efe3",
-                    fontSize: "0.8rem",
-                    color: "#4b5563",
-                    lineHeight: 1.6,
-                    "&::-webkit-scrollbar": {
-                      width: "6px",
-                    },
-                    "&::-webkit-scrollbar-track": {
-                      background: "#f1f1f1",
-                      borderRadius: "3px",
-                    },
-                    "&::-webkit-scrollbar-thumb": {
-                      background: "#7aa874",
-                      borderRadius: "3px",
-                    },
-                    "&::-webkit-scrollbar-thumb:hover": {
-                      background: "#6fa55b",
-                    },
-                  }}
-                >
-                  <Typography
-                    variant="body2"
-                    sx={{ mb: 1, fontSize: "0.8rem" }}
-                  >
-                    <strong>1. Acceptance of Terms</strong>
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    sx={{ mb: 1.5, fontSize: "0.8rem" }}
-                  >
-                    By creating an account with JYA (Join Your Ayurveda), you
-                    agree to embark on a holistic wellness journey. These terms
-                    govern your use of our Ayurvedic wellness platform and
-                    services. If you do not agree with any part of these terms,
-                    please do not register.
-                  </Typography>
-
-                  <Typography
-                    variant="body2"
-                    sx={{ mb: 1, fontSize: "0.8rem" }}
-                  >
-                    <strong>2. Wellness Services & Consultation</strong>
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    sx={{ mb: 1.5, fontSize: "0.8rem" }}
-                  >
-                    Our platform provides Ayurvedic consultations, wellness
-                    guidance, herbal product recommendations, and holistic
-                    health resources. All advice is based on traditional
-                    Ayurvedic principles and should complement, not replace,
-                    conventional medical care. Always consult qualified
-                    healthcare professionals for medical conditions.
-                  </Typography>
-
-                  <Typography
-                    variant="body2"
-                    sx={{ mb: 1, fontSize: "0.8rem" }}
-                  >
-                    <strong>3. Health Information & Privacy</strong>
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    sx={{ mb: 1.5, fontSize: "0.8rem" }}
-                  >
-                    We collect your health information, dosha profile, lifestyle
-                    habits, and wellness goals to provide personalized Ayurvedic
-                    recommendations. Your health data is confidential and
-                    processed in accordance with our Privacy Policy and
-                    applicable health data protection regulations.
-                  </Typography>
-
-                  <Typography
-                    variant="body2"
-                    sx={{ mb: 1, fontSize: "0.8rem" }}
-                  >
-                    <strong>4. Accurate Health Information</strong>
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    sx={{ mb: 1.5, fontSize: "0.8rem" }}
-                  >
-                    You agree to provide accurate and complete health
-                    information including medical history, allergies, current
-                    medications, and health conditions. Accurate information is
-                    crucial for safe and effective Ayurvedic recommendations.
-                    Update your health profile whenever your condition changes.
-                  </Typography>
-
-                  <Typography
-                    variant="body2"
-                    sx={{ mb: 1, fontSize: "0.8rem" }}
-                  >
-                    <strong>5. Product Usage & Responsibility</strong>
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    sx={{ mb: 1.5, fontSize: "0.8rem" }}
-                  >
-                    Ayurvedic products and remedies recommended through our
-                    platform should be used as directed. You are responsible for
-                    checking ingredient lists for potential allergens.
-                    Discontinue use and consult a healthcare provider if you
-                    experience adverse reactions. Pregnant or nursing women
-                    should seek medical advice before using any herbal products.
-                  </Typography>
-
-                  <Typography
-                    variant="body2"
-                    sx={{ mb: 1, fontSize: "0.8rem" }}
-                  >
-                    <strong>6. Account Security & Usage</strong>
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    sx={{ mb: 1.5, fontSize: "0.8rem" }}
-                  >
-                    You are responsible for maintaining the confidentiality of
-                    your account credentials. Do not share your account with
-                    others as it contains personal health information. We
-                    reserve the right to suspend accounts that violate our
-                    community guidelines or misuse our wellness services.
-                  </Typography>
-
-                  <Typography
-                    variant="body2"
-                    sx={{ mb: 1, fontSize: "0.8rem" }}
-                  >
-                    <strong>7. Limitation of Liability</strong>
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    sx={{ mb: 1.5, fontSize: "0.8rem" }}
-                  >
-                    While we strive to provide authentic Ayurvedic guidance,
-                    individual results may vary. We are not liable for any
-                    adverse effects from following wellness recommendations or
-                    using products. Our services are educational and
-                    complementary in nature, not a substitute for professional
-                    medical diagnosis or treatment.
-                  </Typography>
-
-                  <Typography
-                    variant="body2"
-                    sx={{ mb: 1, fontSize: "0.8rem" }}
-                  >
-                    <strong>8. Intellectual Property</strong>
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    sx={{ mb: 1.5, fontSize: "0.8rem" }}
-                  >
-                    All content including Ayurvedic recipes, dosha assessments,
-                    wellness plans, and educational materials are proprietary to
-                    JYA. You may use them for personal wellness purposes but may
-                    not reproduce, distribute, or commercialize our content
-                    without permission.
-                  </Typography>
-
-                  <Typography
-                    variant="body2"
-                    sx={{ mb: 1, fontSize: "0.8rem" }}
-                  >
-                    <strong>9. Changes to Terms</strong>
-                  </Typography>
-                  <Typography variant="body2" sx={{ fontSize: "0.8rem" }}>
-                    We reserve the right to modify these terms to better serve
-                    your wellness journey. Continued use of our platform after
-                    changes constitutes acceptance of the modified terms. We
-                    will notify users of significant changes via email or
-                    platform notifications.
-                  </Typography>
-                </Box>
-
-                <Controller
-                  name="agreeToTerms"
-                  control={control}
-                  render={({ field }) => (
-                    <Box>
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            {...field}
-                            checked={field.value}
-                            sx={{
-                              color: errors.agreeToTerms
-                                ? "#d32f2f"
-                                : "#7aa874",
-                              "&.Mui-checked": {
-                                color: "#7aa874",
-                              },
-                            }}
-                          />
-                        }
-                        label={
-                          <Typography
-                            variant="body2"
-                            sx={{
-                              fontSize: "0.85rem",
-                              color: errors.agreeToTerms
-                                ? "#d32f2f"
-                                : "#4b5563",
+                                    }
+                                    label={
+                                      <Typography
+                                        variant="body2"
+                                        sx={{
+                                          fontSize: "0.875rem",
+                                          color: errors.agreeToTerms
+                                            ? "#d32f2f"
+                                            : "#4b5563",
+                                        }}
+                                      >
+                                        I have read and agree to the Terms and
+                                        Conditions *
+                                      </Typography>
+                                    }
+                                    sx={{ mt: 2 }}
+                                  />
+                                  {errors.agreeToTerms && (
+                                    <FormHelperText error sx={{ ml: 2 }}>
+                                      {errors.agreeToTerms.message}
+                                    </FormHelperText>
+                                  )}
+                                </Box>
+                              )}
+                            />
+                          </div>
+                        </div>
+                      </motion.div>
+                      <motion.div
+                        custom={5}
+                        variants={sectionVariants}
+                        initial="hidden"
+                        animate="visible"
+                      >
+                        <Button
+                          type="submit"
+                          fullWidth
+                          disabled={!agreeToTerms}
+                          sx={{
+                            borderRadius: 3,
+                            py: 1.5,
+                            textTransform: "none",
+                            fontWeight: 700,
+                            fontSize: "1rem",
+                            background: agreeToTerms
+                              ? "linear-gradient(135deg, #c7e8b4 0%, #7fb069 100%)"
+                              : "#e0e0e0",
+                            color: agreeToTerms ? "#1f2d1f" : "#9e9e9e",
+                            boxShadow: agreeToTerms
+                              ? "0 4px 15px rgba(127, 176, 105, 0.3)"
+                              : "none",
+                            transition: "all 0.3s ease",
+                            "&:hover": {
+                              background: agreeToTerms
+                                ? "linear-gradient(135deg, #b9dea6 0%, #6fa55b 100%)"
+                                : "#e0e0e0",
+                              transform: agreeToTerms
+                                ? "translateY(-2px)"
+                                : "none",
+                              boxShadow: agreeToTerms
+                                ? "0 6px 20px rgba(127, 176, 105, 0.4)"
+                                : "none",
+                            },
+                            "&:disabled": {
+                              cursor: "not-allowed",
+                            },
+                          }}
+                        >
+                          Create Account
+                        </Button>
+                      </motion.div>
+                      <Divider sx={{ my: 2 }}>
+                        <Typography
+                          variant="caption"
+                          sx={{
+                            color: "#6b7d6a",
+                            fontSize: "0.75rem",
+                            fontWeight: 500,
+                          }}
+                        >
+                          OR
+                        </Typography>
+                      </Divider>
+                      <motion.div
+                        custom={6}
+                        variants={sectionVariants}
+                        initial="hidden"
+                        animate="visible"
+                        className="text-center"
+                      >
+                        <Typography
+                          variant="body2"
+                          sx={{
+                            color: "#6b7d6a",
+                            fontSize: "0.9rem",
+                          }}
+                        >
+                          Already have an account?{" "}
+                          <span
+                            className="font-semibold cursor-pointer text-[#5d8c57] hover:text-[#4a7046] transition-colors duration-200 underline decoration-2 underline-offset-2"
+                            onClick={() => {
+                              handleModalClose();
+                              setOpenLogin(true);
                             }}
                           >
-                            I have read and agree to the Terms and Conditions *
-                          </Typography>
-                        }
-                        sx={{ mt: 1 }}
-                      />
-                      {errors.agreeToTerms && (
-                        <FormHelperText error sx={{ ml: 2 }}>
-                          {errors.agreeToTerms.message}
-                        </FormHelperText>
-                      )}
-                    </Box>
-                  )}
-                />
-              </Box>
-
-              <Button
-                type="submit"
-                fullWidth
-                disabled={!agreeToTerms}
-                sx={{
-                  borderRadius: 2,
-                  py: 0.9,
-                  mt: 2,
-                  textTransform: "none",
-                  fontWeight: 600,
-                  fontSize: "0.95rem",
-                  background: agreeToTerms
-                    ? "linear-gradient(135deg,#c7e8b4 0%,#7fb069 100%)"
-                    : "#e0e0e0",
-                  color: agreeToTerms ? "#1f2d1f" : "#9e9e9e",
-                  "&:hover": {
-                    background: agreeToTerms
-                      ? "linear-gradient(135deg,#b9dea6 0%,#6fa55b 100%)"
-                      : "#e0e0e0",
-                  },
-                  "&:disabled": {
-                    cursor: "not-allowed",
-                  },
-                }}
-              >
-                Sign Up
-              </Button>
-
-              <Divider sx={{ my: 1.5 }}>
-                <Typography
-                  variant="caption"
-                  sx={{ color: "#6b7d6a", fontSize: "0.7rem" }}
-                >
-                  OR
-                </Typography>
-              </Divider>
-
-              <Typography
-                variant="body2"
-                sx={{
-                  textAlign: "center",
-                  color: "#6b7d6a",
-                  fontSize: "0.85rem",
-                }}
-              >
-                Already have an account?{" "}
-                <span
-                  style={{
-                    fontWeight: 600,
-                    cursor: "pointer",
-                    color: "#5d8c57",
-                  }}
-                  onClick={() => {
-                    handleClose();
-                    setOpenLogin(true);
-                  }}
-                >
-                  Login
-                </span>
-              </Typography>
-            </form>
-          </Box>
+                            Login here
+                          </span>
+                        </Typography>
+                      </motion.div>
+                    </form>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </Box>
       </Modal>
+
+  
+
       <CommonLoader isLoading={loading} />
       <ConfirmationModal
         confirmationOpen={openConfirmationModal}
@@ -964,6 +1033,26 @@ function SignUp({ open, handleClose, setOpenLogin }) {
         confirmationMsg="Are you sure you want to create this account?"
         confirmationButtonMsg="Confirm"
       />
+
+      <style jsx global>{`
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: #7aa874;
+          border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: #6fa55b;
+        }
+        .custom-scrollbar {
+          scrollbar-width: thin;
+          scrollbar-color: #7aa874 transparent;
+        }
+      `}</style>
     </>
   );
 }

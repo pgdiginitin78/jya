@@ -474,15 +474,15 @@ export default function HomePage() {
       "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-2xl overflow-hidden shadow-xl cursor-pointer transition-all duration-500";
 
     if (offset === 0) {
-      return `${base} w-[180px] h-[240px] sm:w-[220px] sm:h-[280px] md:w-[260px] md:h-[320px] lg:w-[300px] lg:h-[360px] 2xl:w-[400px] 2xl:h-[400px] z-30`;
+      return `${base} w-[180px] h-[240px] sm:w-[220px] sm:h-[280px] md:w-[260px] md:h-[320px] lg:w-[300px] lg:h-[360px] 2xl:w-[400px] 2xl:h-[540px] z-30`;
     }
 
     if (offset === -1 || offset === 1) {
-      return `${base} w-[140px] h-[200px] sm:w-[170px] sm:h-[230px] md:w-[200px] md:h-[260px] lg:w-[230px] lg:h-[290px] 2xl:w-[330px] 2xl:h-[350px] z-20 opacity-90`;
+      return `${base} w-[140px] h-[200px] sm:w-[170px] sm:h-[230px] md:w-[200px] md:h-[260px] lg:w-[230px] lg:h-[290px] 2xl:w-[330px] 2xl:h-[480px] z-20 opacity-90`;
     }
 
     if (offset === -2 || offset === 2) {
-      return `${base} w-[100px] h-[160px] sm:w-[120px] sm:h-[180px] md:w-[150px] md:h-[210px] lg:w-[180px] lg:h-[240px] 2xl:w-[280px] 2xl:h-[300px] z-10 opacity-60`;
+      return `${base} w-[100px] h-[160px] sm:w-[120px] sm:h-[180px] md:w-[150px] md:h-[210px] lg:w-[180px] lg:h-[240px] 2xl:w-[280px] 2xl:h-[440px] z-10 opacity-60`;
     }
 
     return "hidden";
@@ -836,7 +836,7 @@ export default function HomePage() {
   return (
     <>
       <div className="pt-16 px-4 md:px-10 2xl:px-20">
-        <div className="w-full py-8 md:py-10 ">
+        <div className="w-full py-8 md:py-10 2xl:py-24">
           <section className="w-full mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 md:gap-6 items-center">
               <div className="space-y-6  z-10">
@@ -867,7 +867,6 @@ export default function HomePage() {
                   transition={{ duration: 0.9, delay: 0.55 }}
                   className="grid grid-cols-1 sm:grid-cols-2 lg:flex items-center lg:flex-wrap gap-3 pt-2 z-50"
                 >
-                  {/* Button 1 - Outlined Style */}
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
@@ -877,7 +876,6 @@ export default function HomePage() {
                     Start Self-Discovery Game
                   </motion.button>
 
-                  {/* Button 2 - Contained Style */}
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
@@ -887,7 +885,6 @@ export default function HomePage() {
                     Become a JYA Member
                   </motion.button>
 
-                  {/* Button 3 - Special Animated Border */}
                   <motion.button
                     type="button"
                     onClick={() => {
@@ -922,7 +919,7 @@ export default function HomePage() {
                 </motion.div>
               </div>
               <div className="flex justify-center lg:justify-end items-center z-0 w-full px-4 sm:px-8 md:px-12 lg:px-16 xl:px-24 2xl:px-12">
-                <div className="relative h-[390px] w-full  overflow-visible">
+                <div className="relative h-[390px] 2xl:h-[480px] w-full  overflow-visible">
                   {slides.map((slide, index) => {
                     const offset = getOffset(index);
                     return (

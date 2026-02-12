@@ -26,6 +26,7 @@ import {
 } from "../../components/common/toast/CustomToast";
 import { userLogin } from "../../services/login/LoginServices";
 import SignUp from "./SignUp";
+import CancelButtonModal from "../../components/common/button/CancelButtonModal";
 
 const modalStyle = {
   position: "absolute",
@@ -45,7 +46,7 @@ const modalStyle = {
 
 const loginValidationSchema = yup.object().shape({
   userName: yup.string().required("Email or Mobile required"),
-  password: yup.string().min(4, "Min 4 chars").required("Password required"),
+  // password: yup.string().min(4, "Min 4 chars").required("Password required"),
 });
 
 function LoginPage({ open, handleClose, setOpenLogin }) {
@@ -77,13 +78,15 @@ function LoginPage({ open, handleClose, setOpenLogin }) {
       setLoading(true);
       setOpenConfirmationModal(false);
 
-      const { data, status } = await userLogin(formData);
+      const response = await userLogin(formData);
+      const { data, status } = response;
 
       if (status === 200 && data?.accessToken) {
         localStorage.setItem("accessToken", data.accessToken);
         localStorage.setItem("refreshToken", data.refreshToken);
         localStorage.setItem("user", JSON.stringify(data.user));
         localStorage.setItem("expiresIn", data.expiresIn);
+        localStorage.setItem("tokenSetTime", Date.now());
 
         successAlert(data.message || "Login successful");
 
@@ -92,10 +95,15 @@ function LoginPage({ open, handleClose, setOpenLogin }) {
           reset();
         }, 800);
       } else {
-        throw new Error("Login failed");
+        throw new Error(data?.message || "Invalid login credentials");
       }
     } catch (error) {
-      errorAlert(error.response?.data?.message || error.message);
+  
+      console.log("password",error);
+      
+      errorAlert(
+        error?.response?.data?.message || "Invalid username or password",
+      );
     } finally {
       setLoading(false);
     }
@@ -131,21 +139,7 @@ function LoginPage({ open, handleClose, setOpenLogin }) {
               flexDirection: "column",
             }}
           >
-            <IconButton
-              onClick={handleModalClose}
-              sx={{
-                position: "absolute",
-                right: { xs: 8, sm: 12 },
-                top: { xs: 8, sm: 12 },
-                zIndex: 10,
-                bgcolor: "rgba(255,255,255,0.8)",
-                "&:hover": {
-                  bgcolor: "rgba(255,255,255,0.95)",
-                },
-              }}
-            >
-              <CloseIcon />
-            </IconButton>
+            <CancelButtonModal onClick={handleModalClose} />
             <Box
               sx={{
                 overflowY: "auto",
@@ -173,7 +167,7 @@ function LoginPage({ open, handleClose, setOpenLogin }) {
               <Box
                 sx={{
                   textAlign: "center",
-                  mb: { xs: 3, sm: 3.5, md: 4, lg: 4.5, xl: 3.5 },
+
                   mt: { xs: 1, sm: 0 },
                 }}
               >
@@ -204,7 +198,7 @@ function LoginPage({ open, handleClose, setOpenLogin }) {
                   Login to continue your wellness journey
                 </Typography>
               </Box>
-              <form onSubmit={handleSubmit(onSubmit)}>
+              <form onSubmit={handleSubmit(onSubmit)} className="mt-2">
                 <Box
                   sx={{
                     display: "flex",

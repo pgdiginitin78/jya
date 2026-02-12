@@ -26,7 +26,9 @@ const InputField = ({
   minRows,
   maxRows,
   multiline,
+  onPaste
 }) => {
+  //  onPaste={(e) => e.preventDefault()}
   return (
     <FormControl fullWidth size="small" sx={sx}>
       <Controller
@@ -46,6 +48,7 @@ const InputField = ({
               InputProps={{
                 disabled: disabled,
               }}
+              onPaste={onPaste}
               minRows={minRows}
               maxRows={maxRows}
               multiline={multiline}

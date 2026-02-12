@@ -22,6 +22,7 @@ import JYALogoImg from "../../asset/JnanaYogAyuLogo.png";
 import LoginPage from "../login/LoginPage";
 import SignUp from "../login/SignUp";
 import { logoutUser } from "../../Actions";
+import AyurvedaSuccessDialog from "../login/AyurvedaSuccessDialog";
 
 const dropdownMotion = {
   initial: { opacity: 0, y: -10, scale: 0.95 },
@@ -66,6 +67,8 @@ export default function ModernNavbar() {
   const [mobileCommunityOpen, setMobileCommunityOpen] = useState(false);
   const [currentTime, setCurrentTime] = useState(new Date());
   const [scrolled, setScrolled] = useState(false);
+  const [openSuccessDialog, setOpenSuccessDialog] = useState(false);
+const [successMessage, setSuccessMessage] = useState("");
 
   const userString = localStorage.getItem("user");
   const user =
@@ -931,8 +934,18 @@ export default function ModernNavbar() {
           open={openSignUpModal}
           handleClose={() => setOpenSignUpModal(false)}
           setOpenLogin={setOpenLogin}
+          setOpenSuccessDialog={setOpenSuccessDialog}
+          setSuccessMessage={setSuccessMessage}
+        />
+      )}
+      {openSuccessDialog && (
+        <AyurvedaSuccessDialog
+          open={openSuccessDialog}
+          onClose={()=>setOpenSuccessDialog(false)}
+          contentMessage={successMessage}
         />
       )}
     </>
   );
 }
+
