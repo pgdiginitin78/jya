@@ -15,14 +15,12 @@ const InputField = ({
   error,
   onKeyDown,
   control,
-  dontCapitalize,
   color,
   shrink,
   InputLabelProps,
   tableInputField,
   accept,
   id,
-  onClick,
   minRows,
   maxRows,
   multiline,
@@ -87,7 +85,7 @@ const InputField = ({
               }}
               autoFocus={focused ? true : false}
               onWheel={(e) => {
-                if (type == "number") {
+                if (type === "number") {
                   e.target.blur();
                 }
               }}

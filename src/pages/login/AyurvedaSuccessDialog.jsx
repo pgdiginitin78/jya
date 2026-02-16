@@ -2,8 +2,8 @@ import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import CloseIcon from "@mui/icons-material/Close";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import { Box, IconButton, Modal } from "@mui/material";
-import { motion, AnimatePresence } from "framer-motion";
-import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { useEffect } from "react";
 
 const modalStyle = {
   position: "absolute",
@@ -17,31 +17,6 @@ const modalStyle = {
   p: 0,
   borderRadius: 3,
 };
-
-const ConfettiParticle = ({ delay, xOffset, color }) => (
-  <motion.div
-    className="absolute w-2 h-2 rounded-full"
-    style={{
-      background: color,
-      left: "50%",
-      top: "20%",
-      willChange: "transform, opacity",
-    }}
-    initial={{ opacity: 0, scale: 0, x: 0, y: 0 }}
-    animate={{
-      opacity: [0, 1, 1, 0],
-      scale: [0, 1, 1, 0.5],
-      x: xOffset,
-      y: [0, 200, 300],
-      rotate: [0, 180, 360],
-    }}
-    transition={{
-      duration: 1.6,
-      delay: delay,
-      ease: [0.25, 0.1, 0.25, 1],
-    }}
-  />
-);
 
 const FloatingLeaf = ({ delay, direction, size = "20px" }) => (
   <motion.div
@@ -70,12 +45,10 @@ const FloatingLeaf = ({ delay, direction, size = "20px" }) => (
 );
 
 const AyurvedaSuccessDialog = ({ open, onClose, contentMessage }) => {
-  const [showConfetti, setShowConfetti] = useState(false);
 
   useEffect(() => {
     if (open) {
-      setShowConfetti(true);
-      const confettiTimer = setTimeout(() => setShowConfetti(false), 1800);
+      const confettiTimer = setTimeout(() => 1800);
       const closeTimer = setTimeout(() => onClose(), 4000);
 
       return () => {
@@ -85,12 +58,7 @@ const AyurvedaSuccessDialog = ({ open, onClose, contentMessage }) => {
     }
   }, [open, onClose]);
 
-  const confettiColors = [
-    "linear-gradient(135deg, #10b981, #059669)",
-    "linear-gradient(135deg, #f59e0b, #d97706)",
-    "linear-gradient(135deg, #34d399, #10b981)",
-    "linear-gradient(135deg, #fbbf24, #f59e0b)",
-  ];
+
 
   return (
     <Modal
@@ -157,18 +125,7 @@ const AyurvedaSuccessDialog = ({ open, onClose, contentMessage }) => {
                   }}
                 />
 
-                {showConfetti && (
-                  <>
-                    {Array.from({ length: 14 }).map((_, i) => (
-                      <ConfettiParticle
-                        key={i}
-                        delay={i * 0.05}
-                        xOffset={Math.random() * 260 - 130}
-                        color={confettiColors[i % confettiColors.length]}
-                      />
-                    ))}
-                  </>
-                )}
+      
 
                 <div className="absolute top-4 right-4 z-10">
                   <IconButton

@@ -1,5 +1,3 @@
-import { yupResolver } from "@hookform/resolvers/yup";
-import CloseIcon from "@mui/icons-material/Close";
 import LockIcon from "@mui/icons-material/Lock";
 import PersonIcon from "@mui/icons-material/Person";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -18,29 +16,25 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import axios from "axios";
+import { format } from "date-fns";
+import { AnimatePresence, motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
-import { motion, AnimatePresence } from "framer-motion";
+import { yupResolver } from "@hookform/resolvers/yup";
 import JYALogoImg from "../../asset/JnanaYogAyuLogo.png";
-
-import axios from "axios";
-import CommonLoader from "../../components/common/commonLoader/CommonLoader";
+import CancelButtonModal from "../../components/common/button/CancelButtonModal";
+import { useLoader } from "../../components/common/commonLoader/LoaderContext";
 import ConfirmationModal from "../../components/common/ConfirmationModal";
 import DatePickerField from "../../components/common/formFields/DatePickerField";
 import InputArea from "../../components/common/formFields/InputArea";
 import InputField from "../../components/common/formFields/InputField";
 import RadioField from "../../components/common/formFields/RadioField";
-import {
-  errorAlert,
-  successAlert,
-} from "../../components/common/toast/CustomToast";
+import { errorAlert } from "../../components/common/toast/CustomToast";
 import { signupJYA } from "../../services/login/LoginServices";
-import { format } from "date-fns";
-import CancelButtonModal from "../../components/common/button/CancelButtonModal";
 
 // Import the Ayurveda Success Dialog
-import AyurvedaSuccessDialog from "./AyurvedaSuccessDialog";
 
 const modalStyle = {
   position: "absolute",
@@ -161,16 +155,20 @@ const sectionVariants = {
   }),
 };
 
-function SignUp({ open, handleClose, setOpenLogin,setOpenSuccessDialog,setSuccessMessage }) {
+function SignUp({
+  open,
+  handleClose,
+  setOpenLogin,
+  setOpenSuccessDialog,
+  setSuccessMessage,
+}) {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [formData, setFormData] = useState(null);
   const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [ipAddress, setIpAddress] = useState(null);
 
-
-
+  const { showLoader, hideLoader } = useLoader();
   const {
     control,
     handleSubmit,
@@ -211,8 +209,6 @@ function SignUp({ open, handleClose, setOpenLogin,setOpenSuccessDialog,setSucces
   const pinCodeValue = watch("pinCode");
   const agreeToTerms = watch("agreeToTerms");
 
-  console.log("signUpError", errors);
-
   const onSubmit = (data) => {
     const formattedData = {
       ...data,
@@ -225,11 +221,9 @@ function SignUp({ open, handleClose, setOpenLogin,setOpenSuccessDialog,setSucces
   const handleUserSignup = async () => {
     try {
       setOpenConfirmationModal(false);
-      setLoading(true);
-
+      showLoader();
       const response = await signupJYA(formData);
       const apiData = response?.data;
-
       if (response.status === 200 && apiData) {
         setSuccessMessage(apiData);
         handleClose();
@@ -242,18 +236,13 @@ function SignUp({ open, handleClose, setOpenLogin,setOpenSuccessDialog,setSucces
       const errorMessage = error?.response?.data?.message || error?.message;
       errorAlert(errorMessage);
     } finally {
-      setLoading(false);
+      hideLoader();
     }
   };
 
   const handleModalClose = () => {
     reset();
     handleClose();
-  };
-
-  const handleSuccessDialogClose = () => {
-    setOpenSuccessDialog(false);
-    reset();
   };
 
   React.useEffect(() => {
@@ -284,21 +273,18 @@ function SignUp({ open, handleClose, setOpenLogin,setOpenSuccessDialog,setSucces
           `https://api.postalpincode.in/pincode/${pinCodeValue}`,
         );
         const pinCodeData = res.data[0]?.PostOffice[0];
-
         setValue("pinCode", pinCodeData.Pincode);
         setValue("locality", pinCodeData.Name);
         setValue("city", pinCodeData.District);
         setValue("state", pinCodeData.State);
         setValue("country", pinCodeData.Country);
-
-        console.log("PinCodeBasedData", pinCodeData);
       } catch (error) {
         console.log(error);
       }
     };
 
     fetchPinData();
-  }, [pinCodeValue]);
+  }, [pinCodeValue, setValue]);
 
   useEffect(() => {
     fetch("https://api.ipify.org?format=json")
@@ -1022,9 +1008,6 @@ function SignUp({ open, handleClose, setOpenLogin,setOpenSuccessDialog,setSucces
         </Box>
       </Modal>
 
-  
-
-      <CommonLoader isLoading={loading} />
       <ConfirmationModal
         confirmationOpen={openConfirmationModal}
         confirmationHandleClose={() => setOpenConfirmationModal(false)}

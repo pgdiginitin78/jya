@@ -17,28 +17,12 @@ import MenuIcon from "@mui/icons-material/Menu";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { Tooltip } from "@mui/material";
-
 import JYALogoImg from "../../asset/JnanaYogAyuLogo.png";
 import LoginPage from "../login/LoginPage";
 import SignUp from "../login/SignUp";
 import { logoutUser } from "../../Actions";
 import AyurvedaSuccessDialog from "../login/AyurvedaSuccessDialog";
 
-const dropdownMotion = {
-  initial: { opacity: 0, y: -10, scale: 0.95 },
-  animate: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: { duration: 0.2, ease: "easeOut" },
-  },
-  exit: {
-    opacity: 0,
-    y: -10,
-    scale: 0.95,
-    transition: { duration: 0.15, ease: "easeIn" },
-  },
-};
 
 const mobilePanelMotion = {
   initial: { opacity: 0, height: 0 },
@@ -68,7 +52,7 @@ export default function ModernNavbar() {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [scrolled, setScrolled] = useState(false);
   const [openSuccessDialog, setOpenSuccessDialog] = useState(false);
-const [successMessage, setSuccessMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   const userString = localStorage.getItem("user");
   const user =
@@ -281,12 +265,15 @@ const [successMessage, setSuccessMessage] = useState("");
         <nav className="container mx-auto px-4 md:px-6 lg:px-8 2xl:px-0">
           <div className="flex items-center justify-between h-20">
             <div className="flex-shrink-0">
-              <Link to="/" className="flex items-center">
-                <div className="bg-white rounded-xl px-3 py-2 shadow-sm hover:shadow-md transition-all duration-300">
+              <Link
+                to="/"
+                className="flex items-center outline-none focus:outline-none focus:ring-0"
+              >
+                <div className="bg-white rounded-xl px-3 outline-none py-2 shadow-sm hover:shadow-md transition-all duration-300">
                   <img
                     src={JYALogoImg}
                     alt="JYA Logo"
-                    className="h-12 md:h-14 w-auto"
+                    className="h-12 md:h-14 w-auto outline-none"
                     loading="lazy"
                   />
                 </div>
@@ -509,6 +496,7 @@ const [successMessage, setSuccessMessage] = useState("");
                         localStorage.removeItem("user");
                         localStorage.removeItem("accessToken");
                         localStorage.removeItem("refreshToken");
+                        navigate("/");
                       }}
                       sx={{
                         color: "#1a2e1a",
@@ -941,11 +929,10 @@ const [successMessage, setSuccessMessage] = useState("");
       {openSuccessDialog && (
         <AyurvedaSuccessDialog
           open={openSuccessDialog}
-          onClose={()=>setOpenSuccessDialog(false)}
+          onClose={() => setOpenSuccessDialog(false)}
           contentMessage={successMessage}
         />
       )}
     </>
   );
 }
-

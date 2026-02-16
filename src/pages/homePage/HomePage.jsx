@@ -56,6 +56,7 @@ import wellnessImg from "../../asset/testimonals/wellness.jpg";
 import EventCalendar from "../eventCalander/EventCalender";
 import TestimonialsSection from "./TestimonialsSection";
 import BookAppointment from "../appointementBookingForm/BookAppointment";
+import { errorAlert } from "../../components/common/toast/CustomToast";
 
 export default function HomePage() {
   const [typedLineIndex, setTypedLineIndex] = useState(0);
@@ -76,6 +77,8 @@ export default function HomePage() {
   const [cardsToShow, setCardsToShow] = useState(1);
   const [openBookAppointmentModal, setOpenBookAppointmentModal] =
     useState(false);
+
+  const accessToken = localStorage.getItem("accessToken");
 
   const containerRef = useRef(null);
 
@@ -777,7 +780,6 @@ export default function HomePage() {
   };
 
   //Blogs
-
   useEffect(() => {
     const updateCardsToShow = () => {
       const width = window.innerWidth;
@@ -832,6 +834,9 @@ export default function HomePage() {
   const openBlog = (id) => {
     window.location.href = `/Blogs.html?blog=${id}`;
   };
+
+
+  
 
   return (
     <>
@@ -888,7 +893,11 @@ export default function HomePage() {
                   <motion.button
                     type="button"
                     onClick={() => {
-                      setOpenBookAppointmentModal(true);
+                      if(accessToken!==null){
+                        setOpenBookAppointmentModal(true);
+                      }else{
+                        errorAlert("Please log in to continue")
+                      }
                     }}
                     whileHover={{ scale: 1.05, y: -2 }}
                     whileTap={{ scale: 0.95 }}

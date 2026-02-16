@@ -1,8 +1,7 @@
-import { Divider } from "@mui/material";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import { AnimatePresence, motion } from "framer-motion";
-import { Calendar, Clock, Stethoscope, User, FileText } from "lucide-react";
+import { Calendar, Clock, FileText, Stethoscope, User } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import CancelButtonModal from "../../components/common/button/CancelButtonModal";
@@ -16,6 +15,7 @@ import {
   getLocationList,
   getServicesByClinicId,
 } from "../../services/bookAppointment/BookAppointmentServices";
+import AddPatientModal from "./AddPatientModal"
 
 const style = {
   position: "absolute",
@@ -85,21 +85,6 @@ function TimeSlotChip({ slot, isSelected, onSelect }) {
   );
 }
 
-const mockSlots = [
-  { id: 1, time: "09:00 AM", available: true },
-  { id: 2, time: "09:30 AM", available: true },
-  { id: 3, time: "10:00 AM", available: false },
-  { id: 4, time: "10:30 AM", available: true },
-  { id: 5, time: "11:00 AM", available: true },
-  { id: 6, time: "11:30 AM", available: true },
-  { id: 7, time: "02:00 PM", available: true },
-  { id: 8, time: "02:30 PM", available: true },
-  { id: 9, time: "03:00 PM", available: false },
-  { id: 10, time: "03:30 PM", available: true },
-  { id: 11, time: "04:00 PM", available: true },
-  { id: 12, time: "04:30 PM", available: true },
-];
-
 export default function BookAppointment({ open, handleClose }) {
   const [locationListOptions, setLocationListOptions] = useState([]);
   const [clinicsOptions, setClinicOptions] = useState([]);
@@ -109,11 +94,11 @@ export default function BookAppointment({ open, handleClose }) {
   const [loading, setLoading] = useState(false);
   const [selectedDoctor, setSelectedDoctor] = useState(null);
   const [servicesOptions, setServicesOptions] = useState([]);
+  const [openAddPatientModal,setOpenAddPatientModal]=useState(false)
   const {
     handleSubmit,
     control,
     watch,
-    trigger,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -135,16 +120,6 @@ export default function BookAppointment({ open, handleClose }) {
 
   const clinicFidValue = watch("clinicFid");
   const locationValue = watch("location");
-
-  const fetchTimeSlots = (doctorFid) => {
-    setLoading(true);
-    setSelectedTimeSlot(null);
-
-    setTimeout(() => {
-      setAvailableSlots(mockSlots);
-      setLoading(false);
-    }, 800);
-  };
 
   const handleReset = () => {
     setSelectedDoctor(null);
@@ -194,7 +169,6 @@ export default function BookAppointment({ open, handleClose }) {
         .catch((err) => console.log(err.message || "Failed to fetch clinics"));
     }
   }, [locationValue]);
-  console.log("clinicFidValue", clinicFidValue);
 
   useEffect(() => {
     if (clinicFidValue?.id > 0) {
@@ -311,6 +285,16 @@ export default function BookAppointment({ open, handleClose }) {
                             </div>
                             <div className="p-4 sm:p-5">
                               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div className="flex justify-end col-span-2">
+                                 <CommonButton
+                                    label="+ Add Patient"
+                                      className="
+                                      border border-emerald-500 hover:bg-emerald-50
+                                      text-emerald-500"
+                                      onClick={()=>setOpenAddPatientModal(true)}
+                                  />  
+
+                                </div>
                                 <DropdownField
                                   control={control}
                                   name="location"
@@ -327,6 +311,7 @@ export default function BookAppointment({ open, handleClose }) {
                                   control={control}
                                   name="serviceFid"
                                   placeholder="Select Service"
+                                  dataArray={servicesOptions}
                                 />
                                 <DropdownField
                                   control={control}
@@ -593,14 +578,14 @@ export default function BookAppointment({ open, handleClose }) {
                       >
                         <CommonButton
                           type="button"
-                          label="Reset Form"
+                          label="Reset"
                           onClick={handleReset}
-                          className="w-full sm:w-auto px-6 py-2.5 bg-white border-2 border-red-500 text-red-600 hover:bg-red-50 rounded-lg font-semibold transition-all duration-200 hover:scale-105 hover:shadow-md"
+                          className=" bg-white border px-5 border-red-500 text-red-600 hover:bg-red-50 transition-all duration-200"
                         />
                         <CommonButton
                           type="submit"
                           label="Book Appointment"
-                          className="w-full sm:w-auto px-6 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 text-white hover:from-emerald-700 hover:to-teal-700 rounded-lg font-semibold shadow-lg shadow-emerald-500/30 transition-all duration-200 hover:scale-105"
+                          className=" bg-gradient-to-r from-emerald-600 to-teal-600 text-white hover:from-emerald-700 hover:to-teal-700   transition-all duration-200"
                         />
                       </motion.div>
                     </form>
@@ -611,6 +596,12 @@ export default function BookAppointment({ open, handleClose }) {
           </AnimatePresence>
         </Box>
       </Modal>
+      {openAddPatientModal &&(
+        <AddPatientModal
+        open={openAddPatientModal}
+        handleClose={()=>setOpenAddPatientModal(false)}
+        />
+      )}
 
       <style jsx global>{`
         .custom-scrollbar::-webkit-scrollbar {

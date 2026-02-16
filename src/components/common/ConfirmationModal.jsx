@@ -1,7 +1,5 @@
-import React from "react";
 import { Box, Modal } from "@mui/material";
-import { motion, AnimatePresence } from "framer-motion";
-import CommonButton from "./button/CommonButton";
+import { AnimatePresence, motion } from "framer-motion";
 
 export default function ConfirmationModal({
   confirmationOpen,

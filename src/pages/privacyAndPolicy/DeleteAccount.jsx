@@ -1,32 +1,31 @@
+import {
+    Button,
+    Checkbox,
+    FormControlLabel,
+    IconButton,
+    InputAdornment,
+    TextField,
+} from "@mui/material";
 import { AnimatePresence, motion } from "framer-motion";
 import {
-  AlertTriangle,
-  Eye,
-  EyeOff,
-  Info,
-  Lock,
-  Trash2,
-  CheckCircle,
-  XCircle,
+    AlertTriangle,
+    CheckCircle,
+    Eye,
+    EyeOff,
+    Info,
+    Lock,
+    Trash2,
+    XCircle,
 } from "lucide-react";
 import { useState } from "react";
-import { useForm, Controller } from "react-hook-form";
-import axios from "axios";
-import {
-  TextField,
-  Checkbox,
-  FormControlLabel,
-  Button,
-  IconButton,
-  InputAdornment,
-} from "@mui/material";
-import { DeleteLoggedAccount } from "../../services/login/LoginServices";
-import {
-  errorAlert,
-  successAlert,
-} from "../../components/common/toast/CustomToast";
+import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { logoutUser } from "../../Actions";
+import {
+    errorAlert,
+    successAlert,
+} from "../../components/common/toast/CustomToast";
+import { DeleteLoggedAccount } from "../../services/login/LoginServices";
 
 export default function DeleteAccount() {
   const [showPassword, setShowPassword] = useState(false);

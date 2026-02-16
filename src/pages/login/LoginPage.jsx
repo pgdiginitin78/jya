@@ -1,5 +1,4 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import CloseIcon from "@mui/icons-material/Close";
 import EmailIcon from "@mui/icons-material/Email";
 import LockIcon from "@mui/icons-material/Lock";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -18,6 +17,7 @@ import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 import JYALogoImg from "../../asset/JnanaYogAyuLogo.png";
+import CancelButtonModal from "../../components/common/button/CancelButtonModal";
 import CommonLoader from "../../components/common/commonLoader/CommonLoader";
 import ConfirmationModal from "../../components/common/ConfirmationModal";
 import {
@@ -26,7 +26,7 @@ import {
 } from "../../components/common/toast/CustomToast";
 import { userLogin } from "../../services/login/LoginServices";
 import SignUp from "./SignUp";
-import CancelButtonModal from "../../components/common/button/CancelButtonModal";
+import { useLoader } from "../../components/common/commonLoader/LoaderContext";
 
 const modalStyle = {
   position: "absolute",
@@ -46,14 +46,15 @@ const modalStyle = {
 
 const loginValidationSchema = yup.object().shape({
   userName: yup.string().required("Email or Mobile required"),
-  // password: yup.string().min(4, "Min 4 chars").required("Password required"),
+  password: yup.string().min(1, "Min 1 chars").required("Password required"),
 });
 
 function LoginPage({ open, handleClose, setOpenLogin }) {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState(null);
   const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
-  const [loading, setLoading] = useState(false);
+
+  const { showLoader, hideLoader } = useLoader();
 
   const [openSignUpModal, setOpenSignUpModal] = useState(false);
 
@@ -75,7 +76,7 @@ function LoginPage({ open, handleClose, setOpenLogin }) {
 
   const handleUserLogin = async () => {
     try {
-      setLoading(true);
+      showLoader();
       setOpenConfirmationModal(false);
 
       const response = await userLogin(formData);
@@ -87,25 +88,18 @@ function LoginPage({ open, handleClose, setOpenLogin }) {
         localStorage.setItem("user", JSON.stringify(data.user));
         localStorage.setItem("expiresIn", data.expiresIn);
         localStorage.setItem("tokenSetTime", Date.now());
-
         successAlert(data.message || "Login successful");
-
-        setTimeout(() => {
-          handleClose();
-          reset();
-        }, 800);
+        handleClose();
+        reset();
       } else {
         throw new Error(data?.message || "Invalid login credentials");
       }
     } catch (error) {
-  
-      console.log("password",error);
-      
       errorAlert(
         error?.response?.data?.message || "Invalid username or password",
       );
     } finally {
-      setLoading(false);
+      hideLoader();
     }
   };
 
@@ -360,8 +354,6 @@ function LoginPage({ open, handleClose, setOpenLogin }) {
         confirmationMsg="Are you sure you want to log in?"
         confirmationButtonMsg="Confirm"
       />
-
-      <CommonLoader />
 
       {openSignUpModal && (
         <SignUp

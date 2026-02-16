@@ -14,8 +14,8 @@ export const getDoctorsByClinicId = (clinicId) => {
   return AxiosInstance.get(`Doctors?ClinicFid=${clinicId}`);
 };
 
-export const getPatientDataByMobileNo = (contactNumber) => {
-  return AxiosInstance.get(`Patients?contactNumber=${contactNumber}`);
+export const getPatientDataByMobileNo = (contactNumber,ClinicId) => {
+  return AxiosInstance.get(`Patients?contactNumber=${contactNumber}&ClinicId=${ClinicId}`);
 };
 
 export const getServicesByClinicId = (clinicId) => {
@@ -31,7 +31,7 @@ export const getDoctorAvailableSlots = (doctorId, appointmentDate) => {
     `DoctorAvailableSlots?doctorId=${doctorId}&appointmentDate=${appointmentDate}`,
   );
 };
-
+//
 export const getPrescriptionsByPatient = (patientFid) => {
   return AxiosInstance.get(`PrescriptionsByPatient?patientFid=${patientFid}`);
 };

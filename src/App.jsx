@@ -1,6 +1,6 @@
 import { Skeleton } from "@mui/material";
 import { AnimatePresence, motion } from "framer-motion";
-import { Suspense, useEffect } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -18,6 +18,8 @@ import PrivacyAndPolicy from "./pages/privacyAndPolicy/PrivacyAndPolicy";
 import ScrollToHash from "./ScrollToHash";
 import ScrollToTopButton from "./ScrollToTopButton";
 import DeleteAccount from "./pages/privacyAndPolicy/DeleteAccount";
+import CommonLoader from "./components/common/commonLoader/CommonLoader";
+import { useLoader } from "./components/common/commonLoader/LoaderContext";
 
 function PageSkeleton() {
   return (
@@ -36,13 +38,13 @@ function PageSkeleton() {
 
 function App() {
   const location = useLocation();
-
+const { loading } = useLoader();
   useEffect(() => {
     let interval;
 
     const refreshTokenApi = async () => {
       try {
-        const accessToken = localStorage.getItem("accessToken");
+        const accessToken = localStorage.getItem("refreshToken");
         const expiresIn = localStorage.getItem("expiresIn");
 
         if (!accessToken) {
@@ -59,7 +61,7 @@ function App() {
         localStorage.setItem("accessToken", apiData.accessToken);
         localStorage.setItem("refreshToken", apiData.refreshToken);
         localStorage.setItem("expiresIn", apiData.expiresIn);
-        localStorage.setItem("tokenSetTime", Date.now()); 
+        localStorage.setItem("tokenSetTime", Date.now());
 
         console.log("Token refreshed successfully");
 
@@ -104,6 +106,8 @@ function App() {
     };
   }, []);
 
+
+
   return (
     <>
       <div className="App bg-gradient-to-br from-lime-50 via-green-50 to-white overflow-hidden">
@@ -134,6 +138,8 @@ function App() {
         </AnimatePresence>
         <Footer />
       </div>
+  {loading && <CommonLoader />}
+
       <ScrollToTopButton />
       <ScrollToHash />
       <ToastContainer
