@@ -1,8 +1,9 @@
 import axios from "axios";
 
-export const API_BASE_URL = "/WellnessAPI/api/";
+export const API_BASE_URL = 'https://ayurmitra.in/WellnessAPILive/';
+
 
 export const API = axios.create({
-  baseURL: "/WellnessAPI/api",
-  withCredentials: true,
+    baseURL: API_BASE_URL,
+    // withCredentials: true,
 });
