@@ -6,6 +6,7 @@ import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 import ScrollToTop from "./ScrollToTop";
 import { LoaderProvider } from "./components/common/commonLoader/LoaderContext";
+import CommonLoader from "./components/common/commonLoader/CommonLoader";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -13,6 +14,7 @@ root.render(
     <BrowserRouter>
       <ScrollToTop />
       <LoaderProvider>
+        <CommonLoader />
         <App />
       </LoaderProvider>
     </BrowserRouter>

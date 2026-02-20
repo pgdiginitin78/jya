@@ -1,6 +1,6 @@
 import { Skeleton } from "@mui/material";
 import { AnimatePresence, motion } from "framer-motion";
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -14,12 +14,10 @@ import Gallary from "./pages/gallary/Gallary";
 import HomePage from "./pages/homePage/HomePage";
 import Navbar from "./pages/navbar/Navbar";
 import OurServices from "./pages/OurServices/OurServices";
+import DeleteAccount from "./pages/privacyAndPolicy/DeleteAccount";
 import PrivacyAndPolicy from "./pages/privacyAndPolicy/PrivacyAndPolicy";
 import ScrollToHash from "./ScrollToHash";
 import ScrollToTopButton from "./ScrollToTopButton";
-import DeleteAccount from "./pages/privacyAndPolicy/DeleteAccount";
-import CommonLoader from "./components/common/commonLoader/CommonLoader";
-import { useLoader } from "./components/common/commonLoader/LoaderContext";
 
 function PageSkeleton() {
   return (
@@ -38,7 +36,7 @@ function PageSkeleton() {
 
 function App() {
   const location = useLocation();
-const { loading } = useLoader();
+
   useEffect(() => {
     let interval;
 
@@ -138,7 +136,7 @@ const { loading } = useLoader();
         </AnimatePresence>
         <Footer />
       </div>
-  {loading && <CommonLoader />}
+
 
       <ScrollToTopButton />
       <ScrollToHash />

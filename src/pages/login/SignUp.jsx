@@ -224,6 +224,8 @@ function SignUp({
       showLoader();
       const response = await signupJYA(formData);
       const apiData = response?.data;
+      console.log("response123455",response);
+
       if (response.status === 200 && apiData) {
         setSuccessMessage(apiData);
         handleClose();
@@ -234,6 +236,8 @@ function SignUp({
       }
     } catch (error) {
       const errorMessage = error?.response?.data?.message || error?.message;
+      console.log("signMsg",error);
+      
       errorAlert(errorMessage);
     } finally {
       hideLoader();

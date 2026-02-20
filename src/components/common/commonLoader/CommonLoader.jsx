@@ -1,12 +1,6 @@
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-/**
- *
- * @param {boolean} isLoading
- * @param {string} loadingText
- * @param {string} size
- */
 const CommonLoader = ({
   isLoading = false,
   loadingText = "Please wait...",
@@ -28,15 +22,14 @@ const CommonLoader = ({
     <AnimatePresence>
       {isLoading && (
         <motion.div
+          key="loader"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50"
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center"
           onClick={(e) => e.stopPropagation()}
-          style={{
-            zIndex: 999,
-          }}
+          style={{ zIndex: 9999 }}
         >
           <motion.div
             initial={{ scale: 0.9, opacity: 0 }}
@@ -47,6 +40,19 @@ const CommonLoader = ({
           >
             <div className="relative">
               <svg className={sizes[size]} viewBox="0 0 100 100">
+                <defs>
+                  <linearGradient
+                    id="circularGradient"
+                    x1="0%"
+                    y1="0%"
+                    x2="100%"
+                    y2="100%"
+                  >
+                    <stop offset="0%" stopColor="#059669" />
+                    <stop offset="50%" stopColor="#d97706" />
+                    <stop offset="100%" stopColor="#0891b2" />
+                  </linearGradient>
+                </defs>
                 <circle
                   cx="50"
                   cy="50"
@@ -55,7 +61,6 @@ const CommonLoader = ({
                   stroke="rgba(255,255,255,0.1)"
                   strokeWidth="8"
                 />
-
                 <motion.circle
                   cx="50"
                   cy="50"
@@ -87,20 +92,6 @@ const CommonLoader = ({
                     transformOrigin: "center",
                   }}
                 />
-
-                <defs>
-                  <linearGradient
-                    id="circularGradient"
-                    x1="0%"
-                    y1="0%"
-                    x2="100%"
-                    y2="100%"
-                  >
-                    <stop offset="0%" stopColor="#059669" />
-                    <stop offset="50%" stopColor="#d97706" />
-                    <stop offset="100%" stopColor="#0891b2" />
-                  </linearGradient>
-                </defs>
               </svg>
             </div>
 
