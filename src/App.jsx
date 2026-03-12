@@ -17,7 +17,7 @@ import OurServices from "./pages/OurServices/OurServices";
 import DeleteAccount from "./pages/privacyAndPolicy/DeleteAccount";
 import PrivacyAndPolicy from "./pages/privacyAndPolicy/PrivacyAndPolicy";
 import ScrollToHash from "./ScrollToHash";
-import ScrollToTopButton from "./ScrollToTopButton";
+import ScrollToTopButton from "./ScrollToTopButton"; 
 
 function PageSkeleton() {
   return (

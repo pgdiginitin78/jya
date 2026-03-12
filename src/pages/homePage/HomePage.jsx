@@ -1601,7 +1601,7 @@ export default function HomePage() {
 
       <section
         id="articleSection"
-        className="py-5 md:py-6 overflow-hidden max-w-[95rem] mx-auto"
+        className="py-5 md:py-6 overflow-hidden w-full px-4 md:px-10 mx-auto"
       >
         {/* HEADER */}
         <div className="flex flex-col md:flex-row justify-between mb-6 items-center gap-6 w-full">
@@ -1623,7 +1623,7 @@ export default function HomePage() {
           </a>
         </div>
 
-        <div className="relative px-8 md:px-8">
+        <div className="relative px-8 md:px-16">
           <button
             onClick={prev}
             disabled={index === 0}
@@ -1645,7 +1645,7 @@ export default function HomePage() {
           </button>
           <div
             ref={containerRef}
-            className="flex gap-4 md:gap-6 overflow-hidden py-4"
+            className="flex gap-4 md:gap-6 overflow-hidden py-4 "
             style={{
               scrollSnapType: "x mandatory",
             }}

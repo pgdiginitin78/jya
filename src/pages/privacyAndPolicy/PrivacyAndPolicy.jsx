@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { motion } from "framer-motion";
+import React, { useRef, useState } from "react";
+import { motion, useInView } from "framer-motion";
 import {
   Shield,
   Lock,
@@ -22,6 +22,88 @@ function PrivacyAndPolicy() {
   const [openModal, setOpenModal] = useState(false);
   const [modalType, setModalType] = useState("");
   const navigate = useNavigate();
+
+  const ref0 = useRef(null);
+  const ref1 = useRef(null);
+  const ref2 = useRef(null);
+  const ref3 = useRef(null);
+
+  const inView0 = useInView(ref0, { once: true, margin: "-60px" });
+  const inView1 = useInView(ref1, { once: true, margin: "-60px" });
+  const inView2 = useInView(ref2, { once: true, margin: "-60px" });
+  const inView3 = useInView(ref3, { once: true, margin: "-60px" });
+
+  const PrivacyForAyurMitra = [
+    {
+      ref: ref0,
+      inView: inView0,
+      title: "About This Policy",
+      content: (
+        <p>
+          This Privacy Policy applies to the mobile application&nbsp;
+          <strong className="text-emerald-900 font-semibold">
+            "AyurMitra"
+          </strong>
+          ,&nbsp; which is developed and published by&nbsp;
+          <strong className="text-emerald-900 font-semibold">
+            Jnanayogayu
+          </strong>
+          .
+        </p>
+      ),
+    },
+    {
+      ref: ref1,
+      inView: inView1,
+      title: "What is AyurMitra?",
+      content: (
+        <p>
+          AyurMitra is a digital platform created by&nbsp;
+          <strong className="text-emerald-900 font-semibold">
+            Jnanayogayu
+          </strong>
+          &nbsp; to provide <em className="italic">Ayurvedic guidance</em>&nbsp;
+          and related services — bringing the wisdom of ancient wellness
+          traditions to your fingertips.
+        </p>
+      ),
+    },
+    {
+      ref: ref2,
+      inView: inView2,
+      title: "Relationship Statement",
+      content: (
+        <p>
+          AyurMitra is a product of&nbsp;
+          <strong className="text-emerald-900 font-semibold">
+            Jnanayogayu
+          </strong>
+          &nbsp; and is available on the <br />
+          <span className="bg-emerald-100 border border-emerald-300 rounded-md px-2 py-0.5 font-semibold text-emerald-800 text-sm">
+            Google Play Store
+          </span>
+        </p>
+      ),
+    },
+    {
+      ref: ref3,
+      inView: inView3,
+      title: "Development Credit",
+      content: (
+        <blockquote className="bg-emerald-50/60 rounded-xl px-5 py-4 italic text-emerald-800 border border-emerald-200/50">
+          "The AyurMitra mobile application is developed by&nbsp;
+          <strong className="text-emerald-900 not-italic font-semibold">
+            Probus Software Solutions&nbsp;
+          </strong>
+          for&nbsp;
+          <strong className="text-emerald-900 not-italic font-semibold">
+            Jnanayogayu
+          </strong>
+          ."
+        </blockquote>
+      ),
+    },
+  ];
 
   const fadeInUp = {
     hidden: { opacity: 0, y: 20 },
@@ -259,6 +341,81 @@ function PrivacyAndPolicy() {
           </motion.p>
         </div>
       </motion.div>
+      <>
+        <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Lora:ital,wght@0,400;0,500;1,400&display=swap');
+        .font-serif { font-family: 'Lora', Georgia, serif !important; }
+        .font-display { font-family: 'Cormorant Garamond', Georgia, serif !important; }
+      `}</style>
+
+        <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-green-100 px-4 sm:px-8 py-10 md:py-16 relative overflow-hidden">
+          <div className="fixed top-[-10%] right-[-10%] w-96 h-96 rounded-full bg-green-300/10 pointer-events-none" />
+          <div className="fixed bottom-[5%] left-[-8%] w-72 h-72 rounded-full bg-emerald-800/8 pointer-events-none" />
+          <div className="fixed top-[40%] right-[5%] w-48 h-48 rounded-full bg-green-400/6 pointer-events-none" />
+
+          <div className=" mx-auto relative z-10">
+            <motion.div
+              initial={{ opacity: 0, y: -30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+              className="text-center mb-12 md:mb-16"
+            >
+              <motion.h1
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 1, delay: 0.3 }}
+                className="font-display text-4xl md:text-6xl font-bold text-emerald-950 tracking-[0.12em] uppercase mb-2"
+              >
+                AyurMitra
+              </motion.h1>
+
+              <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: "7rem" }}
+                transition={{ duration: 0.8, delay: 0.6 }}
+                className="h-0.5 bg-gradient-to-r from-transparent via-emerald-500 to-transparent mx-auto my-3"
+              />
+
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.7 }}
+                className="font-serif italic text-base md:text-lg text-emerald-600 tracking-widest"
+              >
+                Privacy Policy
+              </motion.p>
+            </motion.div>
+
+            <div className="grid lg:grid-cols-2 gap-4">
+              {PrivacyForAyurMitra.map((s, i) => (
+                <motion.div
+                  key={s.title}
+                  ref={s.ref}
+                  initial={{ opacity: 0, y: 40 }}
+                  animate={
+                    s.inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }
+                  }
+                  transition={{
+                    duration: 0.7,
+                    delay: i * 0.15,
+                    ease: [0.22, 1, 0.36, 1],
+                  }}
+                  className="relative bg-white/55 backdrop-blur-lg border border-emerald-200/40 rounded-2xl p-4  mb-3 shadow-sm overflow-hidden"
+                >
+                  <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-emerald-400 to-green-800 rounded-l-2xl" />
+                  <h2 className="font-serif text-lg md:text-xl font-bold text-emerald-950 tracking-wide mb-4">
+                    {s.title}
+                  </h2>
+                  <div className="font-serif text-sm md:text-base text-emerald-800 leading-relaxed">
+                    {s.content}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+
+          </div>
+        </div>
+      </>
 
       <motion.div
         className="max-w-[95rem] mx-auto px-4  lg:px-10 2xl:px-0 py-8 md:py-10"
@@ -269,7 +426,7 @@ function PrivacyAndPolicy() {
       >
         <div className="bg-white rounded-xl shadow-lg p-5 md:p-7 border-t-4 border-green-600">
           <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-3">
-            Welcome to Our Privacy Policy
+            Our Privacy Policy
           </h2>
           <p className="text-gray-600 leading-relaxed text-sm md:text-base">
             At our Ayurvedic wellness center, we honor the ancient principle of

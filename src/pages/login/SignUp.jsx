@@ -249,7 +249,7 @@ function SignUp({
     handleClose();
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (dob) {
       const birthDate = new Date(dob);
       const today = new Date();
@@ -289,6 +289,9 @@ function SignUp({
 
     fetchPinData();
   }, [pinCodeValue, setValue]);
+
+console.log("ipAddresss",ipAddress);
+  
 
   useEffect(() => {
     fetch("https://api.ipify.org?format=json")
