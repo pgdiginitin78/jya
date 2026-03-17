@@ -563,24 +563,7 @@ function PrivacyAndPolicy() {
         },
       ],
     },
-    {
-      icon: <Phone className="w-6 h-6" />,
-      title: "17. Contact Us",
-      content: [
-        {
-          subtitle: "",
-          text: "If you have any questions about this Privacy Policy or your data, please contact us at:",
-        },
-        {
-          subtitle: "Email",
-          text: "privacy@ayurmitra.com",
-        },
-        {
-          subtitle: "Response Time",
-          text: "We will respond to your query within 48 hours.",
-        },
-      ],
-    },
+
   ];
 
   return (
