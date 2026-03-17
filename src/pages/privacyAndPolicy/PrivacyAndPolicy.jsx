@@ -804,6 +804,103 @@ function PrivacyAndPolicy() {
             manage your account directly from within the App by navigating to
             the Settings section and selecting the appropriate option.
           </p>
+          <div className=" mx-auto py-8">
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-8 space-y-6">
+              <div className="space-y-2">
+                <h1 className="text-2xl sm:text-3xl font-semibold text-gray-900">
+                  Delete Your AyurMitra Account
+                </h1>
+                <p className="text-gray-600 text-sm sm:text-base">
+                  AyurMitra, developed by Jnanayogayu, allows you to permanently
+                  delete your account and all associated personal data directly
+                  within the app.
+                </p>
+              </div>
+
+              <div className="space-y-3">
+                <h2 className="text-lg font-medium text-gray-900">
+                  Data That Will Be Deleted
+                </h2>
+                <ul className="list-disc pl-5 space-y-2 text-gray-600 text-sm sm:text-base">
+                  <li>Your profile information (name, email, mobile number)</li>
+                  <li>Family member details added for appointments</li>
+                  <li>All booked appointment history</li>
+                  <li>
+                    Uploaded medical reports, prescriptions, images, or other
+                    files
+                  </li>
+                </ul>
+              </div>
+
+              <div className="bg-red-50 border border-red-100 rounded-xl p-4">
+                <p className="text-red-700 text-sm sm:text-base">
+                  <span className="font-medium">Important:</span> Account
+                  deletion is permanent and irreversible. Once deleted, you will
+                  lose access to your appointment history and uploaded files.
+                </p>
+                <p className="text-red-600 text-sm mt-2">
+                  Some data may be retained temporarily in backups or as
+                  required by law (for legal compliance or dispute resolution),
+                  but it will not be accessible or used in the app.
+                </p>
+              </div>
+
+              <div className="space-y-3">
+                <h2 className="text-lg font-medium text-gray-900">
+                  How to Delete Your Account
+                </h2>
+                <ol className="list-decimal pl-5 space-y-2 text-gray-600 text-sm sm:text-base">
+                  <li>Open the AyurMitra app and log in to your account</li>
+                  <li>
+                    Go to the <span className="font-medium">Settings</span>{" "}
+                    section
+                  </li>
+                  <li>
+                    Select the{" "}
+                    <span className="font-medium">Delete Account</span> option
+                  </li>
+                  <li>Read the confirmation message carefully</li>
+                  <li>
+                    Confirm your choice to permanently delete your account
+                  </li>
+                </ol>
+              </div>
+
+              <div className="bg-gray-50 rounded-xl p-4 space-y-2">
+                <h2 className="text-lg font-medium text-gray-900">
+                  Need Help?
+                </h2>
+                <p className="text-gray-600 text-sm sm:text-base">
+                  If you face any difficulty, contact us at:
+                </p>
+                <a
+                  href="mailto:swagrama.lavale@gmail.com"
+                  className="text-emerald-600 font-medium break-all"
+                >
+                  swagrama.lavale@gmail.com
+                </a>
+                <p className="text-gray-500 text-sm">
+                  Note: For security reasons, account deletion must be completed
+                  within the app.
+                </p>
+              </div>
+
+              <div className="border-t pt-4 space-y-2 text-sm text-gray-600">
+                <p>
+                  For more details, see our{" "}
+                  <a
+                    href="https://ayurmitra.com/privacy-policy"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-emerald-600 font-medium"
+                  >
+                    Privacy Policy
+                  </a>
+                </p>
+                <p className="text-gray-400">Last updated: March 2026</p>
+              </div>
+            </div>
+          </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="bg-white rounded-lg p-4 border-2 border-orange-200 hover:border-orange-400 transition-colors">
