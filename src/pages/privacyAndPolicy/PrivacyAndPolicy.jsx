@@ -830,18 +830,18 @@ function PrivacyAndPolicy() {
 
               <div className="space-y-3">
                 <h2 className="text-lg font-medium text-gray-900">
-                  How to Delete Your Account
+                  How to Delete Your Account (App Only)
                 </h2>
                 <ol className="list-decimal pl-5 space-y-2 text-gray-600 text-sm sm:text-base">
                   <li>Open the AyurMitra app and log in to your account</li>
                   <li>
-                    Go to the <span className="font-medium">Settings</span>{" "}
+                    Go to the <span className="font-medium">Settings</span>&nbsp;
                     section
                   </li>
                   <li>
-                    Select the{" "}
+                    Select the&nbsp;
                     <span className="font-medium">Delete Account</span> option
-                  </li>
+                  </li>&nbsp;
                   <li>Read the confirmation message carefully</li>
                   <li>
                     Confirm your choice to permanently delete your account
@@ -870,7 +870,7 @@ function PrivacyAndPolicy() {
 
               <div className="border-t pt-4 space-y-2 text-sm text-gray-600">
                 <p>
-                  For more details, see our{" "}
+                  For more details, see our
                   <a
                     href="https://ayurmitra.com/privacy-policy"
                     target="_blank"
@@ -885,7 +885,9 @@ function PrivacyAndPolicy() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        </div>
+      </motion.div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 px-10 mb-5">
             <div className="bg-white rounded-lg p-4 border-2 border-orange-200 hover:border-orange-400 transition-colors">
               <div className="flex items-start gap-3 mb-3">
                 <div className="bg-orange-100 p-2 rounded-lg flex-shrink-0">
@@ -941,8 +943,6 @@ function PrivacyAndPolicy() {
               </motion.button>
             </div>
           </div>
-        </div>
-      </motion.div>
 
       {openModal && (
         <Modal
