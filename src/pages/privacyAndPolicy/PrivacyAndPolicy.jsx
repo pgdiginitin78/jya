@@ -887,7 +887,7 @@ function PrivacyAndPolicy() {
 
         </div>
       </motion.div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 px-10 mb-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 px-4 lg:px-10 mb-5">
             <div className="bg-white rounded-lg p-4 border-2 border-orange-200 hover:border-orange-400 transition-colors">
               <div className="flex items-start gap-3 mb-3">
                 <div className="bg-orange-100 p-2 rounded-lg flex-shrink-0">
