@@ -14,6 +14,14 @@ import {
   X,
   AlertTriangle,
   Info,
+  BookOpen,
+  Database,
+  Smartphone,
+  RefreshCw,
+  HeartPulse,
+  Phone,
+  UserCheck,
+  Settings,
 } from "lucide-react";
 import { Modal, Box, Fade, Backdrop } from "@mui/material";
 import { useNavigate } from "react-router-dom";
@@ -118,9 +126,7 @@ function PrivacyAndPolicy() {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-      },
+      transition: { staggerChildren: 0.12 },
     },
   };
 
@@ -159,52 +165,237 @@ function PrivacyAndPolicy() {
 
   const sections = [
     {
-      icon: <Shield className="w-6 h-6" />,
-      title: "Information We Collect",
+      icon: <BookOpen className="w-6 h-6" />,
+      title: "1. Introduction",
       content: [
         {
-          subtitle: "Personal Information",
-          text: "When you book consultations, purchase Ayurvedic products, or create an account, we collect your name, email address, phone number, shipping address, and health-related information necessary for personalized Ayurvedic treatments.",
+          subtitle: "",
+          text: 'This Privacy Policy describes how your information is collected, used, shared, and protected when you use the "AyurMitra" mobile application (referred to as the "App"). This App is developed and published by Jnanayogayu.',
         },
         {
-          subtitle: "Health Data",
-          text: "With your explicit consent, we may collect information about your Prakriti (body constitution), Vikriti (current imbalances), dietary preferences, lifestyle habits, and previous Ayurvedic treatments to provide personalized wellness recommendations.",
+          subtitle: "",
+          text: "By using the App or registering for an account, you agree to the terms of this Privacy Policy.",
+        },
+      ],
+    },
+    {
+      icon: <UserCheck className="w-6 h-6" />,
+      title: "2. About Us (Who We Are)",
+      content: [
+        {
+          subtitle: "Publisher",
+          text: "Jnanayogayu",
         },
         {
-          subtitle: "Usage Information",
-          text: "We automatically collect information about your interactions with our website, including pages visited, time spent, and browsing patterns to improve our services.",
+          subtitle: "Developer",
+          text: "The AyurMitra mobile application is developed by Probus Software Solutions for Jnanayogayu.",
+        },
+        {
+          subtitle: "Contact Email",
+          text: "swagrama.lavale@gmail.com",
+        },
+      ],
+    },
+    {
+      icon: <Smartphone className="w-6 h-6" />,
+      title: "3. What is AyurMitra? (App Functionality)",
+      content: [
+        {
+          subtitle: "",
+          text: "AyurMitra is a digital platform created by Jnanayogayu to provide Ayurvedic guidance and related services. Its core functionality allows users to:",
+        },
+        {
+          subtitle: "Account Creation",
+          text: "Create a user account using email verification.",
+        },
+        {
+          subtitle: "Browse Doctors",
+          text: "Browse departments and doctors based on manually selected location.",
+        },
+        {
+          subtitle: "Doctor Profiles",
+          text: "View detailed doctor profiles.",
+        },
+        {
+          subtitle: "Book Appointments",
+          text: "Book appointments for themselves or their family members.",
+        },
+        {
+          subtitle: "Upload Medical Files",
+          text: "Upload medical reports, prescriptions, or health-related images for doctor consultation.",
+        },
+        {
+          subtitle: "Appointment Management",
+          text: "View their list of booked appointments.",
+        },
+      ],
+    },
+    {
+      icon: <Shield className="w-6 h-6" />,
+      title: "4. What Information Do We Collect?",
+      content: [
+        {
+          subtitle: "A. Information You Give Us Directly",
+          text: "",
+          isGroupHeader: true,
+        },
+        {
+          subtitle: "Account Information",
+          text: "To use the App, you must create an account. We collect your Name, mobile number, and Email Address. Email verification is mandatory to activate your account. This is used for identification and account security.",
+        },
+        {
+          subtitle: "Family Member Information",
+          text: "If you wish to book appointments for your family members, you can use the 'Add New Patient' option. You may choose to add their Names. This information is only used to book appointments on their behalf. By adding their details, you confirm that you have their consent.",
+        },
+        {
+          subtitle: "Uploaded Content (Medical Reports / Photos)",
+          text: "If you choose to upload any files, reports, prescriptions, or images for consultation purposes, we collect and store these files. This is considered sensitive health information.",
+        },
+        {
+          subtitle: "B. Information Collected Automatically",
+          text: "",
+          isGroupHeader: true,
+        },
+        {
+          subtitle: "Manually Selected Location",
+          text: "To show you relevant doctors and Ayurvedic centers, the App asks you to manually select your preferred location (such as your city or area) from a provided list. We do not automatically track your device's real-time GPS location. This selected location is stored with your account preferences.",
+        },
+        {
+          subtitle: "Usage Data",
+          text: "We collect information on how you use the App, such as which departments you view or which doctor profiles you check. This helps us improve the App.",
+        },
+        {
+          subtitle: "Device Information",
+          text: "We may collect information about your mobile device, including the model and operating system version, to fix technical issues.",
+        },
+        {
+          subtitle: "C. Appointment Information",
+          text: "",
+          isGroupHeader: true,
+        },
+        {
+          subtitle: "",
+          text: "When you book an appointment, we collect the following details necessary to fulfill the service:",
+        },
+        {
+          subtitle: "Patient Name",
+          text: "Your name (or the selected family member's name).",
+        },
+        {
+          subtitle: "Service / Department",
+          text: "The selected service or department.",
+        },
+        {
+          subtitle: "Date & Time Slot",
+          text: "The selected date and time slot.",
+        },
+        {
+          subtitle: "Doctor Name",
+          text: "The name of the selected doctor.",
+        },
+        {
+          subtitle: "Uploaded Files",
+          text: "Any uploaded files or reports related to the appointment.",
         },
       ],
     },
     {
       icon: <Lock className="w-6 h-6" />,
-      title: "How We Use Your Information",
+      title: "5. How Do We Use Your Information?",
       content: [
         {
-          subtitle: "Personalized Ayurvedic Care",
-          text: "We use your health information to provide customized Ayurvedic consultations, recommend appropriate herbs and treatments, and create personalized wellness plans based on your unique constitution.",
+          subtitle: "Account Management",
+          text: "To create and manage your user account.",
         },
         {
-          subtitle: "Order Processing",
-          text: "Your personal and payment information is used to process orders for Ayurvedic products, herbs, and wellness packages, and to communicate about order status and delivery.",
+          subtitle: "Identity Verification",
+          text: "To verify your identity (via email verification).",
         },
         {
-          subtitle: "Communication",
-          text: "We send you appointment reminders, seasonal wellness tips, Ayurvedic health advice, and updates about our services with your permission.",
+          subtitle: "Location-Based Services",
+          text: "To display nearby doctors and services based on your selected location.",
         },
         {
-          subtitle: "Service Improvement",
-          text: "We analyze usage patterns to enhance our website functionality, develop new Ayurvedic offerings, and improve overall user experience.",
+          subtitle: "Appointment Processing",
+          text: "To process, confirm, and manage your appointment bookings.",
+        },
+        {
+          subtitle: "Medical Consultation",
+          text: "To share uploaded medical reports or files with your selected doctor for better consultation and treatment.",
+        },
+        {
+          subtitle: "Service Communications",
+          text: "To send you important service-related communications (e.g., appointment reminders or confirmations).",
+        },
+        {
+          subtitle: "App Improvement",
+          text: "To improve the App's functionality, fix bugs, and analyze usage patterns.",
+        },
+        {
+          subtitle: "Platform Security",
+          text: "To ensure the security of our platform.",
+        },
+      ],
+    },
+    {
+      icon: <Users className="w-6 h-6" />,
+      title: "6. Do We Share Your Information?",
+      content: [
+        {
+          subtitle: "",
+          text: "We value your trust and do not sell your personal information (name, email, medical reports) to any third party for marketing purposes. However, we need to share specific information to provide our service:",
+        },
+        {
+          subtitle: "With Doctors / Ayurvedic Centers",
+          text: "To complete your appointment booking and enable proper consultation, necessary details (your name, date, time, and any uploaded medical reports or files) are shared with the relevant doctor or center.",
+        },
+        {
+          subtitle: "With Service Providers — Google Analytics",
+          text: "To understand how users interact with the App. This data is anonymized.",
+        },
+        {
+          subtitle: "With Service Providers — Cloud Storage Providers",
+          text: "To securely store your uploaded files and reports (e.g., Google Firebase or similar secure cloud services).",
+        },
+        {
+          subtitle: "Legal Requirements",
+          text: "We may disclose information when required by law or to protect the rights, property, or safety of our business, customers, or others.",
+        },
+      ],
+    },
+    {
+      icon: <HeartPulse className="w-6 h-6" />,
+      title: "7. Special Note on Medical Reports and Files (Sensitive Data)",
+      content: [
+        {
+          subtitle: "Sensitive Data",
+          text: "Any health-related information you upload (reports, prescriptions, images) is treated as sensitive personal data with special care.",
+        },
+        {
+          subtitle: "Purpose Limitation",
+          text: "This data is used only for your consultation with the selected doctor and is not used for any other purpose.",
+        },
+        {
+          subtitle: "Access",
+          text: "Only you and the doctor/center you book an appointment with can view these files.",
+        },
+        {
+          subtitle: "Storage",
+          text: "These files are stored securely with encryption.",
+        },
+        {
+          subtitle: "Consent",
+          text: "By uploading health information, you provide explicit consent to share it with your chosen healthcare provider.",
         },
       ],
     },
     {
       icon: <Eye className="w-6 h-6" />,
-      title: "Data Protection & Security",
+      title: "8. Data Protection & Security",
       content: [
         {
           subtitle: "Encryption & Security",
-          text: "All sensitive data, including health information and payment details, is encrypted using industry-standard SSL/TLS protocols. We implement strict security measures to protect your information from unauthorized access.",
+          text: "All sensitive data, including health information and payment details, is encrypted using industry-standard SSL/TLS protocols and HTTPS encryption. We implement strict security measures to protect your information from unauthorized access. Uploaded medical reports are stored in secure, encrypted cloud storage.",
         },
         {
           subtitle: "Confidentiality",
@@ -217,34 +408,38 @@ function PrivacyAndPolicy() {
       ],
     },
     {
-      icon: <Users className="w-6 h-6" />,
-      title: "Information Sharing",
+      icon: <Database className="w-6 h-6" />,
+      title: "9. Data Retention",
       content: [
         {
-          subtitle: "Third-Party Sharing",
-          text: "We do not sell your personal or health information to third parties. We may share limited information with trusted service providers (payment processors, shipping partners) who assist in delivering our services.",
+          subtitle: "Account Data",
+          text: "We retain your personal data for as long as your account is active.",
         },
         {
-          subtitle: "Ayurvedic Practitioners",
-          text: "When you book a consultation, relevant health information is shared with your assigned Ayurvedic practitioner to provide appropriate care and treatment recommendations.",
+          subtitle: "Medical Reports / Uploaded Files",
+          text: "These files are retained as long as your account is active or as long as necessary for medical/legal purposes. You can delete individual files anytime.",
         },
         {
-          subtitle: "Legal Requirements",
-          text: "We may disclose information when required by law or to protect the rights, property, or safety of our business, customers, or others.",
+          subtitle: "Upon Account Deletion",
+          text: "If you delete your account, we will permanently delete your information and uploaded files from our active systems. Information may be retained only as necessary for legal obligations or legitimate business purposes (like backups).",
         },
       ],
     },
     {
       icon: <FileText className="w-6 h-6" />,
-      title: "Your Rights & Choices",
+      title: "10. Your Rights & Choices",
       content: [
+        {
+          subtitle: "Access",
+          text: "You have the right to know what information we hold about you.",
+        },
         {
           subtitle: "Access & Correction",
           text: "You have the right to access, update, or correct your personal and health information at any time through your account settings or by contacting us.",
         },
         {
           subtitle: "Data Deletion",
-          text: "You may request deletion of your account and associated data. Please note that we may retain certain information for legal compliance and record-keeping purposes.",
+          text: "You have the right to request the deletion of your account and all personal data. Please note that we may retain certain information for legal compliance and record-keeping purposes.",
         },
         {
           subtitle: "Marketing Preferences",
@@ -254,11 +449,59 @@ function PrivacyAndPolicy() {
           subtitle: "Cookie Control",
           text: "You can manage cookie preferences through your browser settings and control how we collect usage data.",
         },
+        {
+          subtitle: "How to Exercise Your Rights",
+          text: "To exercise these rights, please use the in-app features or contact us using the information in Section 17.",
+        },
+      ],
+    },
+    {
+      icon: <Trash2 className="w-6 h-6" />,
+      title: "11. How to Delete Your Account",
+      content: [
+        {
+          subtitle: "",
+          text: "You can manage your data directly within the App. To Delete Your Entire Account, follow these steps:",
+        },
+        {
+          subtitle: "Step 1",
+          text: "Open the App and log in.",
+        },
+        {
+          subtitle: "Step 2",
+          text: "Go to the 'Settings' section.",
+        },
+        {
+          subtitle: "Step 3",
+          text: "Look for the 'Delete Account' option.",
+        },
+        {
+          subtitle: "Step 4",
+          text: "Confirm your choice. Once confirmed, your account and all associated data (including your profile, appointment history, and all uploaded medical reports) will be permanently deleted and cannot be recovered.",
+        },
+        {
+          subtitle: "Important Note",
+          text: "Account deletion is permanent and irreversible.",
+        },
+      ],
+    },
+    {
+      icon: <Mail className="w-6 h-6" />,
+      title: "12. Children's Privacy",
+      content: [
+        {
+          subtitle: "Age Restriction",
+          text: "Our App is not intended for children under the age of 13. We do not knowingly collect personal information from children under 13. If you are a parent or guardian and believe your child has provided us with personal information, please contact us.",
+        },
+        {
+          subtitle: "Minors Aged 13–18",
+          text: "For minors aged 13–18, parental consent is required for Ayurvedic consultations.",
+        },
       ],
     },
     {
       icon: <Bell className="w-6 h-6" />,
-      title: "Cookies & Tracking",
+      title: "13. Cookies & Tracking",
       content: [
         {
           subtitle: "Essential Cookies",
@@ -275,22 +518,66 @@ function PrivacyAndPolicy() {
       ],
     },
     {
-      icon: <Mail className="w-6 h-6" />,
-      title: "Children's Privacy",
-      content: [
-        {
-          subtitle: "Age Restriction",
-          text: "Our services are not intended for children under 13. We do not knowingly collect information from children. For minors aged 13-18, parental consent is required for Ayurvedic consultations.",
-        },
-      ],
-    },
-    {
       icon: <Globe className="w-6 h-6" />,
-      title: "International Data Transfers",
+      title: "14. International Data Transfers",
       content: [
         {
           subtitle: "Cross-Border Transfers",
           text: "If you access our services from outside our primary operating country, your information may be transferred and processed internationally. We ensure appropriate safeguards are in place to protect your data.",
+        },
+      ],
+    },
+    {
+      icon: <Smartphone className="w-6 h-6" />,
+      title: "15. App Permissions",
+      content: [
+        {
+          subtitle: "",
+          text: "The App may request the following device permissions to function properly:",
+        },
+        {
+          subtitle: "Internet Permission",
+          text: "Required to fetch data (like the doctor list) from our servers and to book appointments.",
+        },
+        {
+          subtitle: "Storage / Media Permission",
+          text: "Required only if you choose to upload medical reports, prescriptions, or images from your device. This permission is only used when you actively select a file to upload.",
+        },
+        {
+          subtitle: "Note on GPS / Location",
+          text: "The app does not require GPS location access. Location is manually selected from a list.",
+        },
+      ],
+    },
+    {
+      icon: <RefreshCw className="w-6 h-6" />,
+      title: "16. Changes to This Policy",
+      content: [
+        {
+          subtitle: "",
+          text: "We may update this Privacy Policy from time to time. If we make significant changes, we will notify you by posting a notice within the App or by sending you an email (if feasible). We encourage you to review this policy periodically.",
+        },
+        {
+          subtitle: "Last Updated Date",
+          text: 'The "Last Updated" date at the top of this policy indicates when it was last revised.',
+        },
+      ],
+    },
+    {
+      icon: <Phone className="w-6 h-6" />,
+      title: "17. Contact Us",
+      content: [
+        {
+          subtitle: "",
+          text: "If you have any questions about this Privacy Policy or your data, please contact us at:",
+        },
+        {
+          subtitle: "Email",
+          text: "privacy@ayurmitra.com",
+        },
+        {
+          subtitle: "Response Time",
+          text: "We will respond to your query within 48 hours.",
         },
       ],
     },
@@ -337,23 +624,24 @@ function PrivacyAndPolicy() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
           >
-            Last Updated: February 2026
+            Last Updated: March 15, 2026
           </motion.p>
         </div>
       </motion.div>
+
       <>
         <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Lora:ital,wght@0,400;0,500;1,400&display=swap');
-        .font-serif { font-family: 'Lora', Georgia, serif !important; }
-        .font-display { font-family: 'Cormorant Garamond', Georgia, serif !important; }
-      `}</style>
+          @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Lora:ital,wght@0,400;0,500;1,400&display=swap');
+          .font-serif { font-family: 'Lora', Georgia, serif !important; }
+          .font-display { font-family: 'Cormorant Garamond', Georgia, serif !important; }
+        `}</style>
 
         <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-green-100 px-4 sm:px-8 py-10 md:py-16 relative overflow-hidden">
           <div className="fixed top-[-10%] right-[-10%] w-96 h-96 rounded-full bg-green-300/10 pointer-events-none" />
           <div className="fixed bottom-[5%] left-[-8%] w-72 h-72 rounded-full bg-emerald-800/8 pointer-events-none" />
           <div className="fixed top-[40%] right-[5%] w-48 h-48 rounded-full bg-green-400/6 pointer-events-none" />
 
-          <div className=" mx-auto relative z-10">
+          <div className="mx-auto relative z-10">
             <motion.div
               initial={{ opacity: 0, y: -30 }}
               animate={{ opacity: 1, y: 0 }}
@@ -368,14 +656,12 @@ function PrivacyAndPolicy() {
               >
                 AyurMitra
               </motion.h1>
-
               <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: "7rem" }}
                 transition={{ duration: 0.8, delay: 0.6 }}
                 className="h-0.5 bg-gradient-to-r from-transparent via-emerald-500 to-transparent mx-auto my-3"
               />
-
               <motion.p
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -400,7 +686,7 @@ function PrivacyAndPolicy() {
                     delay: i * 0.15,
                     ease: [0.22, 1, 0.36, 1],
                   }}
-                  className="relative bg-white/55 backdrop-blur-lg border border-emerald-200/40 rounded-2xl p-4  mb-3 shadow-sm overflow-hidden"
+                  className="relative bg-white/55 backdrop-blur-lg border border-emerald-200/40 rounded-2xl p-4 mb-3 shadow-sm overflow-hidden"
                 >
                   <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-emerald-400 to-green-800 rounded-l-2xl" />
                   <h2 className="font-serif text-lg md:text-xl font-bold text-emerald-950 tracking-wide mb-4">
@@ -412,13 +698,12 @@ function PrivacyAndPolicy() {
                 </motion.div>
               ))}
             </div>
-
           </div>
         </div>
       </>
 
       <motion.div
-        className="max-w-[95rem] mx-auto px-4  lg:px-10 2xl:px-0 py-8 md:py-10"
+        className="max-w-[95rem] mx-auto px-4 lg:px-10 2xl:px-0 py-8 md:py-10"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true }}
@@ -429,13 +714,12 @@ function PrivacyAndPolicy() {
             Our Privacy Policy
           </h2>
           <p className="text-gray-600 leading-relaxed text-sm md:text-base">
-            At our Ayurvedic wellness center, we honor the ancient principle of
-            confidentiality inherent in the healing arts. This Privacy Policy
-            explains how we collect, use, protect, and share your information
-            when you use our website, book consultations, or purchase Ayurvedic
-            products and services. We encourage you to read this policy
-            carefully to understand our practices regarding your personal and
-            health information.
+            At AyurMitra, we honor the ancient principle of confidentiality
+            inherent in the healing arts. This Privacy Policy explains how we
+            collect, use, protect, and share your information when you use our
+            App, book consultations, or access Ayurvedic health services. We
+            encourage you to read this policy carefully to understand our
+            practices regarding your personal and health information.
           </p>
         </div>
       </motion.div>
@@ -455,7 +739,7 @@ function PrivacyAndPolicy() {
               className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
             >
               <div className="bg-gradient-to-r from-green-500 to-emerald-600 text-white p-4 md:p-5 flex items-center gap-3">
-                <div className="bg-white/20 p-2 rounded-lg backdrop-blur-sm">
+                <div className="bg-white/20 p-2 rounded-lg backdrop-blur-sm flex-shrink-0">
                   {section.icon}
                 </div>
                 <h2 className="text-lg md:text-xl font-bold">
@@ -470,14 +754,30 @@ function PrivacyAndPolicy() {
                     initial={{ opacity: 0, x: -20 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
-                    transition={{ delay: idx * 0.08 }}
+                    transition={{ delay: idx * 0.06 }}
                   >
-                    <h3 className="text-base md:text-lg font-semibold text-green-700 mb-1.5">
-                      {item.subtitle}
-                    </h3>
-                    <p className="text-gray-600 leading-relaxed text-sm">
-                      {item.text}
-                    </p>
+                    {item.isGroupHeader ? (
+                      <div className="flex items-center gap-2 mt-3 mb-1">
+                        <div className="h-px flex-1 bg-green-100" />
+                        <span className="text-xs font-bold uppercase tracking-widest text-green-600 bg-green-50 border border-green-200 px-3 py-1 rounded-full whitespace-nowrap">
+                          {item.subtitle}
+                        </span>
+                        <div className="h-px flex-1 bg-green-100" />
+                      </div>
+                    ) : (
+                      <>
+                        {item.subtitle && (
+                          <h3 className="text-base md:text-lg font-semibold text-green-700 mb-1.5">
+                            {item.subtitle}
+                          </h3>
+                        )}
+                        {item.text && (
+                          <p className="text-gray-600 leading-relaxed text-sm">
+                            {item.text}
+                          </p>
+                        )}
+                      </>
+                    )}
                   </motion.div>
                 ))}
               </div>
@@ -495,18 +795,20 @@ function PrivacyAndPolicy() {
       >
         <div className="bg-gradient-to-r from-slate-50 to-gray-50 rounded-xl shadow-lg p-5 md:p-7 border-l-4 border border-slate-500">
           <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-3 flex items-center gap-2">
-            <Shield className="w-6 h-6 text-slate-600" />
+            <Settings className="w-6 h-6 text-slate-600" />
             Account Management
           </h2>
           <p className="text-gray-700 leading-relaxed mb-5 text-sm">
             You have full control over your account. Choose to temporarily pause
-            your account or permanently delete all your data.
+            your account or permanently delete all your data. You can also
+            manage your account directly from within the App by navigating to
+            the Settings section and selecting the appropriate option.
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="bg-white rounded-lg p-4 border-2 border-orange-200 hover:border-orange-400 transition-colors">
               <div className="flex items-start gap-3 mb-3">
-                <div className="bg-orange-100 p-2 rounded-lg">
+                <div className="bg-orange-100 p-2 rounded-lg flex-shrink-0">
                   <PauseCircle className="w-5 h-5 text-orange-600" />
                 </div>
                 <div className="flex-1">
@@ -514,7 +816,8 @@ function PrivacyAndPolicy() {
                     Deactivate Account
                   </h3>
                   <p className="text-xs text-gray-600">
-                    Temporarily pause your account. You can reactivate anytime.
+                    Temporarily pause your account. Your data is preserved and
+                    you can reactivate anytime by logging back in.
                   </p>
                 </div>
               </div>
@@ -528,9 +831,10 @@ function PrivacyAndPolicy() {
                 Deactivate Account
               </motion.button>
             </div>
+
             <div className="bg-white rounded-lg p-4 border-2 border-red-200 hover:border-red-400 transition-colors">
               <div className="flex items-start gap-3 mb-3">
-                <div className="bg-red-100 p-2 rounded-lg">
+                <div className="bg-red-100 p-2 rounded-lg flex-shrink-0">
                   <Trash2 className="w-5 h-5 text-red-600" />
                 </div>
                 <div className="flex-1">
@@ -538,15 +842,15 @@ function PrivacyAndPolicy() {
                     Delete Account
                   </h3>
                   <p className="text-xs text-gray-600">
-                    Permanently remove all your data. This action cannot be
-                    undone.
+                    Permanently remove all your data including profile,
+                    appointment history, and all uploaded medical reports. This
+                    action cannot be undone.
                   </p>
                 </div>
               </div>
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                // onClick={() => handleOpenModal("delete")}
                 onClick={() => {
                   navigate("/deleteAccount");
                 }}
@@ -577,7 +881,7 @@ function PrivacyAndPolicy() {
             <Box sx={modalStyle}>
               {modalType === "delete" ? (
                 <div className="relative">
-                  <div className="bg-gradient-to-r from-red-600 to-red-700 text-white p-5 md:p-6 sticky top-0 z-10 ">
+                  <div className="bg-gradient-to-r from-red-600 to-red-700 text-white p-5 md:p-6 sticky top-0 z-10">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <div className="bg-white/20 p-2 rounded-lg">
@@ -629,6 +933,21 @@ function PrivacyAndPolicy() {
                             <strong>Health Records:</strong> All consultation
                             history, Prakriti/Vikriti assessments, and treatment
                             plans
+                          </span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-red-500 mt-1">•</span>
+                          <span>
+                            <strong>Uploaded Medical Reports:</strong> All
+                            files, prescriptions, and images uploaded for
+                            consultations
+                          </span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-red-500 mt-1">•</span>
+                          <span>
+                            <strong>Appointment History:</strong> All past and
+                            pending appointment records
                           </span>
                         </li>
                         <li className="flex items-start gap-2">
@@ -824,6 +1143,13 @@ function PrivacyAndPolicy() {
                         <li className="flex items-start gap-2">
                           <span className="text-green-500 mt-1">•</span>
                           <span>
+                            <strong>Uploaded medical reports:</strong> All files
+                            remain intact and accessible upon reactivation
+                          </span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-green-500 mt-1">•</span>
+                          <span>
                             <strong>Order history:</strong> Past purchases and
                             transaction records
                           </span>
@@ -851,7 +1177,7 @@ function PrivacyAndPolicy() {
                       <p className="text-xs text-green-800">
                         Simply log in with your email and password anytime to
                         reactivate your account. Everything will be exactly as
-                        you left it - your health records, preferences, and
+                        you left it — your health records, preferences, and
                         order history will be immediately available.
                       </p>
                     </div>
@@ -919,7 +1245,7 @@ function PrivacyAndPolicy() {
             our practices, services, or legal requirements. We will notify you
             of any material changes by posting the new policy on this page and
             updating the "Last Updated" date. For significant changes, we will
-            provide additional notice through email or prominent website
+            provide additional notice through email or prominent App
             notifications.
           </p>
           <p className="text-gray-700 leading-relaxed text-sm">
