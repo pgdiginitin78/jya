@@ -16,12 +16,15 @@ import KeyboardArrowRightRoundedIcon from "@mui/icons-material/KeyboardArrowRigh
 import MenuIcon from "@mui/icons-material/Menu";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import LogoutIcon from "@mui/icons-material/Logout";
+import PersonIcon from "@mui/icons-material/Person";
 import { Tooltip } from "@mui/material";
 import JYALogoImg from "../../asset/JnanaYogAyuLogo.png";
 import LoginPage from "../login/LoginPage";
 import SignUp from "../login/SignUp";
 import { logoutUser } from "../../Actions";
 import AyurvedaSuccessDialog from "../login/AyurvedaSuccessDialog";
+import ManageProfileModal from "../login/ManageProfileModal";
+import { useAuth } from "../../context/AuthContext";
 
 
 const mobilePanelMotion = {
@@ -38,11 +41,12 @@ const mobilePanelMotion = {
   },
 };
 
-export default function ModernNavbar() {
+export default function Navbar() {
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openLogin, setOpenLogin] = useState(false);
   const [openSignUpModal, setOpenSignUpModal] = useState(false);
+  const [openManageProfile, setOpenManageProfile] = useState(false);
 
   const [mobileAboutOpen, setMobileAboutOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
@@ -53,10 +57,25 @@ export default function ModernNavbar() {
   const [scrolled, setScrolled] = useState(false);
   const [openSuccessDialog, setOpenSuccessDialog] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+  const [successTitle, setSuccessTitle] = useState("");
 
-  const userString = localStorage.getItem("user");
-  const user =
-    userString && userString !== "undefined" ? JSON.parse(userString) : null;
+  const { user, logout } = useAuth();
+
+  const handleLogout = () => {
+    logoutUser();
+    logout();
+    setSuccessTitle("Logged Out");
+    setSuccessMessage("You have been successfully logged out from your account.");
+    setOpenSuccessDialog(true);
+    
+    // For mobile drawer
+    if (mobileOpen) {
+      setMobileOpen(false);
+    }
+    
+    // Redirect to home
+    navigate("/");
+  };
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -144,7 +163,7 @@ export default function ModernNavbar() {
 
   return (
     <>
-      <style jsx>{`
+      <style>{`
         .frosted-glass-navbar {
           background: #e6f2e3;
           backdrop-filter: blur(20px) saturate(180%);
@@ -489,15 +508,22 @@ export default function ModernNavbar() {
                       {user?.lastName}
                     </Typography>
                   </Box>
+                  <Tooltip title="Manage Profile">
+                    <IconButton
+                      onClick={() => setOpenManageProfile(true)}
+                      sx={{
+                        color: "#1a2e1a",
+                        "&:hover": {
+                          background: "rgba(255, 255, 255, 0.4)",
+                        },
+                      }}
+                    >
+                      <PersonIcon sx={{ fontSize: 22 }} />
+                    </IconButton>
+                  </Tooltip>
                   <Tooltip title="Log Out">
                     <IconButton
-                      onClick={() => {
-                        logoutUser();
-                        localStorage.removeItem("user");
-                        localStorage.removeItem("accessToken");
-                        localStorage.removeItem("refreshToken");
-                        navigate("/");
-                      }}
+                      onClick={handleLogout}
                       sx={{
                         color: "#1a2e1a",
                         "&:hover": {
@@ -894,12 +920,16 @@ export default function ModernNavbar() {
                 <Divider className="!my-4" />
                 <button
                   onClick={() => {
-                    logoutUser();
-                    localStorage.removeItem("user");
-                    localStorage.removeItem("accessToken");
-                    localStorage.removeItem("refreshToken");
+                    setOpenManageProfile(true);
                     setMobileOpen(false);
                   }}
+                  className="w-full flex items-center gap-2 px-4 py-3 rounded-xl text-[#263d21] hover:bg-green-50 font-medium transition-all"
+                >
+                  <PersonIcon sx={{ fontSize: 20 }} />
+                  Manage Profile
+                </button>
+                <button
+                  onClick={handleLogout}
                   className="w-full flex items-center gap-2 px-4 py-3 rounded-xl text-red-600 hover:bg-red-50 font-medium transition-all"
                 >
                   <LogoutIcon sx={{ fontSize: 20 }} />
@@ -915,6 +945,9 @@ export default function ModernNavbar() {
           open={openLogin}
           handleClose={() => setOpenLogin(false)}
           setOpenLogin={setOpenLogin}
+          setOpenSuccessDialog={setOpenSuccessDialog}
+          setSuccessMessage={setSuccessMessage}
+          setSuccessTitle={setSuccessTitle}
         />
       )}
       {openSignUpModal && (
@@ -924,6 +957,7 @@ export default function ModernNavbar() {
           setOpenLogin={setOpenLogin}
           setOpenSuccessDialog={setOpenSuccessDialog}
           setSuccessMessage={setSuccessMessage}
+          setSuccessTitle={setSuccessTitle}
         />
       )}
       {openSuccessDialog && (
@@ -931,6 +965,14 @@ export default function ModernNavbar() {
           open={openSuccessDialog}
           onClose={() => setOpenSuccessDialog(false)}
           contentMessage={successMessage}
+          title={successTitle}
+        />
+      )}
+      {openManageProfile && (
+        <ManageProfileModal
+          open={openManageProfile}
+          handleClose={() => setOpenManageProfile(false)}
+          user={user}
         />
       )}
     </>

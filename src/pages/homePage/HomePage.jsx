@@ -1,38 +1,18 @@
-import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 import { Button } from "@mui/material";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { FaStethoscope } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import { blogData } from "../../constants/blogData";
 import ManishaSuryawanshiImg from "../../asset/aboutMore/founders/manishaSuryawanshi.png";
-import ConsciousLivingIcon from "../../asset/aboutPage/mission/ConsciousLiving.png";
-import EcosystemIcon from "../../asset/aboutPage/mission/Ecosystem.png";
-import LearningIcon from "../../asset/aboutPage/mission/Learning.png";
-import WellnessIcon from "../../asset/aboutPage/mission/Wellness.png";
-import collectivelearningIcon from "../../asset/aboutPage/ourVision/CollectiveLearning.png";
-import enrichedlifeIcon from "../../asset/aboutPage/ourVision/EnrichedLife.png";
-import innerstrengthIcon from "../../asset/aboutPage/ourVision/InnerStrength.png";
-import naturalwisdomIcon from "../../asset/aboutPage/ourVision/naturalwisdom.png";
-import SustainablesystemsIcon from "../../asset/aboutPage/ourVision/SustainableSystems.png";
-import thrivingecosystemsIcon from "../../asset/aboutPage/ourVision/ThrivingEcosystems.png";
-import BodyIcon from "../../asset/aboutPage/philosophy/Body.png";
-import CommunityIcon from "../../asset/aboutPage/philosophy/Community.png";
-import MindIcon from "../../asset/aboutPage/philosophy/Mind.png";
-import NatureIcon from "../../asset/aboutPage/philosophy/Nature.png";
-import DailyRitualImg from "../../asset/blogs/Daily Rituals.png";
-import panchakaramaImg from "../../asset/blogs/panchakarama.png";
-import yogaclassImg from "../../asset/blogs/yogaclass.jpg";
 import corporateMindfulnessWorkshopsImg from "../../asset/communityProgram/Corporate Mindfulness Workshops.png";
 import guidedForestTherapyWalkImg from "../../asset/communityProgram/Guided Forest Therapy Walk.png";
 import outDoorLeavingImg from "../../asset/communityProgram/Out Door Leaving.png";
 import sisnorToursImg from "../../asset/communityProgram/Sisnor Tours.png";
 import swagramDarshanImg from "../../asset/communityProgram/swagramDarshan.png";
 import weekendDigitalDetoxCampImg from "../../asset/communityProgram/Weekend Digital Detox Camp.png";
-import massageTherapyImg from "../../asset/gallary-stories/massagetherapy.png";
-import morningYogaImg from "../../asset/gallary-stories/morningyoga.jpg";
-import SattvicFoodImg from "../../asset/gallary-stories/SattvicFood.jpg";
-import TurmericImg from "../../asset/gallary-stories/Turmeric.webp";
 import culturistHealerImg from "../../asset/learningcourses/CulturistHealer.png";
 import ingeniousLifestyleImg from "../../asset/learningcourses/IngeniousLifestyle.png";
 import inventionWisdomImg from "../../asset/learningcourses/InventionWisdom.png";
@@ -57,6 +37,172 @@ import EventCalendar from "../eventCalander/EventCalender";
 import TestimonialsSection from "./TestimonialsSection";
 import BookAppointment from "../appointementBookingForm/BookAppointment";
 import { errorAlert } from "../../components/common/toast/CustomToast";
+import Carousel from "../../components/common/Carousel";
+
+import ConsciousLivingIcon from "../../asset/aboutPage/mission/ConsciousLiving.png";
+import EcosystemIcon from "../../asset/aboutPage/mission/Ecosystem.png";
+import LearningIcon from "../../asset/aboutPage/mission/Learning.png";
+import WellnessIcon from "../../asset/aboutPage/mission/Wellness.png";
+import collectivelearningIcon from "../../asset/aboutPage/ourVision/CollectiveLearning.png";
+import enrichedlifeIcon from "../../asset/aboutPage/ourVision/EnrichedLife.png";
+import innerstrengthIcon from "../../asset/aboutPage/ourVision/InnerStrength.png";
+import naturalwisdomIcon from "../../asset/aboutPage/ourVision/naturalwisdom.png";
+import SustainablesystemsIcon from "../../asset/aboutPage/ourVision/SustainableSystems.png";
+import thrivingecosystemsIcon from "../../asset/aboutPage/ourVision/ThrivingEcosystems.png";
+import BodyIcon from "../../asset/aboutPage/philosophy/Body.png";
+import CommunityIcon from "../../asset/aboutPage/philosophy/Community.png";
+import MindIcon from "../../asset/aboutPage/philosophy/Mind.png";
+import NatureIcon from "../../asset/aboutPage/philosophy/Nature.png";
+import massageTherapyImg from "../../asset/gallary-stories/massagetherapy.png";
+import morningYogaImg from "../../asset/gallary-stories/morningyoga.jpg";
+import SattvicFoodImg from "../../asset/gallary-stories/SattvicFood.jpg";
+import TurmericImg from "../../asset/gallary-stories/Turmeric.webp";
+import yogaclassImg from "../../asset/blogs/yogaclass.jpg";
+import DailyRitualImg from "../../asset/blogs/Daily Rituals.png";
+import panchakaramaImg from "../../asset/blogs/panchakarama.png";
+
+const stories = [
+  {
+    id: 1,
+    category: "herbs",
+    title: "The Power of Turmeric",
+    excerpt: "Golden spice for immunity and healing",
+    image: TurmericImg,
+    author: "Dr. Priya Sharma",
+    date: "Dec 5, 2024",
+    content:
+      "Turmeric has been used in Ayurveda for thousands of years as a powerful anti-inflammatory agent...",
+  },
+  {
+    id: 2,
+    category: "yoga",
+    title: "Morning Yoga Rituals",
+    excerpt: "Start your day with ancient practices",
+    image: morningYogaImg,
+    author: "Yogi Arjun Patel",
+    date: "Dec 3, 2024",
+    content:
+      "The ancient practice of Surya Namaskar (Sun Salutation) energizes the body...",
+  },
+  {
+    id: 3,
+    category: "wellness",
+    title: "Ayurvedic Massage Therapy",
+    excerpt: "Abhyanga for body and soul",
+    image: massageTherapyImg,
+    author: "Maya Desai",
+    date: "Nov 30, 2024",
+    content:
+      "Abhyanga, the traditional Ayurvedic oil massage, is a cornerstone of preventive healthcare...",
+  },
+  {
+    id: 4,
+    category: "herbs",
+    title: "Ashwagandha Benefits",
+    excerpt: "Ancient adaptogen for modern stress",
+    image:
+      "https://assets.clevelandclinic.org/transform/8fe65f4e-04aa-4f24-81eb-d01daf7b6b77/Ashwagandha-winter-cherry-1703497855",
+    author: "Dr. Rajesh Kumar",
+    date: "Nov 28, 2024",
+    content:
+      'Ashwagandha, known as the "strength of the stallion," is one of the most revered herbs...',
+  },
+  {
+    id: 5,
+    category: "lifestyle",
+    title: "Ayurvedic Daily Routine",
+    excerpt: "Dinacharya for balanced living",
+    image:
+      "https://assets.clevelandclinic.org/transform/LargeFeatureImage/2d536049-b17c-4b88-b1e3-85f78f7d9fea/Ayurveda-173877738-770x533-1_jpg",
+    author: "Sanjana Reddy",
+    date: "Nov 25, 2024",
+    content:
+      "Dinacharya, the Ayurvedic daily routine, synchronizes your body with natural circadian rhythm...",
+  },
+  {
+    id: 6,
+    category: "wellness",
+    title: "Herbal Tea Rituals",
+    excerpt: "Healing brews from nature",
+    image:
+      "https://tastythriftytimely.com/wp-content/uploads/2021/09/Turmeric-Latte-4.jpg",
+    author: "Kavita Joshi",
+    date: "Nov 22, 2024",
+    content:
+      "Ayurvedic herbal teas are carefully crafted blends designed to balance the doshas...",
+  },
+  {
+    id: 7,
+    category: "yoga",
+    title: "Pranayama Breathing",
+    excerpt: "Master the life force through breath",
+    image:
+      "https://plus.unsplash.com/premium_photo-1661476140414-616180169219?q=60",
+    author: "Guru Vikram Singh",
+    date: "Nov 20, 2024",
+    content:
+      "Pranayama, the science of breath control, is a fundamental pillar of yoga...",
+  },
+  {
+    id: 8,
+    category: "lifestyle",
+    title: "Sattvic Food Philosophy",
+    excerpt: "Eating for clarity and purity",
+    image: SattvicFoodImg,
+    author: "Chef Ananya Verma",
+    date: "Nov 18, 2024",
+    content:
+      "Sattvic foods are pure, fresh, and naturally nourishing ingredients that promote clarity...",
+  },
+  {
+    id: 9,
+    category: "herbs",
+    title: "Holy Basil - Tulsi",
+    excerpt: "The queen of herbs in Ayurveda",
+    image:
+      "https://i.pinimg.com/1200x/d8/b6/70/d8b670d33c4476f11c6f4dd41ec9d3b9.jpg",
+    author: "Dr. Meera Iyer",
+    date: "Nov 15, 2024",
+    content:
+      "Tulsi (Holy Basil) is revered as a sacred plant in Ayurveda, known for healing properties...",
+  },
+  {
+    id: 10,
+    category: "wellness",
+    title: "Ayurvedic Face Care",
+    excerpt: "Natural beauty from within",
+    image:
+      "https://static.wixstatic.com/media/ed3c94_96a0f9c6d0a34e378952b6c79462fe6b~mv2.jpg",
+    author: "Lakshmi Nair",
+    date: "Nov 12, 2024",
+    content:
+      "Ayurvedic skincare focuses on natural ingredients and holistic approaches...",
+  },
+  {
+    id: 11,
+    category: "yoga",
+    title: "Meditation for Inner Peace",
+    excerpt: "Dhyana practice for mindfulness",
+    image:
+      "https://i.pinimg.com/736x/64/14/26/641426ef75aa9f3b03d3218774329eeb.jpg",
+    author: "Swami Anand",
+    date: "Nov 10, 2024",
+    content:
+      "Meditation or Dhyana is the practice of focusing the mind to achieve clarity...",
+  },
+  {
+    id: 12,
+    category: "lifestyle",
+    title: "Ayurvedic Sleep Practices",
+    excerpt: "Restore with quality rest",
+    image:
+      "https://i.pinimg.com/736x/a1/98/23/a19823f5f4952ddeb6df9f1cbf8b275d.jpg",
+    author: "Dr. Arun Menon",
+    date: "Nov 8, 2024",
+    content:
+      "Quality sleep is essential in Ayurveda for maintaining health and vitality...",
+  },
+];
 
 export default function HomePage() {
   const [typedLineIndex, setTypedLineIndex] = useState(0);
@@ -64,23 +210,14 @@ export default function HomePage() {
   const [activeIndex, setActiveIndex] = useState(2);
   const [aboutSectionActiveIndex, setAboutSectionActiveIndex] = useState(0);
   const [aboutSectionPaused, setAboutSectionPaused] = useState(false);
-  const [ourServicesSectionStartIndex, setOurServicesSectionStartIndex] =
-    useState(0);
   const [currentFilter, setCurrentFilter] = useState("all");
   const [modalOpen, setModalOpen] = useState(false);
   const [modalStories, setModalStories] = useState([]);
-  const [currentGalleryIndex, setCurrentGalleryIndex] = useState(0);
-  const [galleryItemsPerView, setGalleryItemsPerView] = useState(3);
-  const [isGalleryAutoPlaying, setIsGalleryAutoPlaying] = useState(true);
-  const [isGalleryAnimating, setIsGalleryAnimating] = useState(false);
-  const [index, setIndex] = useState(0);
-  const [cardsToShow, setCardsToShow] = useState(1);
   const [openBookAppointmentModal, setOpenBookAppointmentModal] =
     useState(false);
 
   const accessToken = localStorage.getItem("accessToken");
-
-  const containerRef = useRef(null);
+  const navigate = useNavigate();
 
   const articleList = [
     {
@@ -502,18 +639,18 @@ export default function HomePage() {
 
   // about jya
 
-  const handleAboutSectionNext = () => {
+  const handleAboutSectionNext = useCallback(() => {
     setAboutSectionActiveIndex(
       (prev) => (prev + 1) % aboutSectionSlides.length,
     );
-  };
+  }, [aboutSectionSlides.length]);
 
-  const handleAboutSectionPrev = () => {
+  const handleAboutSectionPrev = useCallback(() => {
     setAboutSectionActiveIndex(
       (prev) =>
         (prev - 1 + aboutSectionSlides.length) % aboutSectionSlides.length,
     );
-  };
+  }, [aboutSectionSlides.length]);
 
   useEffect(() => {
     if (aboutSectionPaused) return;
@@ -523,320 +660,32 @@ export default function HomePage() {
     }, 8000);
 
     return () => clearInterval(aboutSectionInterval);
-  }, [aboutSectionPaused, aboutSectionSlides.length]);
+  }, [aboutSectionPaused, aboutSectionSlides.length, handleAboutSectionNext]);
 
   const aboutSectionActiveSlide = aboutSectionSlides[aboutSectionActiveIndex];
 
-  // our services
-
-  const handleOurServicesSectionNext = () => {
-    setOurServicesSectionStartIndex((prev) => {
-      const nextIndex = prev + 3;
-      return nextIndex >= ourServicesSectionList.length ? 0 : nextIndex;
-    });
-  };
-
-  const handleOurServicesSectionPrev = () => {
-    setOurServicesSectionStartIndex((prev) => {
-      const nextIndex = prev - 3;
-      return nextIndex < 0
-        ? Math.max(ourServicesSectionList.length - 3, 0)
-        : nextIndex;
-    });
-  };
-
-  const ourServicesSectionVisibleServices = ourServicesSectionList.slice(
-    ourServicesSectionStartIndex,
-    ourServicesSectionStartIndex + 3,
+  const filters = useMemo(
+    () => [
+      { id: "all", label: "All Practices" },
+      { id: "herbs", label: "Herbs & Spices" },
+      { id: "yoga", label: "Yoga & Meditation" },
+      { id: "wellness", label: "Wellness & Healing" },
+      { id: "lifestyle", label: "Lifestyle & Diet" },
+    ],
+    [],
   );
 
-  // gallary section
-
-  const filters = [
-    { id: "all", label: "All Practices" },
-    { id: "herbs", label: "Herbs & Spices" },
-    { id: "yoga", label: "Yoga & Meditation" },
-    { id: "wellness", label: "Wellness & Healing" },
-    { id: "lifestyle", label: "Lifestyle & Diet" },
-  ];
-
-  const stories = [
-    {
-      id: 1,
-      category: "herbs",
-      title: "The Power of Turmeric",
-      excerpt: "Golden spice for immunity and healing",
-      image: TurmericImg,
-      author: "Dr. Priya Sharma",
-      date: "Dec 5, 2024",
-      content:
-        "Turmeric has been used in Ayurveda for thousands of years as a powerful anti-inflammatory agent...",
-    },
-    {
-      id: 2,
-      category: "yoga",
-      title: "Morning Yoga Rituals",
-      excerpt: "Start your day with ancient practices",
-      image: morningYogaImg,
-      author: "Yogi Arjun Patel",
-      date: "Dec 3, 2024",
-      content:
-        "The ancient practice of Surya Namaskar (Sun Salutation) energizes the body...",
-    },
-    {
-      id: 3,
-      category: "wellness",
-      title: "Ayurvedic Massage Therapy",
-      excerpt: "Abhyanga for body and soul",
-      image: massageTherapyImg,
-      author: "Maya Desai",
-      date: "Nov 30, 2024",
-      content:
-        "Abhyanga, the traditional Ayurvedic oil massage, is a cornerstone of preventive healthcare...",
-    },
-    {
-      id: 4,
-      category: "herbs",
-      title: "Ashwagandha Benefits",
-      excerpt: "Ancient adaptogen for modern stress",
-      image:
-        "https://assets.clevelandclinic.org/transform/8fe65f4e-04aa-4f24-81eb-d01daf7b6b77/Ashwagandha-winter-cherry-1703497855",
-      author: "Dr. Rajesh Kumar",
-      date: "Nov 28, 2024",
-      content:
-        'Ashwagandha, known as the "strength of the stallion," is one of the most revered herbs...',
-    },
-    {
-      id: 5,
-      category: "lifestyle",
-      title: "Ayurvedic Daily Routine",
-      excerpt: "Dinacharya for balanced living",
-      image:
-        "https://assets.clevelandclinic.org/transform/LargeFeatureImage/2d536049-b17c-4b88-b1e3-85f78f7d9fea/Ayurveda-173877738-770x533-1_jpg",
-      author: "Sanjana Reddy",
-      date: "Nov 25, 2024",
-      content:
-        "Dinacharya, the Ayurvedic daily routine, synchronizes your body with natural circadian rhythm...",
-    },
-    {
-      id: 6,
-      category: "wellness",
-      title: "Herbal Tea Rituals",
-      excerpt: "Healing brews from nature",
-      image:
-        "https://tastythriftytimely.com/wp-content/uploads/2021/09/Turmeric-Latte-4.jpg",
-      author: "Kavita Joshi",
-      date: "Nov 22, 2024",
-      content:
-        "Ayurvedic herbal teas are carefully crafted blends designed to balance the doshas...",
-    },
-    {
-      id: 7,
-      category: "yoga",
-      title: "Pranayama Breathing",
-      excerpt: "Master the life force through breath",
-      image:
-        "https://plus.unsplash.com/premium_photo-1661476140414-616180169219?q=60",
-      author: "Guru Vikram Singh",
-      date: "Nov 20, 2024",
-      content:
-        "Pranayama, the science of breath control, is a fundamental pillar of yoga...",
-    },
-    {
-      id: 8,
-      category: "lifestyle",
-      title: "Sattvic Food Philosophy",
-      excerpt: "Eating for clarity and purity",
-      image: SattvicFoodImg,
-      author: "Chef Ananya Verma",
-      date: "Nov 18, 2024",
-      content:
-        "Sattvic foods are pure, fresh, and naturally nourishing ingredients that promote clarity...",
-    },
-    {
-      id: 9,
-      category: "herbs",
-      title: "Holy Basil - Tulsi",
-      excerpt: "The queen of herbs in Ayurveda",
-      image:
-        "https://i.pinimg.com/1200x/d8/b6/70/d8b670d33c4476f11c6f4dd41ec9d3b9.jpg",
-      author: "Dr. Meera Iyer",
-      date: "Nov 15, 2024",
-      content:
-        "Tulsi (Holy Basil) is revered as a sacred plant in Ayurveda, known for healing properties...",
-    },
-    {
-      id: 10,
-      category: "wellness",
-      title: "Ayurvedic Face Care",
-      excerpt: "Natural beauty from within",
-      image:
-        "https://static.wixstatic.com/media/ed3c94_96a0f9c6d0a34e378952b6c79462fe6b~mv2.jpg",
-      author: "Lakshmi Nair",
-      date: "Nov 12, 2024",
-      content:
-        "Ayurvedic skincare focuses on natural ingredients and holistic approaches...",
-    },
-    {
-      id: 11,
-      category: "yoga",
-      title: "Meditation for Inner Peace",
-      excerpt: "Dhyana practice for mindfulness",
-      image:
-        "https://i.pinimg.com/736x/64/14/26/641426ef75aa9f3b03d3218774329eeb.jpg",
-      author: "Swami Anand",
-      date: "Nov 10, 2024",
-      content:
-        "Meditation or Dhyana is the practice of focusing the mind to achieve clarity...",
-    },
-    {
-      id: 12,
-      category: "lifestyle",
-      title: "Ayurvedic Sleep Practices",
-      excerpt: "Restore with quality rest",
-      image:
-        "https://i.pinimg.com/736x/a1/98/23/a19823f5f4952ddeb6df9f1cbf8b275d.jpg",
-      author: "Dr. Arun Menon",
-      date: "Nov 8, 2024",
-      content:
-        "Quality sleep is essential in Ayurveda for maintaining health and vitality...",
-    },
-  ];
-
-  const filteredStories =
-    currentFilter === "all"
-      ? stories
-      : stories.filter((s) => s.category === currentFilter);
-
-  useEffect(() => {
-    const updateGalleryItemsPerView = () => {
-      if (window.innerWidth >= 1024) {
-        setGalleryItemsPerView(3);
-      } else if (window.innerWidth >= 768) {
-        setGalleryItemsPerView(2);
-      } else {
-        setGalleryItemsPerView(1);
-      }
-    };
-
-    updateGalleryItemsPerView();
-    window.addEventListener("resize", updateGalleryItemsPerView);
-    return () =>
-      window.removeEventListener("resize", updateGalleryItemsPerView);
-  }, []);
-
-  useEffect(() => {
-    setCurrentGalleryIndex(0);
-  }, [currentFilter]);
-
-  useEffect(() => {
-    if (!isGalleryAutoPlaying || filteredStories.length <= galleryItemsPerView)
-      return;
-    const galleryAutoPlayInterval = setInterval(() => {
-      handleGalleryNext();
-    }, 3000);
-
-    return () => clearInterval(galleryAutoPlayInterval);
-  }, [
-    currentGalleryIndex,
-    isGalleryAutoPlaying,
-    filteredStories.length,
-    galleryItemsPerView,
-  ]);
-
-  const totalGallerySlides = Math.ceil(
-    filteredStories.length / galleryItemsPerView,
+  const filteredStories = useMemo(
+    () =>
+      currentFilter === "all"
+        ? stories
+        : stories.filter((s) => s.category === currentFilter),
+    [stories, currentFilter],
   );
-
-  const handleGalleryPrevious = () => {
-    if (isGalleryAnimating) return;
-    setIsGalleryAnimating(true);
-    setCurrentGalleryIndex((prev) => {
-      if (prev === 0) {
-        return totalGallerySlides - 1;
-      }
-      return prev - 1;
-    });
-    setTimeout(() => setIsGalleryAnimating(false), 500);
-  };
-
-  const handleGalleryNext = () => {
-    if (isGalleryAnimating) return;
-    setIsGalleryAnimating(true);
-    setCurrentGalleryIndex((prev) => {
-      if (prev === totalGallerySlides - 1) {
-        return 0;
-      }
-      return prev + 1;
-    });
-    setTimeout(() => setIsGalleryAnimating(false), 500);
-  };
-
-  const handleGalleryDotClick = (galleryIndex) => {
-    if (isGalleryAnimating) return;
-    setIsGalleryAnimating(true);
-    setCurrentGalleryIndex(galleryIndex);
-    setTimeout(() => setIsGalleryAnimating(false), 500);
-  };
-
-  //Blogs
-  useEffect(() => {
-    const updateCardsToShow = () => {
-      const width = window.innerWidth;
-      if (width >= 1280) {
-        setCardsToShow(3);
-      } else if (width >= 1024) {
-        setCardsToShow(3);
-      } else if (width >= 768) {
-        setCardsToShow(2);
-      } else {
-        setCardsToShow(1);
-      }
-    };
-
-    updateCardsToShow();
-    window.addEventListener("resize", updateCardsToShow);
-    return () => window.removeEventListener("resize", updateCardsToShow);
-  }, []);
-
-  const maxIndex = articleList.length - cardsToShow;
-
-  const scrollToIndex = (i) => {
-    if (!containerRef.current) return;
-
-    const container = containerRef.current;
-    const cardWidth = container.children[0].offsetWidth;
-    const gap = 24;
-
-    container.scrollTo({
-      left: (cardWidth + gap) * i,
-      behavior: "smooth",
-    });
-
-    setIndex(i);
-  };
-
-  const next = () => {
-    const newIndex = index >= maxIndex ? 0 : index + 1;
-    scrollToIndex(newIndex);
-  };
-
-  const prev = () => {
-    const newIndex = index <= 0 ? maxIndex : index - 1;
-    scrollToIndex(newIndex);
-  };
-
-  useEffect(() => {
-    const timer = setInterval(next, 3000);
-    return () => clearInterval(timer);
-  }, [index, maxIndex]);
 
   const openBlog = (id) => {
-    window.location.href = `/Blogs.html?blog=${id}`;
+    navigate(`/blog/${id}`);
   };
-
-
-  
 
   return (
     <>
@@ -893,10 +742,10 @@ export default function HomePage() {
                   <motion.button
                     type="button"
                     onClick={() => {
-                      if(accessToken!==null){
+                      if (accessToken !== null) {
                         setOpenBookAppointmentModal(true);
-                      }else{
-                        errorAlert("Please log in to continue")
+                      } else {
+                        errorAlert("Please log in to continue");
                       }
                     }}
                     whileHover={{ scale: 1.05, y: -2 }}
@@ -1039,7 +888,7 @@ export default function HomePage() {
             </div>
 
             <div
-              className="rounded-3xl bg-white/70 backdrop-blur-sm border h-[480px] border-neutral-200/70 shadow-[0_18px_60px_rgba(15,23,42,0.08)] overflow-hidden"
+              className="rounded-[9px] bg-white/70 backdrop-blur-sm border h-[480px] border-neutral-200/70 shadow-[0_18px_60px_rgba(15,23,42,0.08)] overflow-hidden"
               onMouseEnter={() => setAboutSectionPaused(true)}
               onMouseLeave={() => setAboutSectionPaused(false)}
             >
@@ -1114,66 +963,16 @@ export default function HomePage() {
       <section id="services" className="py-4 px-4 md:px-10">
         <section id="ourServicesSection" className="">
           <div className="max-w-[95rem] mx-auto">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-3xl font-bold text-[#263d21] tracking-wide">
-                Our Services
-              </h2>
-
-              <div className="flex gap-3">
-                <button
-                  type="button"
-                  onClick={handleOurServicesSectionPrev}
-                  className="w-10 h-10 rounded-full bg-white border border-neutral-200 flex items-center justify-center hover:border-emerald-500 hover:bg-emerald-50 transition"
-                  aria-label="Previous"
-                >
-                  <svg
-                    className="w-10 h-5 text-neutral-700"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M15 19l-7-7 7-7"
-                    />
-                  </svg>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={handleOurServicesSectionNext}
-                  className="w-10 h-10 rounded-full bg-white border border-neutral-200 flex items-center justify-center hover:border-emerald-500 hover:bg-emerald-50 transition"
-                  aria-label="Next"
-                >
-                  <svg
-                    className="w-10 h-5 text-neutral-700"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
-                </button>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              <AnimatePresence>
-                {ourServicesSectionVisibleServices.map((service, index) => (
+            <div className="mb-6">
+              <Carousel
+                items={ourServicesSectionList}
+                itemsPerView={{ mobile: 1, tablet: 2, desktop: 3 }}
+                autoPlayInterval={3000}
+                renderItem={(service) => (
                   <motion.div
-                    key={`${service.title}-${ourServicesSectionStartIndex}`}
                     initial={{ opacity: 0, y: 25, scale: 0.98 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: -15, scale: 0.98 }}
-                    transition={{ duration: 0.45, delay: index * 0.12 }}
-                    className={`rounded-2xl border border-gray-200 shadow-md hover:shadow-xl overflow-hidden transition ${service.bgClass}`}
+                    className={`rounded-2xl border border-gray-200 shadow-md hover:shadow-xl overflow-hidden transition h-full ${service.bgClass}`}
                   >
                     <div className="relative h-52 overflow-hidden">
                       <img
@@ -1203,15 +1002,15 @@ export default function HomePage() {
                         ))}
                       </ul>
 
-                      <div className="flex justify-end">
+                      <div className="flex justify-end mt-auto">
                         <button className="bg-[#263d21] rounded px-3 py-1 text-white">
                           {service.buttonText}
                         </button>
                       </div>
                     </div>
                   </motion.div>
-                ))}
-              </AnimatePresence>
+                )}
+              />
             </div>
           </div>
         </section>
@@ -1408,10 +1207,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="py-16 px-4 md:px-10 bg-gradient-to-b from-amber-50/30 to-green-50/30">
+      <section className="py-5 px-4 md:px-10">
         <div className="w-full mx-auto max-w-[95rem]">
           <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-amber-700 via-green-700 to-emerald-700 bg-clip-text text-transparent">
+            <h2 className="text-2xl md:text-3xl font-bold mb-4 bg-gradient-to-r from-amber-700 via-green-700 to-emerald-700 bg-clip-text text-transparent">
               Gallery
             </h2>
             <p className="text-green-800/80 text-lg max-w-2xl mx-auto">
@@ -1436,128 +1235,54 @@ export default function HomePage() {
             ))}
           </div>
 
-          <div
-            className="relative px-12"
-            onMouseEnter={() => setIsGalleryAutoPlaying(false)}
-            onMouseLeave={() => setIsGalleryAutoPlaying(true)}
-          >
-            {filteredStories.length > galleryItemsPerView && (
-              <>
-                <button
-                  onClick={handleGalleryPrevious}
-                  disabled={isGalleryAnimating}
-                  className="absolute -left-2 top-1/2 -translate-y-1/2 z-10 bg-amber-700 text-white rounded-full p-3 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed"
-                  aria-label="Previous gallery slide"
-                >
-                  <ChevronLeft className="w-6 h-6" />
-                </button>
-
-                <button
-                  onClick={handleGalleryNext}
-                  disabled={isGalleryAnimating}
-                  className="absolute -right-2 top-1/2 -translate-y-1/2 z-10 bg-amber-700 text-white rounded-full p-3 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed"
-                  aria-label="Next gallery slide"
-                >
-                  <ChevronRight className="w-6 h-6" />
-                </button>
-              </>
-            )}
-
-            <div className="">
-              <div className="w-full overflow-hidden">
+          <div>
+            <Carousel
+              items={filteredStories}
+              itemsPerView={{ mobile: 1, tablet: 2, desktop: 3 }}
+              autoPlayInterval={3000}
+              renderItem={(story) => (
                 <motion.div
-                  animate={{ x: `-${currentGalleryIndex * 100}%` }}
-                  transition={{
-                    type: "tween",
-                    duration: 0.7,
-                    ease: "easeInOut",
-                  }}
-                  className="flex"
+                  whileHover={{ y: -8, scale: 1.02 }}
+                  transition={{ duration: 0.2 }}
+                  className="w-full h-full pb-4"
                 >
-                  {Array.from({ length: totalGallerySlides }).map(
-                    (_, pageIdx) => (
-                      <div key={pageIdx} className="w-full flex-shrink-0">
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-2 py-3">
-                          {filteredStories
-                            .slice(
-                              pageIdx * galleryItemsPerView,
-                              (pageIdx + 1) * galleryItemsPerView,
-                            )
-                            .map((story) => (
-                              <motion.div
-                                key={story.id}
-                                whileHover={{ y: -8, scale: 1.02 }}
-                                transition={{ duration: 0.2 }}
-                                className="w-full"
-                              >
-                                <div
-                                  onClick={() => {
-                                    setModalStories(story);
-                                    setModalOpen(true);
-                                  }}
-                                  className="cursor-pointer rounded-2xl overflow-hidden bg-white/80 backdrop-blur-sm shadow-md hover:shadow-2xl transition-all duration-300 h-full border border-green-100/50"
-                                >
-                                  <div className="relative overflow-hidden h-64 bg-gradient-to-br from-amber-100 to-green-100">
-                                    <img
-                                      src={story.image}
-                                      loading="lazy"
-                                      alt={story.title}
-                                      className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
-                                    />
-                                    <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-green-800 shadow-md">
-                                      {
-                                        filters.find(
-                                          (f) => f.id === story.category,
-                                        )?.label
-                                      }
-                                    </div>
-                                  </div>
-
-                                  <div className="p-6">
-                                    <h3 className="text-xl font-bold text-green-900 mb-2 line-clamp-2">
-                                      {story.title}
-                                    </h3>
-                                    <p className="text-green-700/80 mb-4 text-sm line-clamp-2">
-                                      {story.excerpt}
-                                    </p>
-
-                                    <div className="flex justify-between items-center text-sm text-green-600/70 pt-4 border-t border-green-100">
-                                      <span className="font-medium">
-                                        {story.author}
-                                      </span>
-                                      <span>{story.date}</span>
-                                    </div>
-                                  </div>
-                                </div>
-                              </motion.div>
-                            ))}
-                        </div>
+                  <div
+                    onClick={() => {
+                      setModalStories(story);
+                      setModalOpen(true);
+                    }}
+                    className="cursor-pointer rounded-2xl overflow-hidden bg-white/80 backdrop-blur-sm shadow-md hover:shadow-2xl transition-all duration-300 h-full border border-green-100/50"
+                  >
+                    <div className="relative overflow-hidden h-64 bg-gradient-to-br from-amber-100 to-green-100">
+                      <img
+                        src={story.image}
+                        loading="lazy"
+                        alt={story.title}
+                        className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+                      />
+                      <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-green-800 shadow-md">
+                        {filters.find((f) => f.id === story.category)?.label}
                       </div>
-                    ),
-                  )}
-                </motion.div>
-              </div>
-            </div>
+                    </div>
 
-            {filteredStories.length > galleryItemsPerView && (
-              <div className="flex justify-center gap-2 mt-3">
-                {Array.from({ length: totalGallerySlides }).map(
-                  (_, galleryDotIndex) => (
-                    <button
-                      key={galleryDotIndex}
-                      onClick={() => handleGalleryDotClick(galleryDotIndex)}
-                      disabled={isGalleryAnimating}
-                      className={`transition-all duration-300 rounded-full disabled:cursor-not-allowed ${
-                        currentGalleryIndex === galleryDotIndex
-                          ? "w-8 h-2.5 bg-green-700"
-                          : "w-2.5 h-2.5 bg-green-300 hover:bg-green-400"
-                      }`}
-                      aria-label={`Go to gallery slide ${galleryDotIndex + 1}`}
-                    />
-                  ),
-                )}
-              </div>
-            )}
+                    <div className="p-6">
+                      <h3 className="text-xl font-bold text-green-900 mb-2 line-clamp-2">
+                        {story.title}
+                      </h3>
+                      <p className="text-green-700/80 mb-4 text-sm line-clamp-2">
+                        {story.excerpt}
+                      </p>
+
+                      <div className="flex justify-between items-center text-sm text-green-600/70 pt-4 border-t border-green-100">
+                        <span className="font-medium">{story.author}</span>
+                        <span>{story.date}</span>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+              arrowClassName="bg-[#263d21] text-white"
+            />
           </div>
 
           {filteredStories.length === 0 && (
@@ -1601,121 +1326,63 @@ export default function HomePage() {
 
       <section
         id="articleSection"
-        className="py-5 md:py-6 overflow-hidden w-full px-4 md:px-10 mx-auto"
+        className="py-12 overflow-hidden w-full px-4 md:px-10 max-w-[95rem] mx-auto"
       >
-        {/* HEADER */}
-        <div className="flex flex-col md:flex-row justify-between mb-6 items-center gap-6 w-full">
+        <div className="flex justify-between items-center mb-10">
           <motion.h3
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="text-xl md:text-3xl font-semibold tracking-tight flex items-center gap-3 text-[#1c3016]"
+            className="text-2xl md:text-3xl font-bold text-[#263d21] tracking-tight"
           >
-            Resources — Blog & Podcast
+            Blogs & Insights
           </motion.h3>
 
-          <a
-            href="#"
-            className="text-[#1c3b15] text-sm tracking-wide font-semibold underline-offset-4 hover:underline hover:scale-105 transition"
-          >
-            View All →
-          </a>
-        </div>
-
-        <div className="relative px-8 md:px-16">
           <button
-            onClick={prev}
-            disabled={index === 0}
-            className="absolute left-0 top-1/2 -translate-y-1/2 z-20
-          w-10 h-10 md:w-12 md:h-12 rounded-full bg-amber-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed"
-            aria-label="Previous"
-          >
-            <ChevronLeft className="w-6 h-6" />
-          </button>
-
-          <button
-            onClick={next}
-            disabled={index === maxIndex}
-            className="absolute right-0 top-1/2 -translate-y-1/2 z-20
-               w-10 h-10 md:w-12 md:h-12 rounded-full bg-amber-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed"
-            aria-label="Next"
-          >
-            <ChevronRight className="w-6 h-6" />
-          </button>
-          <div
-            ref={containerRef}
-            className="flex gap-4 md:gap-6 overflow-hidden py-4 "
-            style={{
-              scrollSnapType: "x mandatory",
+            onClick={(e) => {
+              e.preventDefault();
+              // Navigate to resources
             }}
+            className="text-green-800 text-sm font-semibold hover:underline flex items-center gap-1 transition"
           >
-            {articleList.map((item, idx) => (
-              <motion.div
-                key={item.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: idx * 0.1 }}
-                viewport={{ once: true }}
-                whileHover={{ scale: 1.02 }}
-                className="flex-shrink-0 w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]
-              rounded-3xl bg-white border border-gray-200 shadow-sm group cursor-pointer
-              hover:shadow-xl transition-all overflow-hidden"
-                style={{ scrollSnapAlign: "start" }}
-              >
-                <div className="rounded-t-3xl h-48 md:h-56 overflow-hidden bg-gray-100">
-                  <img
-                    src={item.image}
-                    alt={item.title}
-                    loading="lazy"
-                    className="w-full h-full object-cover transition duration-700 group-hover:scale-110"
-                  />
-                </div>
-
-                <div className="p-5">
-                  <h2 className="text-base md:text-lg font-bold text-[#21381a] line-clamp-1">
-                    {item.title}
-                  </h2>
-
-                  <p className="text-[#263d21] text-sm mt-2 line-clamp-2">
-                    {item.description}
-                  </p>
-
-                  <Button
-                    variant="text"
-                    sx={{
-                      color: "#153310",
-                      textTransform: "none",
-                      fontWeight: 600,
-                      padding: 0,
-                      marginTop: "8px",
-                      "&:hover": {
-                        backgroundColor: "transparent",
-                        textDecoration: "underline",
-                      },
-                    }}
-                  >
-                    {item.buttonText}
-                  </Button>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-          <div className="flex justify-center gap-2 mt-3">
-            {Array.from({ length: maxIndex + 1 }).map((_, i) => (
-              <button
-                key={i}
-                onClick={() => scrollToIndex(i)}
-                className={`h-2 rounded-full transition-all duration-300 ${
-                  i === index
-                    ? "bg-amber-700 w-8"
-                    : "bg-amber-400 hover:bg-[#1c3016]/50 w-2"
-                }`}
-                aria-label={`Go to slide ${i + 1}`}
-              />
-            ))}
-          </div>
+            View All Resources →
+          </button>
         </div>
+
+        <Carousel
+          items={blogData}
+          itemsPerView={{ mobile: 1, tablet: 2, desktop: 3 }}
+          autoPlayInterval={3000}
+          renderItem={(article) => (
+            <div
+              onClick={() => openBlog(article.id)}
+              className="group cursor-pointer bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 h-full flex flex-col"
+            >
+            
+              <div className="relative h-56 overflow-hidden">
+                <img
+                  src={article.image}
+                  alt={article.title}
+                  loading="lazy"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+              </div>
+              <div className="p-6 flex flex-col flex-1">
+                <h3 className="text-xl font-bold text-[#263d21] mb-3 group-hover:text-green-800 transition-colors line-clamp-2">
+                  {article.title}
+                </h3>
+                <p className="text-gray-600 text-sm mb-6 line-clamp-3 leading-relaxed">
+                  {article.content}
+                </p>
+                <button className="mt-auto text-green-800 font-semibold flex items-center gap-2 hover:gap-3 transition-all">
+                  {article.buttonText}
+                </button>
+              </div>
+            </div>
+          )}
+          arrowClassName="bg-[#263d21] text-white"
+        />
       </section>
 
       <TestimonialsSection />

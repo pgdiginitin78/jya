@@ -19,7 +19,7 @@ import {
 import axios from "axios";
 import { format } from "date-fns";
 import { AnimatePresence, motion } from "framer-motion";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -72,10 +72,10 @@ const signupValidationSchema = yup.object().shape({
     .required("Mobile required")
     .matches(/^[0-9]{10}$/, "Must be 10 digits"),
 
-  whatsappNo: yup
-    .string()
-    .required("WhatsApp required")
-    .matches(/^[0-9]{10}$/, "Must be 10 digits"),
+  // whatsappNo: yup
+  //   .string()
+  //   .required("WhatsApp required")
+  //   .matches(/^[0-9]{10}$/, "Must be 10 digits"),
 
   emailId: yup
     .string()
@@ -100,12 +100,13 @@ const signupValidationSchema = yup.object().shape({
 
   country: yup.string().required("Country required").min(2, "Min 2 characters"),
 
-  landmark: yup.string().optional().min(2, "Min 2 characters"),
+  // landmark: yup.string().optional().min(2, "Min 2 characters"),
 
   userName: yup
     .string()
     .required("Username required")
-    .matches(/^[a-zA-Z0-9_]+$/, "Only letters, numbers, underscore"),
+    .matches(/^[a-zA-Z0-9_]+$/, "Only letters, numbers, underscore")
+    .max(50, "Maximum 50 characters required"),
 
   passWord: yup
     .string()
@@ -161,6 +162,7 @@ function SignUp({
   setOpenLogin,
   setOpenSuccessDialog,
   setSuccessMessage,
+  setSuccessTitle,
 }) {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -199,59 +201,17 @@ function SignUp({
       passWord: "",
       confirmPassword: "",
       macId: "",
-      macIp: ipAddress,
       agreeToTerms: false,
       relation: "self",
     },
   });
 
-  const dob = watch("dob");
   const pinCodeValue = watch("pinCode");
   const agreeToTerms = watch("agreeToTerms");
 
-  const onSubmit = (data) => {
-    const formattedData = {
-      ...data,
-      dob: data.dob ? format(new Date(data.dob), "yyyy-MM-dd") : "",
-    };
-    setFormData(formattedData);
-    setOpenConfirmationModal(true);
-  };
-
-  const handleUserSignup = async () => {
-    try {
-      setOpenConfirmationModal(false);
-      showLoader();
-      const response = await signupJYA(formData);
-      const apiData = response?.data;
-      console.log("response123455",response);
-
-      if (response.status === 200 && apiData) {
-        setSuccessMessage(apiData);
-        handleClose();
-        setOpenSuccessDialog(true);
-        reset();
-      } else {
-        errorAlert("Registration failed");
-      }
-    } catch (error) {
-      const errorMessage = error?.response?.data?.message || error?.message;
-      console.log("signMsg",error);
-      
-      errorAlert(errorMessage);
-    } finally {
-      hideLoader();
-    }
-  };
-
-  const handleModalClose = () => {
-    reset();
-    handleClose();
-  };
-
-  useEffect(() => {
-    if (dob) {
-      const birthDate = new Date(dob);
+  const handleDobChange = (newDate) => {
+    if (newDate) {
+      const birthDate = new Date(newDate);
       const today = new Date();
       let calculatedAge = today.getFullYear() - birthDate.getFullYear();
       const monthDiff = today.getMonth() - birthDate.getMonth();
@@ -264,41 +224,101 @@ function SignUp({
       }
 
       if (calculatedAge >= 0) {
-        setValue("age", calculatedAge);
+        setValue("age", calculatedAge, { shouldValidate: true });
       }
     }
-  }, [dob, setValue]);
+  };
+
+  const handleAgeChange = (e) => {
+    const ageVal = e.target.value;
+    if (ageVal && !isNaN(ageVal) && ageVal > 0) {
+      const birthYear = new Date().getFullYear() - parseInt(ageVal);
+      const calculatedDob = new Date(birthYear, 0, 1);
+      setValue("dob", calculatedDob, { shouldValidate: true });
+    }
+  };
+
+  const onSubmit = (data) => {
+    const formattedData = {
+      ...data,
+      dob: data.dob ? format(new Date(data.dob), "yyyy-MM-dd") : "",
+      macIp: ipAddress,
+    };
+    setFormData(formattedData);
+    setOpenConfirmationModal(true);
+  };
+
+  const handleUserSignup = async () => {
+    try {
+      setOpenConfirmationModal(false);
+      showLoader();
+      const response = await signupJYA(formData);
+      const apiData = response?.data;
+      console.log("response123455", response);
+
+      if (response.status === 200 && apiData) {
+        setSuccessMessage?.(apiData);
+        setSuccessTitle?.("Registration Successful!");
+        handleClose();
+        setOpenSuccessDialog?.(true);
+        reset();
+      } else {
+        errorAlert("Registration failed");
+      }
+    } catch (error) {
+      const errorMessage = error?.response?.data?.message || error?.message;
+      console.log("signMsg", error);
+
+      errorAlert(errorMessage);
+    } finally {
+      hideLoader();
+    }
+  };
+
+  const handleModalClose = () => {
+    reset();
+    handleClose();
+  };
+
+  const lastFetchedPin = useRef("");
 
   useEffect(() => {
     const fetchPinData = async () => {
-      if (pinCodeValue.length !== 6) return;
+      if (pinCodeValue.length !== 6 || pinCodeValue === lastFetchedPin.current)
+        return;
+
       try {
         const res = await axios.get(
           `https://api.postalpincode.in/pincode/${pinCodeValue}`,
         );
         const pinCodeData = res.data[0]?.PostOffice[0];
-        setValue("pinCode", pinCodeData.Pincode);
-        setValue("locality", pinCodeData.Name);
-        setValue("city", pinCodeData.District);
-        setValue("state", pinCodeData.State);
-        setValue("country", pinCodeData.Country);
+
+        if (pinCodeData) {
+          lastFetchedPin.current = pinCodeValue;
+          // Only set values if they are different to prevent redundant renders
+          if (watch("locality") !== pinCodeData.Name)
+            setValue("locality", pinCodeData.Name);
+          if (watch("city") !== pinCodeData.District)
+            setValue("city", pinCodeData.District);
+          if (watch("state") !== pinCodeData.State)
+            setValue("state", pinCodeData.State);
+          if (watch("country") !== pinCodeData.Country)
+            setValue("country", pinCodeData.Country);
+        }
       } catch (error) {
         console.log(error);
       }
     };
 
     fetchPinData();
-  }, [pinCodeValue, setValue]);
+  }, [pinCodeValue, setValue, watch]);
 
-console.log("ipAddresss",ipAddress);
-  
+  console.log("ipAddresss", ipAddress);
 
   useEffect(() => {
     fetch("https://api.ipify.org?format=json")
       .then((res) => res.json())
-      .then((data) => {
-        setIpAddress(data.ip);
-      })
+      .then((data) => setIpAddress(data.ip))
       .catch((error) => console.error("Error:", error));
   }, []);
 
@@ -324,7 +344,7 @@ console.log("ipAddresss",ipAddress);
                           animate={{ rotate: 0, opacity: 1 }}
                           transition={{ duration: 0.5 }}
                           src={JYALogoImg}
-                          className="w-12 h-12 sm:w-14 sm:h-14"
+                          className="w-12 h-12 sm:w-14 sm:h-14 xl:w-20 xl:h-16"
                           alt="Logo"
                           loading="lazy"
                         />
@@ -383,12 +403,15 @@ console.log("ipAddresss",ipAddress);
                                 disableFuture={true}
                                 inputFormat="dd-MM-yyyy"
                                 error={errors.dob}
+                                onChange={handleDobChange}
                               />
                               <InputField
                                 control={control}
                                 name="age"
                                 label="Age *"
+                                type="number"
                                 error={errors.age}
+                                onChange={handleAgeChange}
                               />
                               <div className="sm:col-span-2">
                                 <RadioField
@@ -477,7 +500,7 @@ console.log("ipAddresss",ipAddress);
                               <InputField
                                 control={control}
                                 name="whatsappNo"
-                                label="WhatsApp Number *"
+                                label="WhatsApp Number"
                                 error={errors.whatsappNo}
                               />
                               <div className="sm:col-span-2">

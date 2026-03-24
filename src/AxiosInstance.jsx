@@ -70,9 +70,13 @@ AxiosInstance.interceptors.response.use(
           `${API_BASE_URL}refresh-token`,
           { refreshToken }
         );
-        const { accessToken, refreshToken: newRefreshToken } = res.data;
+        const { accessToken, refreshToken: newRefreshToken, expiresIn } = res.data;
         localStorage.setItem("accessToken", accessToken);
         localStorage.setItem("refreshToken", newRefreshToken);
+        if (expiresIn) {
+          localStorage.setItem("expiresIn", expiresIn);
+          localStorage.setItem("tokenSetTime", Date.now().toString());
+        }
         AxiosInstance.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
         processQueue(null, accessToken);
         originalRequest.headers = originalRequest.headers || {};

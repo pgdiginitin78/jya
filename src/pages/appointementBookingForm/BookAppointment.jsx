@@ -26,6 +26,7 @@ import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import ConfirmationModal from "../../components/common/ConfirmationModal";
 import { errorAlert, successAlert } from "../../components/common/toast/CustomToast";
 import { useLoader } from "../../components/common/commonLoader/LoaderContext";
+import { useAuth } from "../../context/AuthContext";
 
 const style = {
   position: "absolute",
@@ -162,7 +163,7 @@ export default function BookAppointment({ open, handleClose }) {
   const appointmentDate = watch("appointmentDate");
   const selectedPatientValue = watch("patientFid");
 
-  const userData = localStorage.getItem("user");
+  const { user } = useAuth();
   const { showLoader, hideLoader } = useLoader();
 
   const handleReset = () => {
@@ -296,9 +297,9 @@ export default function BookAppointment({ open, handleClose }) {
         })
         .catch((error) => error);
 
-      if (userData !== null) {
+      if (user) {
         getPatientDataByMobileNo(
-          JSON.parse(userData)?.mobileNo,
+          user?.mobileNo,
           clinicFidValue?.id,
         )
           .then((res) => {
@@ -317,7 +318,7 @@ export default function BookAppointment({ open, handleClose }) {
           .catch((error) => error);
       }
     }
-  }, [clinicFidValue, userData]);
+  }, [clinicFidValue, user]);
 
   useEffect(() => {
     if (

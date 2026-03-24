@@ -18,15 +18,16 @@ import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 import JYALogoImg from "../../asset/JnanaYogAyuLogo.png";
 import CancelButtonModal from "../../components/common/button/CancelButtonModal";
-import CommonLoader from "../../components/common/commonLoader/CommonLoader";
 import ConfirmationModal from "../../components/common/ConfirmationModal";
 import {
   errorAlert,
   successAlert,
 } from "../../components/common/toast/CustomToast";
-import { userLogin } from "../../services/login/LoginServices";
+import { forgotPassword, userLogin } from "../../services/login/LoginServices";
 import SignUp from "./SignUp";
 import { useLoader } from "../../components/common/commonLoader/LoaderContext";
+import { useAuth } from "../../context/AuthContext";
+import CommonButton from "../../components/common/button/CommonButton";
 
 const modalStyle = {
   position: "absolute",
@@ -49,14 +50,24 @@ const loginValidationSchema = yup.object().shape({
   password: yup.string().min(1, "Min 1 chars").required("Password required"),
 });
 
-function LoginPage({ open, handleClose, setOpenLogin }) {
+function LoginPage({
+  open,
+  handleClose,
+  setOpenLogin,
+  setOpenSuccessDialog,
+  setSuccessMessage,
+  setSuccessTitle,
+}) {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState(null);
   const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
 
   const { showLoader, hideLoader } = useLoader();
+  const { login } = useAuth();
 
   const [openSignUpModal, setOpenSignUpModal] = useState(false);
+  const [openForgotModal, setOpenForgotModal] = useState(false);
+  const [forgotEmail, setForgotEmail] = useState("");
 
   const {
     control,
@@ -88,7 +99,8 @@ function LoginPage({ open, handleClose, setOpenLogin }) {
         localStorage.setItem("user", JSON.stringify(data.user));
         localStorage.setItem("expiresIn", data.expiresIn);
         localStorage.setItem("tokenSetTime", Date.now());
-        successAlert(data.message || "Login successful");
+        login(data.user);
+        successAlert(data.message);
         handleClose();
         reset();
       } else {
@@ -97,6 +109,36 @@ function LoginPage({ open, handleClose, setOpenLogin }) {
     } catch (error) {
       errorAlert(
         error?.response?.data?.message || "Invalid username or password",
+      );
+    } finally {
+      hideLoader();
+    }
+  };
+
+  const handleForgotPassword = async () => {
+    if (!forgotEmail) {
+      errorAlert("Please enter your email");
+      return;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(forgotEmail)) {
+      errorAlert("Please enter a valid email address");
+      return;
+    }
+
+    try {
+      showLoader();
+      const response = await forgotPassword({ email: forgotEmail });
+      if (response.status === 200) {
+        successAlert(response.data?.message || "Password reset email sent!");
+        setOpenForgotModal(false);
+        setForgotEmail("");
+      } else {
+        errorAlert(response.data?.message || "Something went wrong");
+      }
+    } catch (error) {
+      errorAlert(
+        error?.response?.data?.message || "Failed to send reset email",
       );
     } finally {
       hideLoader();
@@ -287,6 +329,7 @@ function LoginPage({ open, handleClose, setOpenLogin }) {
                         textDecoration: "underline",
                       },
                     }}
+                    onClick={() => setOpenForgotModal(true)}
                   >
                     Forgot Password?
                   </Typography>
@@ -360,8 +403,77 @@ function LoginPage({ open, handleClose, setOpenLogin }) {
           open={openSignUpModal}
           handleClose={() => setOpenSignUpModal(false)}
           setOpenLogin={setOpenLogin}
+          setOpenSuccessDialog={setOpenSuccessDialog}
+          setSuccessMessage={setSuccessMessage}
         />
       )}
+
+      <Modal open={openForgotModal} onClose={() => setOpenForgotModal(false)}>
+        <Box sx={modalStyle}>
+          <Box
+            sx={{
+              position: "relative",
+              width: "100%",
+              maxWidth: "400px",
+              bgcolor: "#f8fbf6",
+              borderRadius: 3,
+              boxShadow: "0 10px 40px rgba(0,0,0,0.08)",
+              border: "1px solid #e6efe3",
+              p: 3,
+            }}
+          >
+            <CancelButtonModal onClick={() => setOpenForgotModal(false)} />
+            <Typography
+              variant="h6"
+              sx={{ mb: 2, fontWeight: 700, color: "#2f3e2e" }}
+            >
+              Forgot Password
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 3, color: "#6b7d6a" }}>
+              Enter your email address to reset your password.
+            </Typography>
+            <TextField
+              fullWidth
+              label="Email Address"
+              value={forgotEmail}
+              size="small"
+              onChange={(e) => setForgotEmail(e.target.value)}
+              variant="outlined"
+              sx={{
+                mb: 3,
+                "& .MuiOutlinedInput-root": {
+                  borderRadius: 2,
+                  bgcolor: "#ffffff",
+                },
+              }}
+            />
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "end",
+                width: "100%",
+                gap: 2,
+              }}
+            >
+              <CommonButton
+                type="button"
+                onClick={() => setOpenForgotModal(false)}
+                label="Reset"
+                className={
+                  "border border-red-600 text-red-600 hover:bg-red-100 w-full"
+                }
+              />
+
+              <CommonButton
+                type="button"
+                onClick={handleForgotPassword}
+                label="Confirm"
+                className={" bg-green-600 text-white  w-full"}
+              />
+            </Box>
+          </Box>
+        </Box>
+      </Modal>
     </>
   );
 }

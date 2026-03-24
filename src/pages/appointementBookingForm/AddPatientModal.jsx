@@ -22,6 +22,7 @@ import { AddPatient } from "../../services/bookAppointment/BookAppointmentServic
 import { errorAlert, successAlert } from "../../components/common/toast/CustomToast";
 import { useLoader } from "../../components/common/commonLoader/LoaderContext";
 import ConfirmationModal from "../../components/common/ConfirmationModal";
+import { useAuth } from "../../context/AuthContext";
 
 const today = new Date();
 today.setHours(0, 0, 0, 0);
@@ -177,7 +178,8 @@ export default function AddPatientModal({ open, handleClose }) {
   const [isUpdatingFromDOB, setIsUpdatingFromDOB] = useState(false);
   const [isUpdatingFromAge, setIsUpdatingFromAge] = useState(false);
 
-  const userData = JSON.parse(localStorage.getItem("user") || "null");
+  const { user } = useAuth();
+  const userData = user;
 
   const { showLoader, hideLoader } = useLoader();
 
@@ -216,7 +218,7 @@ export default function AddPatientModal({ open, handleClose }) {
         setTimeout(() => setIsUpdatingFromDOB(false), 100);
       }
     }
-  }, [watchedDOB]);
+  }, [watchedDOB, isUpdatingFromAge, setValue]);
 
   // Auto-calculate DOB when Age changes
   useEffect(() => {
@@ -239,7 +241,7 @@ export default function AddPatientModal({ open, handleClose }) {
         setTimeout(() => setIsUpdatingFromAge(false), 100);
       }
     }
-  }, [watchedAge]);
+  }, [watchedAge, isUpdatingFromDOB, setValue]);
 
   const onSubmit = (data) => {
     const saveObj = {
@@ -296,7 +298,7 @@ export default function AddPatientModal({ open, handleClose }) {
     if (userData !== null) {
       setValue("mobileNO", userData?.mobileNo);
     }
-  }, [userData]);
+  }, [userData, setValue]);
 
   return (
     <>

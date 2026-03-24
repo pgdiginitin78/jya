@@ -16,13 +16,18 @@ export default function ScrollToTop({ children }) {
       window.history.scrollRestoration = "manual";
     }
 
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    // Don't scroll to top if navigating between blog posts
+    if (!location.pathname.startsWith("/blog/")) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
   }, [location.pathname]);
 
   return (
     <AnimatePresence mode="wait">
       <motion.div
-        key={location.pathname}
+        key={
+          location.pathname.startsWith("/blog/") ? "/blog" : location.pathname
+        }
         variants={pageVariants}
         initial="initial"
         animate="animate"

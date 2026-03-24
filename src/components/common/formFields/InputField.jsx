@@ -24,7 +24,9 @@ const InputField = ({
   minRows,
   maxRows,
   multiline,
-  onPaste
+  onPaste,
+  InputProps,
+  ...rest
 }) => {
   //  onPaste={(e) => e.preventDefault()}
   return (
@@ -36,7 +38,7 @@ const InputField = ({
               className={
                 tableInputField
                   ? " text-[12px] bg-white"
-                  : "h-[35px] text-[14px] bg-white"
+                  : "text-[14px] bg-white"
               }
               id={id}
               inputRef={inputRef}
@@ -44,8 +46,10 @@ const InputField = ({
               autoComplete="off"
               onKeyDown={onKeyDown}
               InputProps={{
+                ...InputProps,
                 disabled: disabled,
               }}
+              helperText={error?.message}
               onPaste={onPaste}
               minRows={minRows}
               maxRows={maxRows}
@@ -99,8 +103,13 @@ const InputField = ({
               name={name}
               fullWidth
               {...field}
+              onChange={(e) => {
+                field.onChange(e); // Notify react-hook-form
+                if (rest.onChange) {
+                  rest.onChange(e); // Notify custom handler
+                }
+              }}
               size="small"
-              shrink={false}
             />
           );
         }}

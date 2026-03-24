@@ -7,16 +7,19 @@ import reportWebVitals from "./reportWebVitals";
 import ScrollToTop from "./ScrollToTop";
 import { LoaderProvider } from "./components/common/commonLoader/LoaderContext";
 import CommonLoader from "./components/common/commonLoader/CommonLoader";
+import { AuthProvider } from "./context/AuthContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
       <ScrollToTop />
-      <LoaderProvider>
-        <CommonLoader />
-        <App />
-      </LoaderProvider>
+      <AuthProvider>
+        <LoaderProvider>
+          <CommonLoader />
+          <App />
+        </LoaderProvider>
+      </AuthProvider>
     </BrowserRouter>
   </React.StrictMode>,
 );

@@ -19,7 +19,7 @@ const AutoTypingText = ({ text, speed = 80, showCursor = true }) => {
       {showCursor && (
         <span className="cursor">|</span>
       )}
-      <style jsx>{`
+      <style>{`
         .cursor {
           animation: blink 1s step-end infinite;
         }

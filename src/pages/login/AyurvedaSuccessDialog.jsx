@@ -44,7 +44,7 @@ const FloatingLeaf = ({ delay, direction, size = "20px" }) => (
   </motion.div>
 );
 
-const AyurvedaSuccessDialog = ({ open, onClose, contentMessage }) => {
+const AyurvedaSuccessDialog = ({ open, onClose, contentMessage, title = "Registration Successful!" }) => {
 
   useEffect(() => {
     if (open) {
@@ -187,7 +187,7 @@ const AyurvedaSuccessDialog = ({ open, onClose, contentMessage }) => {
                     transition={{ delay: 0.25, duration: 0.4, ease: "easeOut" }}
                   >
                     <h2 className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-700 to-emerald-700 mb-3">
-                      Registration Successful!
+                      {title}
                     </h2>
                   </motion.div>
 

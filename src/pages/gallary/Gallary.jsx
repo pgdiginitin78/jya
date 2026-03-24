@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import weddingCeremonyImg from "../../asset/galleryPage/galleryBanner/weddingceremony.jpg";
 import img1 from "../../asset/galleryPage/communityCeremony/Akshaytrutiya/img1.jpg";
@@ -55,7 +55,6 @@ import AkshaytrutiyaImg4 from "../../asset/galleryPage/communityCeremony/Akshayt
 import AkshaytrutiyaImg5 from "../../asset/galleryPage/communityCeremony/Akshaytrutiya/img5.jpg";
 import AkshaytrutiyaImg6 from "../../asset/galleryPage/communityCeremony/Akshaytrutiya/img6.jpg";
 import AkshaytrutiyaImg7 from "../../asset/galleryPage/communityCeremony/Akshaytrutiya/img7.jpg";
-import CommonLoader from "../../components/common/commonLoader/CommonLoader";
 
 const galleryData = [
   {
@@ -338,13 +337,13 @@ export default function GalleryApp() {
   const [previewImage, setPreviewImage] = useState("");
   const intervalRef = useRef(null);
 
-  const items = () => {
+  const items = useCallback(() => {
     return level === 0
       ? galleryData
       : level === 1
         ? currentCommunity.children
         : currentEvent.images;
-  };
+  }, [level, currentCommunity, currentEvent]);
 
   // FIXED: Breadcrumb now shows proper navigation path
   const getBreadcrumb = () => {
@@ -353,7 +352,7 @@ export default function GalleryApp() {
     return `Gallery / ${currentCommunity.name} / ${currentEvent.name}`;
   };
 
-  const handleCardClick = (item) => {
+  const handleCardClick = useCallback((item) => {
     if (level === 0) {
       setLevel(1);
       setCurrentCommunity(item);
@@ -366,9 +365,9 @@ export default function GalleryApp() {
       setPreviewImage(item);
       setPreviewOpen(true);
     }
-  };
+  }, [level]);
 
-  const handleBack = () => {
+  const handleBack = useCallback(() => {
     if (level === 2) {
       setLevel(1);
       setCurrentEvent(null);
@@ -378,32 +377,32 @@ export default function GalleryApp() {
       setCurrentCommunity(null);
       setIndex(0);
     }
-  };
+  }, [level]);
 
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     setIndex((prev) => (prev + 1) % items().length);
-  };
+  }, [items]);
 
-  const handlePrev = () => {
+  const handlePrev = useCallback(() => {
     setIndex((prev) => (prev - 1 + items().length) % items().length);
-  };
+  }, [items]);
 
-  const startAutoplay = () => {
+  const startAutoplay = useCallback(() => {
     intervalRef.current = setInterval(() => {
       setIndex((prev) => (prev + 1) % items().length);
     }, 3500);
-  };
+  }, [items]);
 
-  const stopAutoplay = () => {
+  const stopAutoplay = useCallback(() => {
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
     }
-  };
+  }, []);
 
   useEffect(() => {
     startAutoplay();
     return () => stopAutoplay();
-  }, [level, currentCommunity, currentEvent]);
+  }, [level, currentCommunity, currentEvent, startAutoplay, stopAutoplay]);
 
   useEffect(() => {
     const handleWheel = (e) => {
@@ -418,7 +417,7 @@ export default function GalleryApp() {
 
     window.addEventListener("wheel", handleWheel, { passive: true });
     return () => window.removeEventListener("wheel", handleWheel);
-  }, [index, level]);
+  }, [level, handleNext, handlePrev]);
 
   const toggleFullscreen = () => {
     if (!document.fullscreenElement) {

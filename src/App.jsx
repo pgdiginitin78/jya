@@ -4,20 +4,22 @@ import { Suspense, useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "./App.css";
+import { useAuth } from "./context/AuthContext";
 import { API } from "./http-common";
 import AboutUs from "./pages/aboutUs/AboutUs";
+import BlogDetail from "./pages/blogs/BlogDetail";
 import AyurvedaBlog from "./pages/blogs/Blogs";
 import ContactUs from "./pages/contactUs/ContactUs";
 import Footer from "./pages/footer/Footer";
 import Gallary from "./pages/gallary/Gallary";
 import HomePage from "./pages/homePage/HomePage";
-import Navbar from "./pages/navbar/Navbar";
+import ResetPassword from "./pages/login/ResetPassword";
 import OurServices from "./pages/OurServices/OurServices";
 import DeleteAccount from "./pages/privacyAndPolicy/DeleteAccount";
 import PrivacyAndPolicy from "./pages/privacyAndPolicy/PrivacyAndPolicy";
 import ScrollToHash from "./ScrollToHash";
-import ScrollToTopButton from "./ScrollToTopButton"; 
+import ScrollToTopButton from "./ScrollToTopButton";
+import Navbar from "./pages/navbar/Navbar";
 
 function PageSkeleton() {
   return (
@@ -36,61 +38,59 @@ function PageSkeleton() {
 
 function App() {
   const location = useLocation();
+  const { logout } = useAuth();
 
   useEffect(() => {
-    let interval;
+    let timeoutId;
 
     const refreshTokenApi = async () => {
       try {
-        const accessToken = localStorage.getItem("refreshToken");
-        const expiresIn = localStorage.getItem("expiresIn");
-
-        if (!accessToken) {
+        const refreshToken = localStorage.getItem("refreshToken");
+        if (!refreshToken) {
           console.log("No refresh token found");
           return;
         }
 
-        console.log("Calling refresh token API...", accessToken);
+        console.log("Calling refresh token API...");
         const res = await API.post("refresh-token", {
-          refreshToken: accessToken,
+          refreshToken: refreshToken,
         });
 
         const apiData = res.data;
         localStorage.setItem("accessToken", apiData.accessToken);
         localStorage.setItem("refreshToken", apiData.refreshToken);
         localStorage.setItem("expiresIn", apiData.expiresIn);
-        localStorage.setItem("tokenSetTime", Date.now());
+        localStorage.setItem("tokenSetTime", Date.now().toString());
 
         console.log("Token refreshed successfully");
-
-        if (interval) {
-          clearInterval(interval);
-        }
-
-        const expiresInMs = (parseInt(apiData.expiresIn) - expiresIn) * 1000;
-        interval = setInterval(refreshTokenApi, expiresInMs);
+        const expiresInSeconds = parseInt(apiData.expiresIn);
+        const refreshDelayMs = Math.max((expiresInSeconds - 60) * 1000, 30000);
+        
+        if (timeoutId) clearTimeout(timeoutId);
+        timeoutId = setTimeout(refreshTokenApi, refreshDelayMs);
       } catch (err) {
         console.error("Token refresh failed:", err);
-
-        if (err.response?.status === 401 || err.response?.status === 403) {
-          // localStorage.clear();
-          // window.location.href = "/";
-        }
+        logout();
       }
     };
 
     const accessToken = localStorage.getItem("accessToken");
+    const refreshToken = localStorage.getItem("refreshToken");
     const expiresIn = localStorage.getItem("expiresIn");
     const tokenSetTime = localStorage.getItem("tokenSetTime");
 
-    if (accessToken) {
+    if (accessToken && refreshToken) {
       if (tokenSetTime && expiresIn) {
         const currentTime = Date.now();
         const timeElapsed = (currentTime - parseInt(tokenSetTime)) / 1000;
+        const expiresInSeconds = parseInt(expiresIn);
 
-        if (timeElapsed >= parseInt(expiresIn)) {
-          console.log("Token expired, calling refresh API");
+        if (timeElapsed >= expiresInSeconds - 60) {
+          console.log("Token near expiration, calling refresh API");
           refreshTokenApi();
+        } else {
+          const remainingTimeMs = (expiresInSeconds - timeElapsed - 60) * 1000;
+          timeoutId = setTimeout(refreshTokenApi, Math.max(remainingTimeMs, 30000));
         }
       } else {
         refreshTokenApi();
@@ -98,13 +98,11 @@ function App() {
     }
 
     return () => {
-      if (interval) {
-        clearInterval(interval);
+      if (timeoutId) {
+        clearTimeout(timeoutId);
       }
     };
-  }, []);
-
-
+  }, [logout]);
 
   return (
     <>
@@ -118,7 +116,7 @@ function App() {
             transition={{ duration: 0.3 }}
           >
             <Suspense fallback={<PageSkeleton />}>
-              <Routes location={location} key={location.pathname}>
+              <Routes location={location} key={location.pathname.startsWith('/blog/') ? '/blog' : location.pathname}>
                 <Route path="/" element={<HomePage title="Home" />} />
                 <Route
                   path="/privacyAndPolicy"
@@ -130,6 +128,8 @@ function App() {
                 <Route path="/resources/gallery" element={<Gallary />} />
                 <Route path="/contact" element={<ContactUs />} />
                 <Route path="/deleteAccount" element={<DeleteAccount />} />
+                <Route path="/blog/:id" element={<BlogDetail />} />
+                <Route path="/reset-password" element={<ResetPassword />} />
               </Routes>
             </Suspense>
           </motion.div>
