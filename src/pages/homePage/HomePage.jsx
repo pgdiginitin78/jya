@@ -819,22 +819,21 @@ export default function HomePage() {
         </div>
       </div>
       <div>
-        <section id="about" className="py-2 pt-5 px-6 lg:px-10">
+        <section id="about" className="py-4 px-4 sm:px-6 lg:px-10">
           <div className="max-w-[95rem] mx-auto">
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-6">
-              <h2 className="text-xl md:text-2xl xl:text-3xl font-bold tracking-wider text-[#263d21] text-left sm:text-left flex items-center gap-2">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-5">
+              <h2 className="text-lg sm:text-xl md:text-2xl xl:text-3xl font-bold tracking-wider text-[#263d21] flex items-center gap-2">
                 <span>About JYA</span>
               </h2>
 
-              <div className="flex items-center justify-end gap-2">
+              <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap justify-end">
                 <button
                   type="button"
                   onClick={handleAboutSectionPrev}
-                  className="w-10 h-10 rounded-full bg-white border border-neutral-200 flex items-center justify-center hover:border-emerald-500 hover:bg-emerald-50 transition"
-                  aria-label="Previous"
+                  className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white border border-neutral-200 flex items-center justify-center hover:border-emerald-500 hover:bg-emerald-50 transition"
                 >
                   <svg
-                    className="w-10 h-5 text-neutral-700"
+                    className="w-5 h-5 text-neutral-700"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -856,10 +855,9 @@ export default function HomePage() {
                       onClick={() => setAboutSectionActiveIndex(index)}
                       className={`h-2.5 rounded-full transition-all ${
                         index === aboutSectionActiveIndex
-                          ? "w-7 bg-emerald-600"
+                          ? "w-6 sm:w-7 bg-emerald-600"
                           : "w-2.5 bg-neutral-300 hover:bg-neutral-400"
                       }`}
-                      aria-label={`Go to ${slide.label}`}
                     />
                   ))}
                 </div>
@@ -867,11 +865,10 @@ export default function HomePage() {
                 <button
                   type="button"
                   onClick={handleAboutSectionNext}
-                  className="w-10 h-10 rounded-full bg-white border border-neutral-200 flex items-center justify-center hover:border-emerald-500 hover:bg-emerald-50 transition"
-                  aria-label="Next"
+                  className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white border border-neutral-200 flex items-center justify-center hover:border-emerald-500 hover:bg-emerald-50 transition"
                 >
                   <svg
-                    className="w-10 h-5 text-neutral-700"
+                    className="w-5 h-5 text-neutral-700"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -888,11 +885,11 @@ export default function HomePage() {
             </div>
 
             <div
-              className="rounded-[9px] bg-white/70 backdrop-blur-sm border h-[480px] border-neutral-200/70 shadow-[0_18px_60px_rgba(15,23,42,0.08)] overflow-hidden"
+              className="rounded-[9px] bg-white/70 backdrop-blur-sm border border-neutral-200/70 shadow overflow-hidden"
               onMouseEnter={() => setAboutSectionPaused(true)}
               onMouseLeave={() => setAboutSectionPaused(false)}
             >
-              <div className="p-6 md:p-8">
+              <div className="p-4 sm:p-6 md:p-8">
                 <AnimatePresence>
                   <motion.div
                     key={aboutSectionActiveSlide.id}
@@ -901,15 +898,15 @@ export default function HomePage() {
                     exit={{ opacity: 0, y: -18 }}
                     transition={{ duration: 0.45 }}
                   >
-                    <div className="grid lg:grid-cols-[340px,1fr] items-start gap-6">
-                      <div className="space-y-5">
-                        <div className="inline-flex items-center rounded-full bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-700 border border-emerald-100">
+                    <div className="grid grid-cols-1 lg:grid-cols-[300px,1fr] gap-6 items-start">
+                      <div className="space-y-4">
+                        <div className="inline-flex items-center rounded-[9px] bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-700 border border-emerald-100 w-fit">
                           <span className="w-2 h-2 rounded-full bg-emerald-500 mr-2 animate-pulse" />
                           {aboutSectionActiveSlide.badge}
                         </div>
 
                         <div>
-                          <h2 className="text-2xl font-semibold text-neutral-900 mb-2">
+                          <h2 className="text-xl sm:text-2xl font-semibold text-neutral-900 mb-2">
                             {aboutSectionActiveSlide.label}
                           </h2>
                           <p className="text-sm text-neutral-600 leading-relaxed">
@@ -918,24 +915,24 @@ export default function HomePage() {
                         </div>
                       </div>
 
-                      <div className="grid gap-4 md:gap-5 sm:grid-cols-2">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         {aboutSectionActiveSlide.nodes.map((node, idx) => (
                           <motion.div
                             key={node.title}
                             initial={{ opacity: 0, y: 18 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.4, delay: idx * 0.07 }}
-                            className={`relative overflow-hidden rounded-2xl bg-gradient-to-br ${node.gradient} p-5 border ${node.border}`}
+                            className={`relative overflow-hidden rounded-xl sm:rounded-2xl bg-gradient-to-br ${node.gradient} p-4 sm:p-5 border ${node.border}`}
                           >
-                            <div className="flex items-start space-x-3">
+                            <div className="flex items-start gap-3">
                               <div
-                                className={`w-10 h-10 flex items-center justify-center rounded-full border ${node.border} flex-shrink-0 bg-white/60`}
+                                className={`w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-full border ${node.border} flex-shrink-0 bg-white/60`}
                               >
                                 <img
                                   src={node.icon}
                                   alt={node.title}
                                   loading="lazy"
-                                  className="w-6 h-6 object-contain"
+                                  className="w-5 h-5 sm:w-6 sm:h-6 object-contain"
                                   draggable={false}
                                 />
                               </div>
@@ -944,7 +941,7 @@ export default function HomePage() {
                                 <h3 className="text-sm font-semibold text-neutral-900 mb-1">
                                   {node.title}
                                 </h3>
-                                <p className="text-xs md:text-sm text-neutral-700 leading-relaxed">
+                                <p className="text-xs sm:text-sm text-neutral-700 leading-relaxed">
                                   {node.text}
                                 </p>
                               </div>
@@ -1016,7 +1013,7 @@ export default function HomePage() {
         </section>
       </section>
       <section id="services" className="py-4 px-4 md:px-10">
-        <section className=" py-12 max-w-[95rem] mx-auto">
+        <section className=" py-5 max-w-[95rem] mx-auto">
           <motion.article
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -1359,7 +1356,6 @@ export default function HomePage() {
               onClick={() => openBlog(article.id)}
               className="group cursor-pointer bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 h-full flex flex-col"
             >
-            
               <div className="relative h-56 overflow-hidden">
                 <img
                   src={article.image}

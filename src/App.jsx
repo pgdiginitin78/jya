@@ -14,12 +14,12 @@ import Footer from "./pages/footer/Footer";
 import Gallary from "./pages/gallary/Gallary";
 import HomePage from "./pages/homePage/HomePage";
 import ResetPassword from "./pages/login/ResetPassword";
+import Navbar from "./pages/navbar/Navbar";
 import OurServices from "./pages/OurServices/OurServices";
 import DeleteAccount from "./pages/privacyAndPolicy/DeleteAccount";
 import PrivacyAndPolicy from "./pages/privacyAndPolicy/PrivacyAndPolicy";
 import ScrollToHash from "./ScrollToHash";
 import ScrollToTopButton from "./ScrollToTopButton";
-import Navbar from "./pages/navbar/Navbar";
 
 function PageSkeleton() {
   return (
@@ -130,6 +130,7 @@ function App() {
                 <Route path="/deleteAccount" element={<DeleteAccount />} />
                 <Route path="/blog/:id" element={<BlogDetail />} />
                 <Route path="/reset-password" element={<ResetPassword />} />
+            
               </Routes>
             </Suspense>
           </motion.div>

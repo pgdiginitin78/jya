@@ -16,14 +16,13 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { IconButton, InputAdornment, Typography, Box } from "@mui/material";
 import LockResetIcon from "@mui/icons-material/LockReset";
 import JYALogoImg from "../../asset/JnanaYogAyuLogo.png";
-import LockOpenIcon from '@mui/icons-material/LockOpen';
-
+import LockOpenIcon from "@mui/icons-material/LockOpen";
 
 const schema = yup.object().shape({
   password: yup
     .string()
     .required("New password is required")
-    .min(6, "Password must be at least 6 characters"),
+    .min(4, "Password must be at least 4 characters"),
   confirmPassword: yup
     .string()
     .required("Confirm password is required")
@@ -38,7 +37,8 @@ const ResetPassword = () => {
   const navigate = useNavigate();
   const token =
     searchParams.get("token") ||
-    "1i8tfWn/+UjJ6/lv7vQpw0MafYYEX8NwkVfQDU7OYIlehyvTfAf5f8898tz+pcsYUNQWik9sd5kQLz93w4CP1A=="; 
+    "1i8tfWn/+UjJ6/lv7vQpw0MafYYEX8NwkVfQDU7OYIlehyvTfAf5f8898tz+pcsYUNQWik9sd5kQLz93w4CP1A==";
+console.log("searchParams",token);
 
   const {
     control,
@@ -98,17 +98,13 @@ const ResetPassword = () => {
     visible: { opacity: 1, y: 0 },
   };
 
-
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-lime-50 via-green-50 to-white overflow-hidden relative p-4 mt-20 lg:mt-12">
-
-
       <motion.div
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="max-w-[480px] w-full bg-[#f8fbf6]/80 backdrop-blur-md p-8 rounded-lg shadow-[0_10px_40px_rgba(0,0,0,0.08)] border border-[#e6efe3] relative z-10"
+        className="max-w-[440px] 2xl:max-w-[420px] w-full bg-[#f8fbf6]/80 backdrop-blur-md p-8 rounded-lg shadow-[0_10px_40px_rgba(0,0,0,0.08)] border border-[#e6efe3] relative z-10"
       >
         <motion.div variants={itemVariants} className="text-center mb-5">
           <img
@@ -211,10 +207,7 @@ const ResetPassword = () => {
             />
           </motion.div>
 
-          <motion.div
-            variants={itemVariants}
-            className="flex  gap-4 pt-2"
-          >
+          <motion.div variants={itemVariants} className="flex  gap-4 pt-2">
             <CommonButton
               type="button"
               onClick={handleResetForm}

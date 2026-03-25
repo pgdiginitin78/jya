@@ -276,7 +276,7 @@ const EventCalendar = () => {
   ]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-lime-50 to-green-50 p-2 sm:p-4 md:p-6 lg:px-16 lg:py-8">
+    <div className="min-h-screen  p-2 sm:p-4 md:p-6 lg:px-16 ">
       <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
         <div className="absolute top-20 left-10 w-64 h-64 bg-lime-300 rounded-full blur-3xl"></div>
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-green-300 rounded-full blur-3xl"></div>
