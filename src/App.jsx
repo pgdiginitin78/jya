@@ -1,11 +1,9 @@
 import { Skeleton } from "@mui/material";
 import { AnimatePresence, motion } from "framer-motion";
-import { Suspense, useEffect } from "react";
+import { Suspense } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useAuth } from "./context/AuthContext";
-import { API } from "./http-common";
 import AboutUs from "./pages/aboutUs/AboutUs";
 import BlogDetail from "./pages/blogs/BlogDetail";
 import AyurvedaBlog from "./pages/blogs/Blogs";
@@ -20,6 +18,7 @@ import DeleteAccount from "./pages/privacyAndPolicy/DeleteAccount";
 import PrivacyAndPolicy from "./pages/privacyAndPolicy/PrivacyAndPolicy";
 import ScrollToHash from "./ScrollToHash";
 import ScrollToTopButton from "./ScrollToTopButton";
+import { useTokenRefresh } from "./useTokenRefresh";
 
 function PageSkeleton() {
   return (
@@ -38,71 +37,7 @@ function PageSkeleton() {
 
 function App() {
   const location = useLocation();
-  const { logout } = useAuth();
-
-  useEffect(() => {
-    let timeoutId;
-
-    const refreshTokenApi = async () => {
-      try {
-        const refreshToken = localStorage.getItem("refreshToken");
-        if (!refreshToken) {
-          console.log("No refresh token found");
-          return;
-        }
-
-        console.log("Calling refresh token API...");
-        const res = await API.post("refresh-token", {
-          refreshToken: refreshToken,
-        });
-
-        const apiData = res.data;
-        localStorage.setItem("accessToken", apiData.accessToken);
-        localStorage.setItem("refreshToken", apiData.refreshToken);
-        localStorage.setItem("expiresIn", apiData.expiresIn);
-        localStorage.setItem("tokenSetTime", Date.now().toString());
-
-        console.log("Token refreshed successfully");
-        const expiresInSeconds = parseInt(apiData.expiresIn);
-        const refreshDelayMs = Math.max((expiresInSeconds - 60) * 1000, 30000);
-        
-        if (timeoutId) clearTimeout(timeoutId);
-        timeoutId = setTimeout(refreshTokenApi, refreshDelayMs);
-      } catch (err) {
-        console.error("Token refresh failed:", err);
-        logout();
-      }
-    };
-
-    const accessToken = localStorage.getItem("accessToken");
-    const refreshToken = localStorage.getItem("refreshToken");
-    const expiresIn = localStorage.getItem("expiresIn");
-    const tokenSetTime = localStorage.getItem("tokenSetTime");
-
-    if (accessToken && refreshToken) {
-      if (tokenSetTime && expiresIn) {
-        const currentTime = Date.now();
-        const timeElapsed = (currentTime - parseInt(tokenSetTime)) / 1000;
-        const expiresInSeconds = parseInt(expiresIn);
-
-        if (timeElapsed >= expiresInSeconds - 60) {
-          console.log("Token near expiration, calling refresh API");
-          refreshTokenApi();
-        } else {
-          const remainingTimeMs = (expiresInSeconds - timeElapsed - 60) * 1000;
-          timeoutId = setTimeout(refreshTokenApi, Math.max(remainingTimeMs, 30000));
-        }
-      } else {
-        refreshTokenApi();
-      }
-    }
-
-    return () => {
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
-    };
-  }, [logout]);
+  useTokenRefresh();
 
   return (
     <>

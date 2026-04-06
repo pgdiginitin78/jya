@@ -1,31 +1,29 @@
-import { AnimatePresence, motion } from "framer-motion";
-import { useMemo, useState, useEffect } from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
-
+import Avatar from "@mui/material/Avatar";
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
-import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
-
+import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import CloseIcon from "@mui/icons-material/Close";
+import GroupsIcon from "@mui/icons-material/Groups";
 import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
 import KeyboardArrowRightRoundedIcon from "@mui/icons-material/KeyboardArrowRightRounded";
-import MenuIcon from "@mui/icons-material/Menu";
-import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import LogoutIcon from "@mui/icons-material/Logout";
+import MenuIcon from "@mui/icons-material/Menu";
 import PersonIcon from "@mui/icons-material/Person";
-import { Tooltip } from "@mui/material";
-import JYALogoImg from "../../asset/JnanaYogAyuLogo.png";
-import LoginPage from "../login/LoginPage";
-import SignUp from "../login/SignUp";
 import { logoutUser } from "../../Actions";
-import AyurvedaSuccessDialog from "../login/AyurvedaSuccessDialog";
-import ManageProfileModal from "../login/ManageProfileModal";
+import JYALogoImg from "../../asset/JnanaYogAyuLogo.png";
 import { useAuth } from "../../context/AuthContext";
-
+import AyurvedaSuccessDialog from "../login/AyurvedaSuccessDialog";
+import LoginPage from "../login/LoginPage";
+import ManageMembers from "../login/ManageMember";
+import ManageProfileModal from "../login/ManageProfileModal";
+import SignUp from "../login/SignUp";
 
 const mobilePanelMotion = {
   initial: { opacity: 0, height: 0 },
@@ -47,6 +45,7 @@ export default function Navbar() {
   const [openLogin, setOpenLogin] = useState(false);
   const [openSignUpModal, setOpenSignUpModal] = useState(false);
   const [openManageProfile, setOpenManageProfile] = useState(false);
+  const [openManageMembers, setOpenManageMembers] = useState(false);
 
   const [mobileAboutOpen, setMobileAboutOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
@@ -58,6 +57,25 @@ export default function Navbar() {
   const [openSuccessDialog, setOpenSuccessDialog] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [successTitle, setSuccessTitle] = useState("");
+  const [showProfileDropdown, setShowProfileDropdown] = useState(false);
+  const dropdownRef = useRef(null);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowProfileDropdown(false);
+      }
+    };
+
+    if (showProfileDropdown) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showProfileDropdown]);
 
   const { user, logout } = useAuth();
 
@@ -65,14 +83,16 @@ export default function Navbar() {
     logoutUser();
     logout();
     setSuccessTitle("Logged Out");
-    setSuccessMessage("You have been successfully logged out from your account.");
+    setSuccessMessage(
+      "You have been successfully logged out from your account.",
+    );
     setOpenSuccessDialog(true);
-    
+
     // For mobile drawer
     if (mobileOpen) {
       setMobileOpen(false);
     }
-    
+
     // Redirect to home
     navigate("/");
   };
@@ -270,6 +290,70 @@ export default function Navbar() {
           transform: scale(1.05);
         }
 
+        .profile-dropdown {
+          background: #ffffff;
+          border-radius: 20px;
+          border: 1px solid rgba(0, 0, 0, 0.05);
+          box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+          overflow: hidden;
+          width: 280px;
+          position: absolute;
+          right: 0;
+          top: calc(100% + 15px);
+          z-index: 100;
+        }
+
+        .profile-dropdown-header {
+          background: #f1faf1;
+          padding: 18px 20px;
+          border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+        }
+
+        .profile-dropdown-name {
+          color: #1a5e37;
+          font-weight: 700;
+          font-size: 1.1rem;
+          margin: 0;
+          line-height: 1.2;
+        }
+
+        .profile-dropdown-handle {
+          color: #34c759;
+          font-weight: 500;
+          font-size: 0.95rem;
+          margin-top: 4px;
+        }
+
+        .profile-dropdown-item {
+          display: flex;
+          align-items: center;
+          gap: 16px;
+          padding: 14px 20px;
+          color: #4a5568;
+          font-weight: 500;
+          font-size: 1rem;
+          transition: all 0.2s ease;
+          cursor: pointer;
+        }
+
+        .profile-dropdown-item:hover {
+          background: #f8faf9;
+        }
+
+        .profile-dropdown-icon {
+          font-size: 20px;
+          color: #34c759;
+        }
+
+        .profile-dropdown-logout {
+          color: #e53e3e;
+          border-top: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .profile-dropdown-logout .profile-dropdown-icon {
+          color: #e53e3e;
+        }
+
         @media (max-width: 1024px) {
           .nav-link {
             font-size: 0.9rem;
@@ -457,84 +541,88 @@ export default function Navbar() {
             </div>
             <div className="flex items-center gap-3">
               {user?.userName ? (
-                <Box
-                  sx={{
-                    display: { xs: "none", lg: "flex" },
-                    alignItems: "center",
-                    gap: 1.5,
-                    px: 2,
-                    py: 1,
-                    borderRadius: "12px",
-                    background: "rgba(255, 255, 255, 0.3)",
-                    transition: "all 0.3s ease",
-                    "&:hover": {
-                      background: "rgba(255, 255, 255, 0.4)",
-                    },
-                  }}
-                >
-                  <Avatar
-                    src={user?.avatar}
-                    alt={user?.userName}
-                    className="user-avatar"
+                <div className="relative hidden lg:block" ref={dropdownRef}>
+                  <IconButton
+                    onClick={() => setShowProfileDropdown(!showProfileDropdown)}
                     sx={{
-                      width: 38,
-                      height: 38,
-                      bgcolor: "#263d21",
-                      color: "#ffffff",
-                      fontSize: "15px",
-                      fontWeight: 600,
+                      p: 0.5,
+                      border: "2px solid",
+                      borderColor: showProfileDropdown
+                        ? "#34c759"
+                        : "transparent",
+                      transition: "all 0.3s ease",
                     }}
                   >
-                    {getUserInitials(user?.userName)}
-                  </Avatar>
-                  <Box sx={{ display: { xs: "none", xl: "block" } }}>
-                    <Typography
-                      variant="body2"
+                    <Avatar
+                      src={user?.avatar}
+                      alt={user?.userName}
                       sx={{
-                        color: "#1a2e1a",
+                        width: 42,
+                        height: 42,
+                        bgcolor: "#263d21",
+                        color: "#ffffff",
+                        fontSize: "16px",
                         fontWeight: 600,
-                        lineHeight: 1.2,
                       }}
                     >
-                      {user?.firstName}
-                    </Typography>
-                    <Typography
-                      variant="caption"
-                      sx={{
-                        color: "#2d4a2d",
-                        lineHeight: 1,
-                      }}
-                    >
-                      {user?.lastName}
-                    </Typography>
-                  </Box>
-                  <Tooltip title="Manage Profile">
-                    <IconButton
-                      onClick={() => setOpenManageProfile(true)}
-                      sx={{
-                        color: "#1a2e1a",
-                        "&:hover": {
-                          background: "rgba(255, 255, 255, 0.4)",
-                        },
-                      }}
-                    >
-                      <PersonIcon sx={{ fontSize: 22 }} />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title="Log Out">
-                    <IconButton
-                      onClick={handleLogout}
-                      sx={{
-                        color: "#1a2e1a",
-                        "&:hover": {
-                          background: "rgba(255, 255, 255, 0.4)",
-                        },
-                      }}
-                    >
-                      <LogoutIcon sx={{ fontSize: 20 }} />
-                    </IconButton>
-                  </Tooltip>
-                </Box>
+                      {getUserInitials(user?.userName)}
+                    </Avatar>
+                  </IconButton>
+
+                  <AnimatePresence>
+                    {showProfileDropdown && (
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.95, y: -10 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.95, y: -10 }}
+                        transition={{ duration: 0.2, ease: "easeOut" }}
+                        className="profile-dropdown"
+                      >
+                          <div className="profile-dropdown-header">
+                            <h3 className="profile-dropdown-name">
+                              {user?.firstName} {user?.lastName}
+                            </h3>
+                            <div className="profile-dropdown-handle">
+                              @{user?.userName || user?.firstName}
+                            </div>
+                          </div>
+
+                          <div
+                            className="profile-dropdown-item"
+                            onClick={() => {
+                              setOpenManageProfile(true);
+                              setShowProfileDropdown(false);
+                            }}
+                          >
+                            <PersonIcon className="profile-dropdown-icon" />
+                            <span>Manage Profile</span>
+                          </div>
+
+                          <div
+                            className="profile-dropdown-item"
+                            onClick={() => {
+                              setOpenManageMembers(true);
+                              setShowProfileDropdown(false);
+                            }}
+                          >
+                            <GroupsIcon className="profile-dropdown-icon" />
+                            <span>Manage Members</span>
+                          </div>
+
+                          <div
+                            className="profile-dropdown-item profile-dropdown-logout"
+                            onClick={() => {
+                              handleLogout();
+                              setShowProfileDropdown(false);
+                            }}
+                          >
+                            <LogoutIcon className="profile-dropdown-icon" />
+                            <span>Logout</span>
+                          </div>
+                        </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
               ) : (
                 <div className="hidden lg:flex items-center gap-2">
                   <button
@@ -666,6 +754,82 @@ export default function Navbar() {
                     {formattedTime}
                   </Typography>
                 </Box>
+
+                <div className="grid grid-cols-1 gap-2 mb-4">
+                  <Button
+                    variant="outlined"
+                    fullWidth
+                    onClick={() => {
+                      setMobileOpen(false);
+                      setOpenManageProfile(true);
+                    }}
+                    startIcon={<PersonIcon />}
+                    sx={{
+                      borderColor: "#263d21",
+                      color: "#263d21",
+                      textTransform: "none",
+                      borderRadius: "12px",
+                      fontWeight: 600,
+                      justifyContent: "flex-start",
+                      px: 2,
+                      py: 1.2,
+                      "&:hover": {
+                        borderColor: "#263d21",
+                        background: "rgba(38, 61, 33, 0.05)",
+                      },
+                    }}
+                  >
+                    Manage Profile
+                  </Button>
+
+                  <Button
+                    variant="outlined"
+                    fullWidth
+                    onClick={() => {
+                      setMobileOpen(false);
+                      setOpenManageMembers(true);
+                    }}
+                    startIcon={<GroupsIcon />}
+                    sx={{
+                      borderColor: "#263d21",
+                      color: "#263d21",
+                      textTransform: "none",
+                      borderRadius: "12px",
+                      fontWeight: 600,
+                      justifyContent: "flex-start",
+                      px: 2,
+                      py: 1.2,
+                      "&:hover": {
+                        borderColor: "#263d21",
+                        background: "rgba(38, 61, 33, 0.05)",
+                      },
+                    }}
+                  >
+                    Manage Members
+                  </Button>
+
+                  <Button
+                    variant="contained"
+                    fullWidth
+                    onClick={() => {
+                      setMobileOpen(false);
+                      handleLogout();
+                    }}
+                    startIcon={<LogoutIcon />}
+                    sx={{
+                      backgroundColor: "#e53e3e",
+                      textTransform: "none",
+                      borderRadius: "12px",
+                      fontWeight: 600,
+                      justifyContent: "flex-start",
+                      px: 2,
+                      py: 1.2,
+                      "&:hover": { backgroundColor: "#c53030" },
+                    }}
+                  >
+                    Logout
+                  </Button>
+                </div>
               </>
             )}
 
@@ -972,6 +1136,13 @@ export default function Navbar() {
         <ManageProfileModal
           open={openManageProfile}
           handleClose={() => setOpenManageProfile(false)}
+          user={user}
+        />
+      )}
+      {openManageMembers && (
+        <ManageMembers
+          open={openManageMembers}
+          onClose={() => setOpenManageMembers(false)}
           user={user}
         />
       )}

@@ -68,6 +68,7 @@ function LoginPage({
   const [openSignUpModal, setOpenSignUpModal] = useState(false);
   const [openForgotModal, setOpenForgotModal] = useState(false);
   const [forgotEmail, setForgotEmail] = useState("");
+  const [forgotEmailError, setForgotEmailError] = useState("");
 
   const {
     control,
@@ -117,14 +118,15 @@ function LoginPage({
 
   const handleForgotPassword = async () => {
     if (!forgotEmail) {
-      errorAlert("Please enter your email");
+      setForgotEmailError("Please enter your email");
       return;
     }
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(forgotEmail)) {
-      errorAlert("Please enter a valid email address");
+      setForgotEmailError("Please enter a valid email address");
       return;
     }
+    setForgotEmailError("");
 
     try {
       showLoader();
@@ -133,6 +135,7 @@ function LoginPage({
         successAlert(response.data?.message || "Password reset email sent!");
         setOpenForgotModal(false);
         setForgotEmail("");
+        setForgotEmailError("");
       } else {
         errorAlert(response.data?.message || "Something went wrong");
       }
@@ -252,6 +255,19 @@ function LoginPage({
                         label="Email / Mobile No."
                         error={!!errors.userName}
                         helperText={errors.userName?.message}
+                        FormHelperTextProps={{
+                          sx: {
+                            background:
+                              "linear-gradient(135deg,#c7e8b4 0%,#7fb069 100%)",
+                            color: "#1f2d1f !important",
+                            fontWeight: 600,
+                            fontSize: "0.8rem",
+                            mx: 0,
+                            px: 1.5,
+                            py: 0.4,
+                            borderRadius: "0 0 8px 8px",
+                          },
+                        }}
                         InputProps={{
                           startAdornment: (
                             <InputAdornment position="start">
@@ -283,6 +299,19 @@ function LoginPage({
                         type={showPassword ? "text" : "password"}
                         error={!!errors.password}
                         helperText={errors.password?.message}
+                        FormHelperTextProps={{
+                          sx: {
+                            background:
+                              "linear-gradient(135deg,#c7e8b4 0%,#7fb069 100%)",
+                            color: "#1f2d1f !important",
+                            fontWeight: 600,
+                            fontSize: "0.8rem",
+                            mx: 0,
+                            px: 1.5,
+                            py: 0.4,
+                            borderRadius: "0 0 8px 8px",
+                          },
+                        }}
                         InputProps={{
                           startAdornment: (
                             <InputAdornment position="start">
@@ -295,7 +324,7 @@ function LoginPage({
                                 onClick={() => setShowPassword(!showPassword)}
                                 edge="end"
                               >
-                                {showPassword ? (
+                                {showPassword === false ? (
                                   <VisibilityOffIcon />
                                 ) : (
                                   <VisibilityIcon />
@@ -408,7 +437,7 @@ function LoginPage({
         />
       )}
 
-      <Modal open={openForgotModal} onClose={() => setOpenForgotModal(false)}>
+      <Modal open={openForgotModal}>
         <Box sx={modalStyle}>
           <Box
             sx={{
@@ -422,7 +451,12 @@ function LoginPage({
               p: 3,
             }}
           >
-            <CancelButtonModal onClick={() => setOpenForgotModal(false)} />
+            <CancelButtonModal
+              onClick={() => {
+                setOpenForgotModal(false);
+                setForgotEmailError("");
+              }}
+            />
             <Typography
               variant="h6"
               sx={{ mb: 2, fontWeight: 700, color: "#2f3e2e" }}
@@ -437,10 +471,26 @@ function LoginPage({
               label="Email Address"
               value={forgotEmail}
               size="small"
-              onChange={(e) => setForgotEmail(e.target.value)}
+              error={!!forgotEmailError}
+              FormHelperTextProps={{
+                sx: {
+                  background: "linear-gradient(135deg,#c7e8b4 0%,#7fb069 100%)",
+                  color: "#1f2d1f !important",
+                  fontWeight: 600,
+                  fontSize: "0.8rem",
+                  mx: 0,
+                  px: 1.5,
+                  py: 0.4,
+                  borderRadius: "0 0 8px 8px",
+                },
+              }}
+              onChange={(e) => {
+                setForgotEmail(e.target.value);
+                if (forgotEmailError) setForgotEmailError("");
+              }}
               variant="outlined"
               sx={{
-                mb: 3,
+                mb: forgotEmailError ? 1 : 3,
                 "& .MuiOutlinedInput-root": {
                   borderRadius: 2,
                   bgcolor: "#ffffff",
@@ -457,7 +507,10 @@ function LoginPage({
             >
               <CommonButton
                 type="button"
-                onClick={() => setOpenForgotModal(false)}
+                onClick={() => {
+                  setForgotEmail("");
+                  setForgotEmailError("");
+                }}
                 label="Reset"
                 className={
                   "border border-red-600 text-red-600 hover:bg-red-100 w-full"

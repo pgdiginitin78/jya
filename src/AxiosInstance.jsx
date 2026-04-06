@@ -1,10 +1,11 @@
 import axios from "axios";
-import { logoutUser } from "./Actions";
 import { API_BASE_URL } from "./http-common";
+import { callAuthLogout } from "./context/AuthContext";
+import { toast } from "react-toastify";
 
 const AxiosInstance = axios.create({
   baseURL: API_BASE_URL,
-  // withCredentials: true, 
+  // withCredentials: true,
 });
 
 let isRefreshing = false;
@@ -18,32 +19,34 @@ const processQueue = (error, token = null) => {
       prom.resolve(token);
     }
   });
-
   failedQueue = [];
 };
 
 AxiosInstance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("accessToken");
-
     if (token) {
       config.headers = config.headers || {};
       config.headers.Authorization = `Bearer ${token}`;
     }
-
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => Promise.reject(error),
 );
 
 AxiosInstance.interceptors.response.use(
   (response) => response,
-
   async (error) => {
     const originalRequest = error.config;
-
+    if (originalRequest?.url?.includes("refresh-token")) {
+      processQueue(error, null);
+      localStorage.clear();
+      callAuthLogout();
+      toast.error("Session expired, please login again.");
+      window.location.href = "/";
+      return Promise.reject(error);
+    }
     if (error.response?.status === 401 && !originalRequest._retry) {
-      
       if (isRefreshing) {
         return new Promise((resolve, reject) => {
           failedQueue.push({ resolve, reject });
@@ -53,11 +56,8 @@ AxiosInstance.interceptors.response.use(
             originalRequest.headers.Authorization = `Bearer ${token}`;
             return AxiosInstance(originalRequest);
           })
-          .catch((err) => {
-            return Promise.reject(err);
-          });
+          .catch((err) => Promise.reject(err));
       }
-
       originalRequest._retry = true;
       isRefreshing = true;
 
@@ -66,26 +66,22 @@ AxiosInstance.interceptors.response.use(
         if (!refreshToken) {
           throw new Error("No refresh token available");
         }
-        const res = await axios.post(
-          `${API_BASE_URL}refresh-token`,
-          { refreshToken }
-        );
-        const { accessToken, refreshToken: newRefreshToken, expiresIn } = res.data;
+        const res = await axios.post(`${API_BASE_URL}refresh-token`, {
+          refreshToken,
+        });
+        const { accessToken, refreshToken: newRefreshToken } = res.data;
         localStorage.setItem("accessToken", accessToken);
         localStorage.setItem("refreshToken", newRefreshToken);
-        if (expiresIn) {
-          localStorage.setItem("expiresIn", expiresIn);
-          localStorage.setItem("tokenSetTime", Date.now().toString());
-        }
         AxiosInstance.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
         processQueue(null, accessToken);
         originalRequest.headers = originalRequest.headers || {};
         originalRequest.headers.Authorization = `Bearer ${accessToken}`;
         return AxiosInstance(originalRequest);
       } catch (err) {
-        processQueue(err, null);        
+        processQueue(err, null);
         localStorage.clear();
-        logoutUser();      
+        callAuthLogout();
+        toast.error("Session expired, please login again.");
         window.location.href = "/";
         return Promise.reject(err);
       } finally {
@@ -94,7 +90,7 @@ AxiosInstance.interceptors.response.use(
     }
 
     return Promise.reject(error);
-  }
+  },
 );
 
 export default AxiosInstance;

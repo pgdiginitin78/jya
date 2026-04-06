@@ -35,10 +35,8 @@ const ResetPassword = () => {
   const [loading, setLoading] = useState(false);
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const token =
-    searchParams.get("token") ||
-    "1i8tfWn/+UjJ6/lv7vQpw0MafYYEX8NwkVfQDU7OYIlehyvTfAf5f8898tz+pcsYUNQWik9sd5kQLz93w4CP1A==";
-console.log("searchParams",token);
+  const token = searchParams.get("token") || "";
+  console.log("searchParams", token);
 
   const {
     control,

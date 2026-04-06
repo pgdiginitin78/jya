@@ -673,7 +673,7 @@ function SignUp({
                                               setShowPassword(!showPassword)
                                             }
                                           >
-                                            {showPassword ? (
+                                            {showPassword=== false ? (
                                               <VisibilityOffIcon
                                                 sx={{ fontSize: 20 }}
                                               />
@@ -737,7 +737,7 @@ function SignUp({
                                               )
                                             }
                                           >
-                                            {showConfirmPassword ? (
+                                            {showConfirmPassword === false ? (
                                               <VisibilityOffIcon
                                                 sx={{ fontSize: 20 }}
                                               />

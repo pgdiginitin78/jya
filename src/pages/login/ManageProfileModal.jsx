@@ -26,6 +26,7 @@ import { useAuth } from "../../context/AuthContext";
 import CommonButton from "../../components/common/button/CommonButton";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { useLoader } from "../../components/common/commonLoader/LoaderContext";
 
 const modalStyle = {
   position: "absolute",
@@ -77,7 +78,8 @@ export default function ManageProfileModal({ open, handleClose, user }) {
   const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
   const [formData, setFormData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-
+  const { showLoader, hideLoader } = useLoader();
+  
   const {
     control,
     setValue,
