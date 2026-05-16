@@ -65,7 +65,6 @@ function App() {
                 <Route path="/deleteAccount" element={<DeleteAccount />} />
                 <Route path="/blog/:id" element={<BlogDetail />} />
                 <Route path="/reset-password" element={<ResetPassword />} />
-            
               </Routes>
             </Suspense>
           </motion.div>

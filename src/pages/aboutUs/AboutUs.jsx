@@ -11,12 +11,10 @@ import { Backdrop, Box, Fade, IconButton, Modal } from "@mui/material";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import aboutPageHeroBg from "../../asset/aboutMore/aboutPageHeroBg.jpg";
-import SantoshSuryawanshi from "../../asset/aboutMore/founders/SantoshSuryawanshi.jpg";
+import SantoshSuryawanshi from "../../asset/aboutMore/founders/Vaidya Santosh Suryawanshi.png";
+import VaishaliHolmukhe from "../../asset/aboutMore/founders/Vaishali Holmukhe.png";
 import BhushanPuranik from "../../asset/aboutMore/founders/bhushanpuranik.jpg";
-import {
-  default as ManishaSuryawanshi,
-  default as VaishaliHolmukhe,
-} from "../../asset/aboutMore/founders/manishaSuryawanshi.png";
+import  ManishaSuryawanshi from "../../asset/aboutMore/founders/ManishaSuryavanshi.png";
 import SamruddhiPuranik from "../../asset/aboutMore/founders/samrudhhipuranik.jpg";
 
 const pillars = [
@@ -137,7 +135,7 @@ const founders = [
   {
     initials: "SP",
     image: SamruddhiPuranik,
-    title: "Miss. Samruddhi Puranik – Strategist · Brand Architect",
+    title: "Mrs. Samruddhi Puranik – Strategist · Brand Architect",
     desc: "Strategist and brand architect with expertise in digital marketing.",
     expertise: [
       "Brand Strategy & Positioning",

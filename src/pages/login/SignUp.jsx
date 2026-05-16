@@ -105,6 +105,7 @@ const signupValidationSchema = yup.object().shape({
   userName: yup
     .string()
     .required("Username required")
+    .matches(/^[a-zA-Z0-9_]+$/, "Only letters, numbers, underscore")
     .max(50, "Maximum 50 characters required"),
 
   passWord: yup
@@ -673,7 +674,7 @@ function SignUp({
                                               setShowPassword(!showPassword)
                                             }
                                           >
-                                            {showPassword=== false ? (
+                                            {showPassword ? (
                                               <VisibilityOffIcon
                                                 sx={{ fontSize: 20 }}
                                               />
@@ -737,7 +738,7 @@ function SignUp({
                                               )
                                             }
                                           >
-                                            {showConfirmPassword === false ? (
+                                            {showConfirmPassword ? (
                                               <VisibilityOffIcon
                                                 sx={{ fontSize: 20 }}
                                               />

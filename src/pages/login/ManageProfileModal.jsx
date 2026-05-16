@@ -26,7 +26,6 @@ import { useAuth } from "../../context/AuthContext";
 import CommonButton from "../../components/common/button/CommonButton";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { useLoader } from "../../components/common/commonLoader/LoaderContext";
 
 const modalStyle = {
   position: "absolute",
@@ -62,7 +61,7 @@ const schema = yup.object().shape({
     .required("Pincode is required")
     .matches(/^[0-9]{6}$/, "Must be 6 digits"),
   address: yup.string().required("Address is required"),
-  locality: yup.string().required("Locality is required"),
+  // locality: yup.string().required("Locality is required"),
   city: yup.string().required("City is required"),
   state: yup.string().required("State is required"),
   country: yup.string().required("Country is required"),
@@ -78,8 +77,7 @@ export default function ManageProfileModal({ open, handleClose, user }) {
   const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
   const [formData, setFormData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  const { showLoader, hideLoader } = useLoader();
-  
+
   const {
     control,
     setValue,
@@ -199,21 +197,14 @@ export default function ManageProfileModal({ open, handleClose, user }) {
       <Modal open={open} onClose={handleClose}>
         <Box
           sx={modalStyle}
-          className="bg-white rounded-xl shadow-2xl p-0 overflow-hidden"
+          className="bg-white rounded shadow-2xl p-0 overflow-hidden"
         >
           <div className="sticky top-0 z-10 bg-white/95 backdrop-blur-sm border-b px-4 py-2 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <img
-                src={JYALogoImg}
-                alt="Logo"
-                className="w-10 h-10 object-contain"
-              />
-              <Typography
-                variant="h6"
-                className="font-bold text-gray-800 text-sm sm:text-base"
-              >
+          
+              <h2 className="font-bold text-gray-800 text-sm md:text-2xl">
                 Manage Profile
-              </Typography>
+              </h2>
             </div>
             <CancelButtonModal onClick={handleClose} />
           </div>

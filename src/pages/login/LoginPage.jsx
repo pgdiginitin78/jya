@@ -92,20 +92,20 @@ function LoginPage({
       setOpenConfirmationModal(false);
 
       const response = await userLogin(formData);
-      const { data, status } = response;
 
-      if (status === 200 && data?.accessToken) {
-        localStorage.setItem("accessToken", data.accessToken);
-        localStorage.setItem("refreshToken", data.refreshToken);
-        localStorage.setItem("user", JSON.stringify(data.user));
-        localStorage.setItem("expiresIn", data.expiresIn);
+      console.log("response", response.data.statusCode);
+
+      if (response.data.statusCode === 200) {
+        localStorage.setItem("accessToken", response.data.data.accessToken);
+        localStorage.setItem("refreshToken", response.data.data.refreshToken);
+        localStorage.setItem("user", JSON.stringify(response.data.data.user));
+        localStorage.setItem("expiresIn", response.data.data.expiresIn);
         localStorage.setItem("tokenSetTime", Date.now());
-        login(data.user);
-        successAlert(data.message);
+
+        login(response.data.data.user);
+        successAlert(response.data.message);
         handleClose();
         reset();
-      } else {
-        throw new Error(data?.message || "Invalid login credentials");
       }
     } catch (error) {
       errorAlert(
@@ -437,7 +437,7 @@ function LoginPage({
         />
       )}
 
-      <Modal open={openForgotModal}>
+      <Modal open={openForgotModal} onClose={() => setOpenForgotModal(false)}>
         <Box sx={modalStyle}>
           <Box
             sx={{
@@ -472,6 +472,7 @@ function LoginPage({
               value={forgotEmail}
               size="small"
               error={!!forgotEmailError}
+              helperText={forgotEmailError}
               FormHelperTextProps={{
                 sx: {
                   background: "linear-gradient(135deg,#c7e8b4 0%,#7fb069 100%)",
@@ -508,10 +509,11 @@ function LoginPage({
               <CommonButton
                 type="button"
                 onClick={() => {
+                  setOpenForgotModal(false);
                   setForgotEmail("");
                   setForgotEmailError("");
                 }}
-                label="Reset"
+                label="Cancel"
                 className={
                   "border border-red-600 text-red-600 hover:bg-red-100 w-full"
                 }
