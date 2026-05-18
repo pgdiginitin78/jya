@@ -883,7 +883,7 @@ export default function HomePage() {
                   through wellness, nature, community and conscious lifestyle.
                 </motion.p>
 
-                <motion.div
+                {/* <motion.div
                   initial={{ opacity: 0, y: 25 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.9, delay: 0.55 }}
@@ -938,7 +938,7 @@ export default function HomePage() {
                       Consult Doctor
                     </span>
                   </motion.button>
-                </motion.div>
+                </motion.div> */}
               </div>
               <div className="flex justify-center lg:justify-end items-center z-0 w-full px-4 sm:px-8 md:px-12 lg:px-16 xl:px-24 2xl:px-12">
                 <div className="relative h-[390px] 2xl:h-[480px] w-full  overflow-visible">
