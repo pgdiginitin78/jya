@@ -38,7 +38,7 @@ function PageSkeleton() {
 function App() {
   const location = useLocation();
   const params = new URLSearchParams(window.location.search);
-  const isApp = params.get("app") === "true";
+  const isApp = params.get("mobileApp") === "true";
 
   useTokenRefresh();
 
