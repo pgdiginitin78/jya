@@ -37,12 +37,15 @@ function PageSkeleton() {
 
 function App() {
   const location = useLocation();
+  const params = new URLSearchParams(window.location.search);
+  const isApp = params.get("app") === "true";
+
   useTokenRefresh();
 
   return (
     <>
       <div className="App bg-gradient-to-br from-lime-50 via-green-50 to-white overflow-hidden">
-        <Navbar />
+        <Navbar isApp={isApp} />
         <AnimatePresence mode="wait">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -51,7 +54,14 @@ function App() {
             transition={{ duration: 0.3 }}
           >
             <Suspense fallback={<PageSkeleton />}>
-              <Routes location={location} key={location.pathname.startsWith('/blog/') ? '/blog' : location.pathname}>
+              <Routes
+                location={location}
+                key={
+                  location.pathname.startsWith("/blog/")
+                    ? "/blog"
+                    : location.pathname
+                }
+              >
                 <Route path="/" element={<HomePage title="Home" />} />
                 <Route
                   path="/privacyAndPolicy"
@@ -69,9 +79,8 @@ function App() {
             </Suspense>
           </motion.div>
         </AnimatePresence>
-        <Footer />
+        {!isApp && <Footer />}
       </div>
-
 
       <ScrollToTopButton />
       <ScrollToHash />

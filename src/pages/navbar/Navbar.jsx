@@ -39,7 +39,7 @@ const mobilePanelMotion = {
   },
 };
 
-export default function Navbar() {
+export default function Navbar({ isApp }) {
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openLogin, setOpenLogin] = useState(false);
@@ -578,48 +578,48 @@ export default function Navbar() {
                         transition={{ duration: 0.2, ease: "easeOut" }}
                         className="profile-dropdown"
                       >
-                          <div className="profile-dropdown-header">
-                            <h3 className="profile-dropdown-name">
-                              {user?.firstName} {user?.lastName}
-                            </h3>
-                            <div className="profile-dropdown-handle">
-                              @{user?.userName || user?.firstName}
-                            </div>
+                        <div className="profile-dropdown-header">
+                          <h3 className="profile-dropdown-name">
+                            {user?.firstName} {user?.lastName}
+                          </h3>
+                          <div className="profile-dropdown-handle">
+                            @{user?.userName || user?.firstName}
                           </div>
+                        </div>
 
-                          <div
-                            className="profile-dropdown-item"
-                            onClick={() => {
-                              setOpenManageProfile(true);
-                              setShowProfileDropdown(false);
-                            }}
-                          >
-                            <PersonIcon className="profile-dropdown-icon" />
-                            <span>Manage Profile</span>
-                          </div>
+                        <div
+                          className="profile-dropdown-item"
+                          onClick={() => {
+                            setOpenManageProfile(true);
+                            setShowProfileDropdown(false);
+                          }}
+                        >
+                          <PersonIcon className="profile-dropdown-icon" />
+                          <span>Manage Profile</span>
+                        </div>
 
-                          <div
-                            className="profile-dropdown-item"
-                            onClick={() => {
-                              setOpenManageMembers(true);
-                              setShowProfileDropdown(false);
-                            }}
-                          >
-                            <GroupsIcon className="profile-dropdown-icon" />
-                            <span>Manage Members</span>
-                          </div>
+                        <div
+                          className="profile-dropdown-item"
+                          onClick={() => {
+                            setOpenManageMembers(true);
+                            setShowProfileDropdown(false);
+                          }}
+                        >
+                          <GroupsIcon className="profile-dropdown-icon" />
+                          <span>Manage Members</span>
+                        </div>
 
-                          <div
-                            className="profile-dropdown-item profile-dropdown-logout"
-                            onClick={() => {
-                              handleLogout();
-                              setShowProfileDropdown(false);
-                            }}
-                          >
-                            <LogoutIcon className="profile-dropdown-icon" />
-                            <span>Logout</span>
-                          </div>
-                        </motion.div>
+                        <div
+                          className="profile-dropdown-item profile-dropdown-logout"
+                          onClick={() => {
+                            handleLogout();
+                            setShowProfileDropdown(false);
+                          }}
+                        >
+                          <LogoutIcon className="profile-dropdown-icon" />
+                          <span>Logout</span>
+                        </div>
+                      </motion.div>
                     )}
                   </AnimatePresence>
                 </div>
@@ -834,49 +834,53 @@ export default function Navbar() {
             )}
 
             {!user?.userName && (
-              <div className="flex gap-2 mb-4">
-                <Button
-                  variant="outlined"
-                  fullWidth
-                  onClick={() => {
-                    setMobileOpen(false);
-                    setOpenLogin(true);
-                  }}
-                  sx={{
-                    borderColor: "#263d21",
-                    color: "#263d21",
-                    textTransform: "none",
-                    borderRadius: "12px",
-                    fontWeight: 600,
-                    py: 1.5,
-                    "&:hover": {
-                      borderColor: "#263d21",
-                      background: "rgba(38, 61, 33, 0.05)",
-                    },
-                  }}
-                >
-                  Login
-                </Button>
+              <>
+                {!isApp && (
+                  <div className="flex gap-2 mb-4">
+                    <Button
+                      variant="outlined"
+                      fullWidth
+                      onClick={() => {
+                        setMobileOpen(false);
+                        setOpenLogin(true);
+                      }}
+                      sx={{
+                        borderColor: "#263d21",
+                        color: "#263d21",
+                        textTransform: "none",
+                        borderRadius: "12px",
+                        fontWeight: 600,
+                        py: 1.5,
+                        "&:hover": {
+                          borderColor: "#263d21",
+                          background: "rgba(38, 61, 33, 0.05)",
+                        },
+                      }}
+                    >
+                      Login
+                    </Button>
 
-                <Button
-                  variant="contained"
-                  fullWidth
-                  onClick={() => {
-                    setMobileOpen(false);
-                    setOpenSignUpModal(true);
-                  }}
-                  sx={{
-                    backgroundColor: "#263d21",
-                    textTransform: "none",
-                    borderRadius: "12px",
-                    fontWeight: 600,
-                    py: 1.5,
-                    "&:hover": { backgroundColor: "#1f321a" },
-                  }}
-                >
-                  Register
-                </Button>
-              </div>
+                    <Button
+                      variant="contained"
+                      fullWidth
+                      onClick={() => {
+                        setMobileOpen(false);
+                        setOpenSignUpModal(true);
+                      }}
+                      sx={{
+                        backgroundColor: "#263d21",
+                        textTransform: "none",
+                        borderRadius: "12px",
+                        fontWeight: 600,
+                        py: 1.5,
+                        "&:hover": { backgroundColor: "#1f321a" },
+                      }}
+                    >
+                      Register
+                    </Button>
+                  </div>
+                )}
+              </>
             )}
 
             <Divider className="!my-4" />
