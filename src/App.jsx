@@ -45,7 +45,7 @@ function App() {
   return (
     <>
       <div className="App bg-gradient-to-br from-lime-50 via-green-50 to-white overflow-hidden">
-        <Navbar isApp={isApp} />
+        {!isApp && <Navbar isApp={isApp} />}
         <AnimatePresence mode="wait">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
